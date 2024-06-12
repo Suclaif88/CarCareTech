@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Empresas</title>
+</head>
+<body>
+    <h1>Lista de Empresas</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nit</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Direccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for empresa in empresa %}
+                <tr>
+                    <td>{{ empresa.nit }}</td>
+                    <td>{{ empresa.nombre }}</td>
+                    <td>{{ empresa.telefono }}</td>
+                    <td>{{ empresa.correo }}</td>
+                    <td>{{ empresa.direccion }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
