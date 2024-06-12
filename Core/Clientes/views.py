@@ -35,3 +35,5 @@ def productos(request):
 def servicios(request):
     servicio = Servicios.objects.all()
     return render(request, 'Servicios.html', {'servicios': servicio})
+
+# hola
