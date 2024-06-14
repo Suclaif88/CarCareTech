@@ -16,14 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import index, about, ingreso
+from .views import index, about, login, registro
 from Clientes.views import lista_clientes
-from Mecanicos.views import lista_mecanicos
+
 from Vehiculo.views import  lista_vehiculo
 from Empresa.views import datos_empresa
 from Productos.views import productos
 from Servicios.views import servicios
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,12 +31,12 @@ urlpatterns = [
     path('Productos/', productos, name='Productos'),
     path('Servicios/', servicios, name='Servicios'),
     path('SobreNosotros/',about, name='SobreNosotros'),
-    path('Ingreso/', ingreso, name='Ingreso'),
+    path('Ingreso/', login, name='Login'),
+    path('Registro/', registro, name='Registro'),
     
     
-    path('clientes/', lista_clientes, name='lista_clientes'),
-    path('mecanicos/', lista_mecanicos,name='lista_mecanico'),
-    path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),
-    path('datos-empresa/', datos_empresa, name='Datos-Empresa'),
+    path('clientes/', lista_clientes, name='lista_clientes'),#Vistas provicionales para comprobar informacion
+    path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
+    path('datos-empresa/', datos_empresa, name='Datos-Empresa'),#Vistas provicionales para comprobar informacion
     
 ]

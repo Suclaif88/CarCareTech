@@ -1,11 +1,15 @@
 from django.shortcuts import render
 
-
 def index(request):
     return render(request, 'index.html')
 
 def about(request):
     return render(request, 'SobreNosotros.html')
 
-def ingreso(request):
-    return render(request, 'Ingreso.html')
+def login(request):
+    return render(request, 'Login.html')
+
+def registro(request):
+    return render(request, 'Registro.html')
+
+
