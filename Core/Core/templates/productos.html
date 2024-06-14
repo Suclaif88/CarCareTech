@@ -1,27 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Lista de Productos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>CarCareTech-Productos</title>
 </head>
 <body>
-    <h1>Lista de Productos</h1>
-    <table border="1">
-        <tr>
-            <th>Id_producto</th>
-            <th>Id_tipo_producto</th>
-            <th>Cantidad_Stock</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-        </tr>
-        {% for producto in productos %}
-        <tr>
-            <td>{{ producto.id_producto}}</td>
-            <td>{{ producto.id_tipo_producto}}</td>
-            <td>{{ producto.cantidad_stock}}</td>
-            <td>{{ producto.nombre}}</td>
-            <td>{{ producto.precio}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+
+{% include 'Navbar.html' %}
+
+<div class="ParentDiv">
+    <div>
+        <h1>Lista de Productos</h1>
+            <table border="1">
+                <tr>
+                    <th>Id_producto</th>
+                    <th>Id_tipo_producto</th>
+                    <th>Cantidad_Stock</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                </tr>
+                {% for producto in productos %}
+                <tr>
+                    <td>{{ producto.id_producto }}</td>
+                    <td>{{ producto.id_tipo_producto}}</td>
+                    <td>{{ producto.cantidad_stock}}</td>
+                    <td>{{ producto.nombre}}</td>
+                    <td>{{ producto.precio}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
+</div>
 </body>
 </html>

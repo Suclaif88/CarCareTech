@@ -1,0 +1,17 @@
+{% load static %}
+<nav>
+    <div class="navbar">
+      <div class="logo">
+        <img src="{% static 'resources/img/favicon.png' %}" alt="Favicon">
+        <a href="{% url 'Inicio' %}">CarCareTech</a>
+      </div>
+      <ul class="menu">
+        <li><a href="{% url 'Inicio' %}">Inicio</a></li>
+        <li><a href="{% url 'Servicios' %}">Servicios</a></li><!--DINAMICO-->
+        <li><a href="{% url 'Productos' %}">Productos</a></li><!--DINAMICO-->
+        <li><a href="{% url 'SobreNosotros' %}">Contactenos</a></li>
+        <li><a href="{% url 'Ingreso' %}">Ingreso</a></li>
+      </ul>
+    </div>
+  </nav>
+  

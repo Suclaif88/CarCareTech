@@ -1,25 +1,39 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Lista de Servicios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <title>CarCareTech-Servicios</title>
 </head>
 <body>
-    <h1>Lista de Servicios</h1>
-    <table border="1">
-        <tr>
-            <th>Id_Servicios</th>
-            <th>Nombre Servicios</th>
-            <th>Precio</th>
-            <th>Descripcion</th>
-        </tr>
-        {% for servicio in servicios %}
-        <tr>
-            <td>{{ servicio.id_servicios}}</td>
-            <td>{{ servicio.nombre_servicio}}</td>
-            <td>{{ servicio.precio}}</td>
-            <td>{{ servicio.descripcion}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+
+{% include 'Navbar.html' %}
+
+<div class="ParentDiv">
+    <div>
+        <h1>Lista de Servicios</h1>
+            <table border="1">
+                <tr>
+                    <th>Id_Servicios</th>
+                    <th>Nombre Servicios</th>
+                    <th>Precio</th>
+                    <th>Descripcion</th>
+                </tr>
+                {% for servicio in servicios %}
+                <tr>
+                    <td>{{ servicio.id_servicios}}</td>
+                    <td>{{ servicio.nombre_servicio}}</td>
+                    <td>{{ servicio.precio}}</td>
+                    <td>{{ servicio.descripcion}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+    </div>
+</div>
+
 </body>
 </html>
