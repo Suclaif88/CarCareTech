@@ -8,8 +8,3 @@ def about(request):
 
 def login(request):
     return render(request, 'Login.html')
-
-def registro(request):
-    return render(request, 'Registro.html')
-
-
