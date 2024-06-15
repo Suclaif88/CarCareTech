@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'resources/css/banner.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <title>CarCareTech-Inicio</title>
@@ -18,12 +17,12 @@
 	<div class="contenedor">
 		<div class="wrap">
 			<div class="box">
-				<span>Escucha ahora...</span>
-				<h1>NUESTRO NUEVO PODCAST</h1>
+				<span>Tu solucion en mecanica...</span>
+				<h1>NUESTROS MEJORES EXPERTOS</h1>
 				<p>Lorem, ipsum dolor, sit amet consectetur adipisicing elit. Dolorem dolore ea aut fugit officiis nesciunt nulla, voluptate perferendis maiores!.</p>
 				<div class="botones">
-					<a href="#" class="btn1">Suscríbete</a>
-					<a href="#" class="btn2">Escúchalo</a>					
+					<a href="{% url 'Productos' %}" class="btn1">Productos</a>
+					<a href="{% url 'Servicios' %}" class="btn2">Servicios</a>					
 				</div>
 			</div>
 		</div>
@@ -32,20 +31,22 @@
 <section class="services">
     <div class="service-card">
         <img src="{% static 'resources/img/mecanico.png' %}" alt="Service 1">
-        <h3>Auto Diagnosis</h3>
+        <h3>Diagnostico</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <div class="service-card">
         <img src="{% static 'resources/img/mecanismo.png' %}" alt="Service 2">
-        <h3>Auto Diagnosis</h3>
+        <h3>Mantenimiento</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
     <div class="service-card">
         <img src="{% static 'resources/img/mecanico2.png' %}" alt="Service 3">
-        <h3>Auto Diagnosis</h3>
+        <h3>Soluciones y respuestos</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
     </div>
 </section>
+  
+{% include 'footer.html' %}
 
 </body>
 </html>
