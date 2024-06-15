@@ -1,7 +1,7 @@
 from django.db import models
 
 class TipoProducto(models.Model):
-    id_tipo_producto = models.PositiveSmallIntegerField(primary_key=True)
+    id_tipo_producto = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):

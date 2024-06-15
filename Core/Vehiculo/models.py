@@ -1,7 +1,7 @@
 from django.db import models
 from Clientes.models import Clientes
 class TipoVehiculo(models.Model):
-    id_tipo_vehiculo = models.PositiveSmallIntegerField(primary_key=True)
+    id_tipo_vehiculo = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=30, null=True, blank=True)
     numero_ruedas = models.PositiveSmallIntegerField(null=True, blank=True)
     descripcion = models.CharField(max_length=2000, null=True, blank=True)
