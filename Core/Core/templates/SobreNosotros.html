@@ -12,8 +12,33 @@
 <body>
 
 {% include 'Navbar.html' %}
+{% include 'loader.html' %}
 
-<section id="About" class="sectionAboutus">ACA SOBRE NOSOTROS</section>
+<section class="services">
+    <div class="service-card">
+        <img src="{% static 'resources/img/sobrenosotros_mec.png' %}" >
+        <h3>SOBRE NOSOTROS</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+</section>
+
+<section class="services">
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanico.png' %}" alt="Service 1">
+        <h3>Auto Diagnosis</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanismo.png' %}" alt="Service 2">
+        <h3>Auto Diagnosis</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanico2.png' %}" alt="Service 3">
+        <h3>Auto Diagnosis</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+</section>
 
 </body>
 </html>
