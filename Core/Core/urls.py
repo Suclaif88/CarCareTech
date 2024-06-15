@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import index, about, login
+from .views import index, about, custom_login
 from Clientes.views import lista_clientes
 
 from Vehiculo.views import  lista_vehiculo
@@ -26,12 +26,13 @@ from Servicios.views import servicios
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index),
+
     path('', index, name='Inicio'),
     path('Productos/', productos, name='Productos'),
     path('Servicios/', servicios, name='Servicios'),
     path('SobreNosotros/',about, name='SobreNosotros'),
-    path('Ingreso/', login, name='Login'),
+    path('login/', custom_login, name='Login'),
+
     
     
     path('clientes/', lista_clientes, name='lista_clientes'),#Vistas provicionales para comprobar informacion
