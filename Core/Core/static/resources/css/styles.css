@@ -427,6 +427,7 @@ section.services {
 
 /*SOBRE NOSOTROS*/
 
-.contenedor {
-  margin-top: 100px;
+.services{
+  background-image: url(resources/img/sobrenosotros_mec.png);
+  margin-top: 35px;
 }
