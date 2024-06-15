@@ -12,8 +12,41 @@
 <body>
 
 {% include 'Navbar.html' %}
+{% include 'loader.html' %}
 
-<section id="Inicio" class="sectionInicio">ACA EL INICIO</section>
+	<div class="contenedor">
+		<div class="wrap">
+			<div class="box">
+				<span>Tu solucion en mecanica...</span>
+				<h1>NUESTROS MEJORES EXPERTOS</h1>
+				<p>Lorem, ipsum dolor, sit amet consectetur adipisicing elit. Dolorem dolore ea aut fugit officiis nesciunt nulla, voluptate perferendis maiores!.</p>
+				<div class="botones">
+					<a href="{% url 'Productos' %}" class="btn1">Productos</a>
+					<a href="{% url 'Servicios' %}" class="btn2">Servicios</a>					
+				</div>
+			</div>
+		</div>
+	</div>
+
+<section class="services">
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanico.png' %}" alt="Service 1">
+        <h3>Diagnostico</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanismo.png' %}" alt="Service 2">
+        <h3>Mantenimiento</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-card">
+        <img src="{% static 'resources/img/mecanico2.png' %}" alt="Service 3">
+        <h3>Soluciones y respuestos</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+</section>
+  
+{% include 'footer.html' %}
 
 </body>
 </html>
