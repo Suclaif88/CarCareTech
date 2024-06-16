@@ -1,31 +1,33 @@
-from django.contrib.auth import login
 from django.shortcuts import render, redirect
-from .forms import CustomAuthenticationForm 
-from Usuarios.models import Usuarios
 from django.contrib import messages
-
+from Usuarios.models import Usuarios
 
 def index(request):
-    return render(request, 'index.html')
+    if 'usuario_autenticado' in request.session:
+        usuario_id = request.session['usuario_autenticado']
+        
+        try:
+            usuario = Usuarios.objects.get(pk=usuario_id)
+            return render(request, 'index.html', {'usuario': usuario})
+        
+        except Usuarios.DoesNotExist:
+            messages.error(request, 'Usuario no encontrado.')
+            return redirect('login_view')
+    
+    else:
+        return render(request, 'index.html')
 
 def about(request):
-    return render(request, 'SobreNosotros.html')
-
-
-
-def custom_login(request):
-    if request.method == 'POST':
-        form = CustomAuthenticationForm(request.POST)
-        if form.is_valid():
-            Documento = form.cleaned_data.get('Documento')
-            Rol = form.cleaned_data.get('Rol')
-            user = Usuarios.objects.filter(Documento=Documento, Rol=Rol).first()
-            if user is not None and user.Rol == 2:
-                login(request, user)
-                messages.success(request, f'¡Bienvenido, {user.Nombre}! Has iniciado sesión correctamente.')
-                return redirect('/admin/')  # Cambia 'Productos' a la URL correcta
+    if 'usuario_autenticado' in request.session:
+        usuario_id = request.session['usuario_autenticado']
+        
+        try:
+            usuario = Usuarios.objects.get(pk=usuario_id)
+            return render(request, 'SobreNosotros.html', {'usuario': usuario})
+        
+        except Usuarios.DoesNotExist:
+            messages.error(request, 'Usuario no encontrado.')
+            return redirect('login_view')
+    
     else:
-        form = CustomAuthenticationForm()
-    return render(request, 'registration/Login.html', {'form': form})
-
-
+        return render(request, 'SobreNosotros.html')

@@ -1,14 +1,19 @@
-<div class="login-box">
-    <h1>Login</h1>
-    <div class="textbox">
-      <i class="fas fa-user"></i>
-      <input type="text" placeholder="Usuario" autofocus="autofocus">
-    </div>
-  
-    <div class="textbox">
-      <i class="fas fa-lock"></i>
-      <input type="password" placeholder="Contraseña">
-    </div>
-  
-    <input type="button" class="btn" value="Ingresar">
+<div class="unique-container">
+    <h2>Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="unique-form-group">
+            <label for="documento">Documento:</label>
+            <input type="text" id="documento" name="documento" required>
+        </div>
+        <button type="submit" class="unique-button">Entrar</button>
+    </form>
+    {% if messages %}
+    <br>
+        <ul class="unique-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>

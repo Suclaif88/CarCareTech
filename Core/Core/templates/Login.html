@@ -11,22 +11,13 @@
 </head>
 <body>
 
-{% comment %} {% include '../Navbar.html' %} {% endcomment %}
+{% include 'Navbar.html' %}
 
-<h1>Iniciar Sesión</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Iniciar Sesión</button>
-</form>
+{% include 'loader.html' %}
 
-{% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+{% include 'LoginForm.html' %}
+
+{% include 'footer.html' %}
 
 </body>
 </html>
