@@ -12,3 +12,4 @@ class Clientes(models.Model):
     def __str__(self):
         return f"{self.Documento}" 
 
+
