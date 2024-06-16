@@ -428,8 +428,33 @@ section.services {
 
 /*SOBRE NOSOTROS*/
 
-.services {
-  margin-top: 100px;
+.section {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.about, .story {
+  padding: 80px 0;
+}
+
+.about-content, .story-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.about-content img, .story-content img {
+  width: 80%;
+  max-width: 400px;
+}
+
+.text-content {
+  max-width: 600px;
+  text-align: left;
 }
 
 /*---------------------------------------------*/
