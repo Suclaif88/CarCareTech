@@ -282,7 +282,7 @@ section.services {
 	padding: 0;
 	margin: 0;
   background-image: linear-gradient(to top, #1a5276, #2980b9, #3498db, #5eaefc, #86c5fc, #b3dfff, #d6e9ff);
-    
+  background-repeat: no-repeat;
 }
 .contenedor{
 	display: flex;

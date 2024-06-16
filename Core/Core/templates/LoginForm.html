@@ -1,14 +1,14 @@
-<div class="login-box">
-    <h1>Login</h1>
-    <div class="textbox">
-      <i class="fas fa-user"></i>
-      <input type="text" placeholder="Usuario" autofocus="autofocus">
-    </div>
-  
-    <div class="textbox">
-      <i class="fas fa-lock"></i>
-      <input type="password" placeholder="Contraseña">
-    </div>
-  
-    <input type="button" class="btn" value="Ingresar">
-</div>
+<h1>Iniciar Sesión</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Iniciar Sesión</button>
+</form>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
