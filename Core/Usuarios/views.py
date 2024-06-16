@@ -1,7 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Usuarios
 from django.contrib.auth import logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -29,7 +33,7 @@ def admin_view(request):
         usuario_id = request.session['usuario_autenticado']
         try:
             usuario = Usuarios.objects.get(pk=usuario_id)
-            return render(request, 'admin_panel.html', {'usuario': usuario})
+            return render(request, 'ADMIN/admin_panel.html', {'usuario': usuario})
         except Usuarios.DoesNotExist:
             messages.error(request, 'Usuario no encontrado')
             return redirect('login_view')
@@ -53,4 +57,82 @@ def home_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('Inicio') 
+    return redirect('Inicio')
+
+#-------Vistas Admin--------------
+
+def AdUsuarios(request):
+    usuarios = Usuarios.objects.all()
+    return render(request, 'ADMIN/usuarios.html', {'usuarios': usuarios})
+
+
+#-----EDITAR-----------------------
+
+def editar_usuario(request, documento):
+    usuario = get_object_or_404(Usuarios, Documento=documento)
+
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        apellido = request.POST.get('apellido')
+        celular = request.POST.get('celular')
+        f_nacimiento = request.POST.get('f_nacimiento')
+        correo = request.POST.get('correo')
+        rol = request.POST.get('rol')
+
+        usuario.Nombre = nombre
+        usuario.Apellido = apellido
+        usuario.Celular = celular
+        usuario.F_Nacimiento = f_nacimiento
+        usuario.Correo = correo
+        usuario.Rol = rol
+
+        usuario.save()
+
+        return redirect('ad_usuarios')
+
+    return render(request, 'ADMIN/editar_usuario.html', {'usuario': usuario})
+
+#-----ELIMINAR-----------------------
+
+def eliminar_usuario(request, documento):
+    usuario = get_object_or_404(Usuarios, Documento=documento)
+    
+    if request.method == 'POST':
+        usuario.delete()
+        return JsonResponse({'mensaje': 'Usuario eliminado correctamente'})
+    return render(request, 'ADMIN/eliminar_usuario.html', {'usuario': usuario})
+
+
+#-----AGREGAR------------------------
+
+@csrf_exempt
+def agregar_usuario(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        nombre = data.get('nombre')
+        apellido = data.get('apellido')
+        documento = data.get('documento')
+        celular = data.get('celular')
+        f_nacimiento = data.get('f_nacimiento')
+        correo = data.get('correo')
+        rol = data.get('rol')
+
+        if nombre and apellido and documento and celular and f_nacimiento and correo and rol:
+            try:
+                nuevo_usuario = Usuarios(
+                    Nombre=nombre,
+                    Apellido=apellido,
+                    Documento=documento,
+                    Celular=celular,
+                    F_Nacimiento=f_nacimiento,
+                    Correo=correo,
+                    Rol=rol
+                )
+                nuevo_usuario.save()
+                return JsonResponse({'message': 'Usuario agregado correctamente'}, status=201)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
