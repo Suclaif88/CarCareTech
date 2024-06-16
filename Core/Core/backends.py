@@ -1,13 +1,14 @@
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth import get_user_model
 from Usuarios.models import Usuarios
 
 class DocumentRoleBackend(BaseBackend):
-    def authenticate(self, request, Documento=None, password=None, Rol=None):
+    def authenticate(self, request, documento=None, rol=None):
         try:
-            user = Usuarios.objects.get(Documento=Documento, Rol=Rol)
-            if user.check_password(password):
-                return user
+            usuario = Usuarios.objects.get(Documento=documento)
+            if usuario:
+                if rol is not None and usuario.Rol != rol:
+                    return None
+                return usuario  
         except Usuarios.DoesNotExist:
             return None
 

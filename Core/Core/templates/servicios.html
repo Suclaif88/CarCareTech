@@ -13,27 +13,25 @@
 
 {% include 'Navbar.html' %}
 
+{% include 'loader.html' %}
+
 <div class="ParentDiv">
-    <div>
         <h1>Lista de Servicios</h1>
-            <table border="1">
-                <tr>
-                    <th>Id_Servicios</th>
-                    <th>Nombre Servicios</th>
-                    <th>Precio</th>
-                    <th>Descripcion</th>
-                </tr>
-                {% for servicio in servicios %}
-                <tr>
-                    <td>{{ servicio.id_servicios}}</td>
-                    <td>{{ servicio.nombre_servicio}}</td>
-                    <td>{{ servicio.precio}}</td>
-                    <td>{{ servicio.descripcion}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-    </div>
+        <div class="card-container">
+            {% for servicio in servicios %}
+            <div class="card">
+                <div class="card-content">
+                    <h2>{{ servicio.nombre_servicio }}</h2>
+                    <p><strong>Precio:</strong> {{ servicio.precio|floatformat:"0" }}</p>
+                    <p>{{ servicio.descripcion }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 </div>
+
+
+{% include 'footer.html' %}
 
 </body>
 </html>
