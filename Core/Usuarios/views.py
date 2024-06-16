@@ -59,7 +59,7 @@ def logout_view(request):
     logout(request)
     return redirect('Inicio')
 
-#-------Vistas Admin--------------
+#-------Vistas Admin Usuario--------------
 
 def AdUsuarios(request):
     usuarios = Usuarios.objects.all()

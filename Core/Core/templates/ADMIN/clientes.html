@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>CarCareTech-Admin</title>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+
+    <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+
+    <form method="post" action="{% url 'agregar_cliente' %}" id="formAgregarCliente" class="formulario-agregar" style="display: none;">
+        {% csrf_token %}
+        <br>
+        <div class="form-group">
+            <label for="id_nombre">Nombre:</label>
+            <input type="text" id="id_nombre" name="Nombre" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_apellido">Apellido:</label>
+            <input type="text" id="id_apellido" name="Apellido" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_documento">Documento:</label>
+            <input type="text" id="id_documento" name="Documento" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_celular">Celular:</label>
+            <input type="text" id="id_celular" name="Celular" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="id_f_nacimiento" name="F_Nacimiento" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_correo">Correo:</label>
+            <input type="email" id="id_correo" name="Correo" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_direccion">Dirección:</label>
+            <input type="text" id="id_direccion" name="Direccion" class="form-control" required>
+        </div>
+        <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
+        <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
+    </form>
+</div>
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2>Lista de Clientes</h2>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Celular</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.Nombre }}</td>
+                        <td>{{ cliente.Apellido }}</td>
+                        <td>{{ cliente.Documento }}</td>
+                        <td>{{ cliente.Celular }}</td>
+                        <td>{{ cliente.Direccion }}</td>
+                        <td class="acciones">
+                            <a href="{% url 'editar_cliente' cliente.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_cliente' cliente.Documento %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No hay clientes registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+        document.getElementById('formAgregarCliente').style.display = 'block';
+        document.getElementById('btnAbrirFormulario').style.display = 'none';
+    });
+
+    document.querySelector('.btn-cancelar').addEventListener('click', function() {
+        document.getElementById('formAgregarCliente').style.display = 'none';
+        document.getElementById('btnAbrirFormulario').style.display = 'block';
+    });
+
+    document.getElementById('formAgregarCliente').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud HTTP: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Cliente agregado correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                location.reload();
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar cliente',
+                text: 'Hubo un problema al procesar tu solicitud. Por favor, intenta nuevamente.',
+                showConfirmButton: true
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

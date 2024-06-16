@@ -4,55 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Editar Usuario</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
-    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/css/admin.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>CarCareTech-Admin</title>
 </head>
 <body>
 
 {% include 'ADMIN/sidebar.html' %}
 
 <div class="content-wrapper">
-    <form method="post" class="formulario-editar">
-        {% csrf_token %}
-        <input type="hidden" name="documento" value="{{ usuario.Documento }}">
-        <div class="form-group">
-            <label for="id_nombre">Nombre:</label>
-            <input type="text" id="id_nombre" name="nombre" value="{{ usuario.Nombre }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_apellido">Apellido:</label>
-            <input type="text" id="id_apellido" name="apellido" value="{{ usuario.Apellido }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_celular">Celular:</label>
-            <input type="text" id="id_celular" name="celular" value="{{ usuario.Celular }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
-            <input type="date" id="id_f_nacimiento" name="f_nacimiento" value="{{ usuario.F_Nacimiento }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_correo">Correo:</label>
-            <input type="email" id="id_correo" name="correo" value="{{ usuario.Correo }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_rol">Rol:</label>
-            <select id="id_rol" name="rol" required>
-                <option value="1" {% if usuario.Rol == 1 %} selected {% endif %}>Usuario</option>
-                <option value="2" {% if usuario.Rol == 2 %} selected {% endif %}>Administrador</option>
-            </select>
-        </div>
-        <button type="submit" class="btn-submit">Guardar Cambios</button>
+    <div class="center-content">
+        <h2 class="form-title">Editar Usuario</h2>
+        <form method="post" class="formulario-editar" id="editarUsuarioForm">
+            {% csrf_token %}
+            <input type="hidden" name="documento" value="{{ usuario.Documento }}">
+            <div class="form-group">
+                <label for="id_nombre">Nombre:</label>
+                <input type="text" id="id_nombre" name="nombre" value="{{ usuario.Nombre }}" required>
+            </div>
+            <div class="form-group">
+                <label for="id_apellido">Apellido:</label>
+                <input type="text" id="id_apellido" name="apellido" value="{{ usuario.Apellido }}" required>
+            </div>
+            <div class="form-group">
+                <label for="id_celular">Celular:</label>
+                <input type="text" id="id_celular" name="celular" value="{{ usuario.Celular }}" required>
+            </div>
+            <div class="form-group">
+                <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="id_f_nacimiento" name="f_nacimiento" value="{{ usuario.F_Nacimiento }}" required>
+            </div>
+            <div class="form-group">
+                <label for="id_correo">Correo:</label>
+                <input type="email" id="id_correo" name="correo" value="{{ usuario.Correo }}" required>
+            </div>
+            <div class="form-group">
+                <label for="id_rol">Rol:</label>
+                <select id="id_rol" name="rol" required>
+                    <option value="1" {% if usuario.Rol == 1 %} selected {% endif %}>Usuario</option>
+                    <option value="2" {% if usuario.Rol == 2 %} selected {% endif %}>Administrador</option>
+                </select>
+            </div>
+            <button type="submit" class="btn-submit">Guardar Cambios</button>
+        </form>
+    </div>
 </div>
-
-
-</body>
-</html>
-
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -99,3 +97,6 @@
         });
     });
 </script>
+
+</body>
+</html>

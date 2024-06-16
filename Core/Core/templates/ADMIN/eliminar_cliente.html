@@ -1,0 +1,88 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Confirmar Eliminar Cliente</title>
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2 class="form-title">Confirmar Eliminación de Cliente</h2>
+        <p>¿Estás seguro que deseas eliminar al cliente {{ cliente.Nombre }} {{ cliente.Apellido }}?</p>
+        <button id="btn-delete" class="btn-delete">Eliminar</button>
+        <a href="{% url 'ad_clientes' %}" class="btn-cancel">Cancelar</a>
+        <input type="hidden" id="csrf-token" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('btn-delete').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Confirmar Eliminación',
+                text: "¿Estás seguro que deseas eliminar al cliente?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const csrfToken = document.getElementById('csrf-token').value;
+                    const urlEliminarCliente = '{% url 'eliminar_cliente' cliente.Documento %}';
+                    
+                    fetch(urlEliminarCliente, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrfToken
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Cliente eliminado correctamente',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                window.location.href = '{% url 'ad_clientes' %}';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error al eliminar el cliente',
+                                text: 'Por favor, intenta nuevamente',
+                                showConfirmButton: true
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error del servidor',
+                            text: 'Hubo un problema al procesar tu solicitud',
+                            showConfirmButton: true
+                        });
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

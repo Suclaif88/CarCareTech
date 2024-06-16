@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Eliminar Usuario</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
-    <link rel="icon" type="image/png' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
@@ -26,7 +26,7 @@
         </div>
         <div class="botones-eliminar">
             <button id="btnConfirmarEliminar" class="boton-confirmar"><i class="fas fa-trash-alt"></i> Confirmar Eliminar</button>
-            <a href="{% url 'ad_usuarios' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
+            <a href="{% url 'ad_usuarios' %}" class="btn-cancel"><i class="fas fa-times"></i> Cancelar</a>
         </div>
     </div>
 </div>
