@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import index, about
 from Clientes.views import lista_clientes
-from Usuarios.views import login_view, admin_view, home_view, logout_view
+from Usuarios.views import *
 
 from Vehiculo.views import  lista_vehiculo
 from Empresa.views import datos_empresa
@@ -37,6 +37,13 @@ urlpatterns = [
     path('admin_panel/', admin_view, name='admin_view'),
     path('', home_view, name='home_view'),
     path('logout/', logout_view, name='logout'),
+    
+    #URLS DE ADMIN USUARIOS
+    path('admin_panel/usuarios/', AdUsuarios, name='ad_usuarios'),
+    path('admin_panel/usuarios/editar/<str:documento>/', editar_usuario, name='editar'),
+    path('admin_panel/usuarios/eliminar/<str:documento>/', eliminar_usuario, name='eliminar_usuario'),
+    path('agregar/', agregar_usuario, name='agregar_usuario'),
+    
     
     path('clientes/', lista_clientes, name='lista_clientes'),#Vistas provicionales para comprobar informacion
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
