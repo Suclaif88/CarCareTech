@@ -5,12 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+<<<<<<< HEAD
     <title>Confirmar Eliminar Cliente</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+=======
+    <title>Eliminar Usuario</title>
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+>>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
 </head>
 <body>
 
@@ -18,6 +27,7 @@
 
 <div class="content-wrapper">
     <div class="center-content">
+<<<<<<< HEAD
         <h2 class="form-title">Confirmar Eliminación de Cliente</h2>
         <p>¿Estás seguro que deseas eliminar al cliente {{ cliente.Nombre }} {{ cliente.Apellido }}?</p>
         <button id="btn-delete" class="btn-delete">Eliminar</button>
@@ -80,9 +90,71 @@
                     });
                 }
             });
+=======
+        <h2>Eliminar Cliente</h2>
+        <div class="mensaje-eliminar">
+            <p>¿Estás seguro de que deseas eliminar este cliente?</p>
+            <p>Nombre: {{ cliente.Nombre }} {{ cliente.Apellido }}</p>
+            <p>Documento: {{ cliente.Documento }}</p>
+        </div>
+        <div class="botones-eliminar">
+            <button id="btnConfirmarEliminar" class="boton-confirmar"><i class="fas fa-trash-alt"></i> Confirmar Eliminar</button>
+            <a href="{% url 'ad_clientes' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const urlEliminarCliente = "{% url 'eliminar_cliente' cliente.Documento %}";
+
+    document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#007bff',
+            confirmButtonText: 'Sí, eliminarlo'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(urlEliminarCliente, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: '¡Eliminado!',
+                        text: data.mensaje,
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = '{% url 'ad_clientes' %}';
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un problema al eliminar el cliente'
+                    });
+                });
+            }
+>>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
         });
     });
 </script>
 
 </body>
 </html>
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53

@@ -42,7 +42,14 @@ urlpatterns = [
     path('admin_panel/usuarios/', AdUsuarios, name='ad_usuarios'),
     path('admin_panel/usuarios/editar/<str:documento>/', editar_usuario, name='editar'),
     path('admin_panel/usuarios/eliminar/<str:documento>/', eliminar_usuario, name='eliminar_usuario'),
-    path('agregar/', agregar_usuario, name='agregar_usuario'),
+    path('admin_panel/usuarios/agregar/', agregar_usuario, name='agregar_usuario'),
+
+    #URLS DE ADMIN CLIENTES
+    path('admin_panel/clientes/', AdClientes, name='ad_clientes'),
+    path('admin_panel/clientes/editar/<str:documento>/', editar_cliente, name='editar_cliente'),
+    path('admin_panel/clientes/eliminar/<str:documento>/', eliminar_cliente, name='eliminar_cliente'),
+    path('clientes/agregar/', agregar_cliente, name='agregar_cliente'),
+
     
     #URLS DE ADMIN CLIENTES
     path('admin_panel/clientes/', AdClientes, name='ad_clientes'),
