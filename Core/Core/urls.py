@@ -49,15 +49,11 @@ urlpatterns = [
     path('admin_panel/clientes/editar/<str:documento>/', editar_cliente, name='editar_cliente'),
     path('admin_panel/clientes/eliminar/<str:documento>/', eliminar_cliente, name='eliminar_cliente'),
     path('clientes/agregar/', agregar_cliente, name='agregar_cliente'),
-
-    
-    #URLS DE ADMIN CLIENTES
-    path('admin_panel/clientes/', AdClientes, name='ad_clientes'),
-    path('admin_panel/clientes/editar/<str:documento>/', editar_cliente, name='editar_cliente'),
-    path('admin_panel/clientes/eliminar/<str:documento>/', eliminar_cliente, name='eliminar_cliente'), 
-    path('admin_panel/clientes/agregar_cliente/', agregar_cliente, name='agregar_cliente'),
     
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
     path('datos-empresa/', datos_empresa, name='Datos-Empresa'),#Vistas provicionales para comprobar informacion
     
 ]
+
+
+#HOLIIII
