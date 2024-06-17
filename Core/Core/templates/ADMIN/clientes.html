@@ -16,49 +16,6 @@
 {% include 'ADMIN/sidebar.html' %}
 
 <div class="content-wrapper">
-<<<<<<< HEAD
-
-    <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
-
-    <form method="post" action="{% url 'agregar_cliente' %}" id="formAgregarCliente" class="formulario-agregar" style="display: none;">
-        {% csrf_token %}
-        <br>
-        <div class="form-group">
-            <label for="id_nombre">Nombre:</label>
-            <input type="text" id="id_nombre" name="Nombre" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_apellido">Apellido:</label>
-            <input type="text" id="id_apellido" name="Apellido" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_documento">Documento:</label>
-            <input type="text" id="id_documento" name="Documento" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_celular">Celular:</label>
-            <input type="text" id="id_celular" name="Celular" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
-            <input type="date" id="id_f_nacimiento" name="F_Nacimiento" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_correo">Correo:</label>
-            <input type="email" id="id_correo" name="Correo" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="id_direccion">Dirección:</label>
-            <input type="text" id="id_direccion" name="Direccion" class="form-control" required>
-        </div>
-        <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
-        <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
-    </form>
-</div>
-
-<div class="content-wrapper">
-=======
->>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
     <div class="center-content">
         <h2>Lista de Clientes</h2>
         <table class="user-table">
@@ -68,11 +25,8 @@
                     <th>Apellido</th>
                     <th>Documento</th>
                     <th>Celular</th>
-<<<<<<< HEAD
-=======
                     <th>Fecha de Nacimiento</th>
                     <th>Correo</th>
->>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
                     <th>Dirección</th>
                     <th>Acciones</th>
                 </tr>
@@ -84,11 +38,8 @@
                         <td>{{ cliente.Apellido }}</td>
                         <td>{{ cliente.Documento }}</td>
                         <td>{{ cliente.Celular }}</td>
-<<<<<<< HEAD
-=======
                         <td>{{ cliente.F_Nacimiento }}</td>
                         <td>{{ cliente.Correo }}</td>
->>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
                         <td>{{ cliente.Direccion }}</td>
                         <td class="acciones">
                             <a href="{% url 'editar_cliente' cliente.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
@@ -97,71 +48,11 @@
                     </tr>
                 {% empty %}
                     <tr>
-<<<<<<< HEAD
-                        <td colspan="6">No hay clientes registrados.</td>
-=======
                         <td colspan="8">No hay clientes registrados.</td>
->>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-<<<<<<< HEAD
-    </div>
-</div>
-
-<script>
-    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
-        document.getElementById('formAgregarCliente').style.display = 'block';
-        document.getElementById('btnAbrirFormulario').style.display = 'none';
-    });
-
-    document.querySelector('.btn-cancelar').addEventListener('click', function() {
-        document.getElementById('formAgregarCliente').style.display = 'none';
-        document.getElementById('btnAbrirFormulario').style.display = 'block';
-    });
-
-    document.getElementById('formAgregarCliente').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-
-        fetch(this.action, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud HTTP: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            Swal.fire({
-                icon: 'success',
-                title: 'Cliente agregado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                location.reload();
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al agregar cliente',
-                text: 'Hubo un problema al procesar tu solicitud. Por favor, intenta nuevamente.',
-                showConfirmButton: true
-            });
-        });
-    });
-</script>
-=======
 
         <div class="content-wrapper">
             <!-- Botón para abrir el formulario de agregar cliente -->
@@ -267,7 +158,6 @@
         
         
         
->>>>>>> b5919f5e10669152a5ac66012a1cec9fc9246f53
 
 </body>
 </html>

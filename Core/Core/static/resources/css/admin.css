@@ -228,8 +228,8 @@ nav.main-menu li.active > a,
 }
 
 .boton-cancelar:hover {
-    background-color: #ffffff;
-    color: #ffffff;
+    background-color: #0011ff;
+    color: #0011ff;
     text-decoration: none;
 }
 
