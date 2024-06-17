@@ -1,0 +1,433 @@
+/*SIDEBAR ADMIN*/
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
+.fa-2x {
+font-size: 2em;
+}
+.fa {
+position: relative;
+display: table-cell;
+width: 60px;
+height: 36px;
+text-align: center;
+vertical-align: middle;
+font-size:20px;
+}
+
+.main-menu:hover, .nav.main-menu.expanded {
+    width: 60px;
+    overflow: visible;
+}
+
+.main-menu {
+    background: #212121;
+    border-right: 1px solid #e5e5e5;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    left: 0;
+    width: 60px;
+    overflow: hidden;
+    transition: width 0.2s ease;
+    z-index: 1000;
+    border-bottom-right-radius: 30px ;
+}
+
+.main-menu:hover {
+    width: 250px;
+}
+
+.main-menu ul {
+    margin: 7px 0;
+}
+
+.main-menu li {
+    position: relative;
+    display: block;
+    width: 250px;
+}
+
+.main-menu li > a {
+    position: relative;
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #999;
+    font-family: Arial;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.1s linear;
+}
+
+
+.main-menu .nav-icon {
+    position: relative;
+    display: table-cell;
+    width: 60px;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 18px;
+}
+
+.main-menu .nav-text {
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    width: 190px;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.main-menu > ul.logout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.no-touch .scrollable.hover {
+    overflow-y: hidden;
+}
+
+.no-touch .scrollable.hover:hover {
+    overflow-y: auto;
+    overflow: visible;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+nav {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+nav ul, nav li {
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para los enlaces y elementos interactivos del sidebar*/
+
+.main-menu li:hover > a,
+nav.main-menu li.active > a,
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus,
+.no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
+.dashboard-page nav.dashboard-menu ul li.active a {
+    color: #fff;
+    background-color: #000000;
+    border-radius: 30px ;
+}
+
+
+.area {
+    position: relative;
+    background: #e2e2e2;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Titillium Web Light'), local('TitilliumWeb-Light'), url(https://fonts.gstatic.com/s/titilliumweb/v9/NaPDcZTIAOhVxoMyOr9n_E7ffO8r7W4.woff2) format('woff2');
+}
+
+
+
+/*---------------------------------------------*/
+
+/*BOTONES Y CONTENEDORES*/
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.center-content {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 350px;
+    width: 100%;
+}
+
+.center-content h2 {
+    margin-top: 0;
+}
+
+.center-content p {
+    margin: 10px 0;
+}
+
+.center-content .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ce1c1c;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    border: 2px solid black;
+}
+
+.center-content .btn:hover {
+    background-color: #a01616;
+}
+
+.boton-confirmar {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.boton-confirmar:hover {
+    background-color: #c82333;
+}
+
+.boton-cancelar {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.boton-cancelar:hover {
+    background-color: #0056b3;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.btn-agregar {
+    background-color: #28a745;
+    color: #ffffff;
+    margin-top: 10px;
+    padding: 10px 20px;
+}
+
+.btn-agregar:hover {
+    background-color: #218838;
+    color: #ffffff;
+}
+  /*---------------------------------------------*/
+
+/*TABLA USUARIOS*/
+
+.center-content {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    width: 100%;
+    overflow-x: auto;
+    margin-left: 100px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th, .user-table td {
+    padding: 8px;
+    border: 1px solid #dddddd;
+    text-align: center;
+}
+
+.user-table th {
+    background-color: #f2f2f2;
+}
+
+.user-table td {
+    background-color: #ffffff;
+}
+
+.acciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.acciones a {
+    margin: 5px;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.acciones a.btn-primary {
+    background-color: #007bff;
+}
+
+.acciones a.btn-danger {
+    background-color: #dc3545;
+}
+
+.acciones a.btn:hover {
+    background-color: #0056b3;
+}
+
+/*---------------------------------------------*/
+
+/*EDITAR USUARIO*/
+
+.formulario-editar {
+    max-width: 600px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.formulario-editar .form-group {
+    margin-bottom: 20px;
+}
+
+.formulario-editar label {
+    font-weight: bold;
+}
+
+.formulario-editar input[type="text"],
+.formulario-editar input[type="email"],
+.formulario-editar select,
+.formulario-editar input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formulario-editar .btn-submit {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+}
+
+.formulario-editar .btn-submit:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+}
+
+ /*---------------------------------------------*/
+
+ /*FORMULARIO AGREGAR*/
+
+ .formulario-agregar {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 400px; 
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.formulario-agregar label {
+    font-weight: bold;
+}
+
+.formulario-agregar .form-group {
+    margin-bottom: 15px;
+}
+
+.formulario-agregar .form-control {
+    width: calc(100% - 20px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formulario-agregar .btn-submit {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.formulario-agregar .btn-submit:hover {
+    background-color: #0056b3;
+}
+
+.formulario-agregar .btn-cancelar {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.formulario-agregar .btn-cancelar:hover {
+    background-color: #5a6268;
+}
+
+/* Estilos para el botón de agregar */
+.btn-agregar {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-agregar:hover {
+    background-color: #218838;
+}
+ /*---------------------------------------------*/

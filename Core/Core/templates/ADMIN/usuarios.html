@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>CarCareTech-Admin</title>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2>Lista de Usuarios</h2>
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Celular</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.Nombre }}</td>
+                        <td>{{ usuario.Apellido }}</td>
+                        <td>{{ usuario.Documento }}</td>
+                        <td>{{ usuario.Celular }}</td>
+                        <td>{{ usuario.F_Nacimiento }}</td>
+                        <td>{{ usuario.Correo }}</td>
+                        <td>{{ usuario.get_Rol_display }}</td>
+                        <td class="acciones">
+                            <a href="{% url 'editar' usuario.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_usuario' usuario.Documento %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No hay usuarios registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="content-wrapper">
+            <!-- Botón para abrir el formulario de agregar usuario -->
+            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+        
+            <!-- Formulario para agregar usuario oculto -->
+            <form method="post" action="{% url 'agregar_usuario' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
+                {% csrf_token %}
+                <br>
+                <div class="form-group">
+                    <label for="id_nombre">Nombre:</label>
+                    <input type="text" id="id_nombre" name="nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_apellido">Apellido:</label>
+                    <input type="text" id="id_apellido" name="apellido" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_documento">Documento:</label>
+                    <input type="text" id="id_documento" name="documento" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_celular">Celular:</label>
+                    <input type="text" id="id_celular" name="celular" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" id="id_f_nacimiento" name="f_nacimiento" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_correo">Correo:</label>
+                    <input type="email" id="id_correo" name="correo" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_rol">Rol:</label>
+                    <select id="id_rol" name="rol" class="form-control" required>
+                        <option value="" disabled selected>Seleccionar Rol</option>
+                        <option value="1">Mecánico</option>
+                        <option value="2">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
+            </form>
+        </div>
+        
+        <script>
+            document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+                document.getElementById('formAgregarUsuario').style.display = 'block';
+                document.getElementById('btnAbrirFormulario').style.display = 'none';
+            });
+        
+            document.querySelector('.btn-cancelar').addEventListener('click', function() {
+                document.getElementById('formAgregarUsuario').style.display = 'none';
+                document.getElementById('btnAbrirFormulario').style.display = 'block';
+            });
+        
+            document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
+                event.preventDefault();
+        
+                fetch('{% url "agregar_usuario" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        nombre: document.getElementById('id_nombre').value,
+                        apellido: document.getElementById('id_apellido').value,
+                        documento: document.getElementById('id_documento').value,
+                        celular: document.getElementById('id_celular').value,
+                        f_nacimiento: document.getElementById('id_f_nacimiento').value,
+                        correo: document.getElementById('id_correo').value,
+                        rol: document.getElementById('id_rol').value
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Error al agregar usuario');
+                })
+                .then(data => {
+                    console.log(data);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Usuario agregado correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al agregar usuario',
+                        text: 'Por favor, intenta nuevamente',
+                        showConfirmButton: true
+                    });
+                });
+            });
+        </script>
+        
+        
+        
+
+</body>
+</html>
