@@ -16,9 +16,9 @@
 {% include 'ADMIN/sidebar.html' %}
 
 <div class="content-wrapper">
-
     <div class="center-content">
         <h2>Lista de Usuarios</h2>
+        <input type="text" id="searchInput" placeholder="Buscar usuario..." class="search-bar">
         <table class="user-table">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="userTableBody">
                 {% for usuario in usuarios %}
                     <tr>
                         <td>{{ usuario.Nombre }}</td>
@@ -99,70 +99,78 @@
                 <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
             </form>
         </div>
-        
-        <script>
-            document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
-                document.getElementById('formAgregarUsuario').style.display = 'block';
-                document.getElementById('btnAbrirFormulario').style.display = 'none';
-            });
-        
-            document.querySelector('.btn-cancelar').addEventListener('click', function() {
-                document.getElementById('formAgregarUsuario').style.display = 'none';
-                document.getElementById('btnAbrirFormulario').style.display = 'block';
-            });
-        
-            document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
-                event.preventDefault();
-        
-                fetch('{% url "agregar_usuario" %}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({
-                        nombre: document.getElementById('id_nombre').value,
-                        apellido: document.getElementById('id_apellido').value,
-                        documento: document.getElementById('id_documento').value,
-                        celular: document.getElementById('id_celular').value,
-                        f_nacimiento: document.getElementById('id_f_nacimiento').value,
-                        correo: document.getElementById('id_correo').value,
-                        rol: document.getElementById('id_rol').value
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    throw new Error('Error al agregar usuario');
-                })
-                .then(data => {
-                    console.log(data);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Usuario agregado correctamente',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        location.reload();
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error al agregar usuario',
-                        text: 'Por favor, intenta nuevamente',
-                        showConfirmButton: true
-                    });
-                });
-            });
+    </div>
+</div>
 
-            
+<script>
+    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+        document.getElementById('formAgregarUsuario').style.display = 'block';
+        document.getElementById('btnAbrirFormulario').style.display = 'none';
+    });
+
+    document.querySelector('.btn-cancelar').addEventListener('click', function() {
+        document.getElementById('formAgregarUsuario').style.display = 'none';
+        document.getElementById('btnAbrirFormulario').style.display = 'block';
+    });
+
+    document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        fetch('{% url "agregar_usuario" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                nombre: document.getElementById('id_nombre').value,
+                apellido: document.getElementById('id_apellido').value,
+                documento: document.getElementById('id_documento').value,
+                celular: document.getElementById('id_celular').value,
+                f_nacimiento: document.getElementById('id_f_nacimiento').value,
+                correo: document.getElementById('id_correo').value,
+                rol: document.getElementById('id_rol').value
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Error al agregar usuario');
+        })
+        .then(data => {
+            console.log(data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Usuario agregado correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                location.reload();
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar usuario',
+                text: 'Por favor, intenta nuevamente',
+                showConfirmButton: true
+            });
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#userTableBody tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+        });
+    });
 </script>
-        
-        
-        
 
 </body>
 </html>
