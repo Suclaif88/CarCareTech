@@ -76,7 +76,7 @@
             </thead>
             <tbody id="clienteTableBody">
                 {% for cliente in clientes %}
-                    <tr>
+                    <tr data-cliente-id="{{ cliente.Documento }}">
                         <td>{{ cliente.Nombre }}</td>
                         <td>{{ cliente.Apellido }}</td>
                         <td>{{ cliente.Documento }}</td>
@@ -117,10 +117,49 @@
                 {% endfor %}
             </tbody>
         </table>
+        <br>
 
-        
+        <div id="paginationControls" class="pagination-controls"></div>
 
         <script>
+            const rowsPerPage = 10;
+            const clienteTableBody = document.getElementById('clienteTableBody');
+            const paginationControls = document.getElementById('paginationControls');
+
+            function paginateTable() {
+                const rows = clienteTableBody.querySelectorAll('tr[data-cliente-id]');
+                const totalRows = rows.length;
+                const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+                function displayPage(page) {
+                    const start = (page - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+
+                    rows.forEach((row, index) => {
+                        row.style.display = (index >= start && index < end) ? '' : 'none';
+                    });
+
+                    document.querySelectorAll('.pagination-button').forEach(button => {
+                        button.classList.remove('active');
+                    });
+                    document.querySelector(`.pagination-button[data-page="${page}"]`).classList.add('active');
+                }
+
+                paginationControls.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const button = document.createElement('button');
+                    button.classList.add('pagination-button');
+                    button.setAttribute('data-page', i);
+                    button.textContent = i;
+                    button.addEventListener('click', () => displayPage(i));
+                    paginationControls.appendChild(button);
+                }
+
+                displayPage(1);
+            }
+
+            document.addEventListener('DOMContentLoaded', paginateTable);
+
             document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
                 document.getElementById('formAgregarCliente').style.display = 'block';
                 document.getElementById('btnAbrirFormulario').style.display = 'none';
@@ -225,13 +264,15 @@
 
             document.getElementById('searchInput').addEventListener('input', function() {
                 const filter = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#clienteTableBody tr');
+                const rows = document.querySelectorAll('#clienteTableBody tr[data-cliente-id]');
         
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
                     const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
                     row.style.display = match ? '' : 'none';
                 });
+
+                paginateTable();
             });
 
             document.getElementById('searchInput').addEventListener('input', function() {

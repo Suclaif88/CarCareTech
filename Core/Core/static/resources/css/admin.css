@@ -490,3 +490,55 @@ nav.main-menu li.active > a,
 }
 
  /*---------------------------------------------*/
+
+         /* Estilos para la paginación */
+         .pagination-controls {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .pagination-button {
+            background-color: #f8f9fa;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #007bff;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .pagination-button:hover {
+            background-color: #007bff;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pagination-button.active {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .pagination-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+        }
+        
+        .pagination-button.disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        
+        
+
+         /*---------------------------------------------*/

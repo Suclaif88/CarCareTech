@@ -19,43 +19,8 @@
     <div class="center-content">
         <h2>Lista de Usuarios</h2>
         <input type="text" id="searchInput" placeholder="Buscar usuario..." class="search-bar">
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Documento</th>
-                    <th>Celular</th>
-                    <th>Fecha de Nacimiento</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="userTableBody">
-                {% for usuario in usuarios %}
-                    <tr>
-                        <td>{{ usuario.Nombre }}</td>
-                        <td>{{ usuario.Apellido }}</td>
-                        <td>{{ usuario.Documento }}</td>
-                        <td>{{ usuario.Celular }}</td>
-                        <td>{{ usuario.F_Nacimiento }}</td>
-                        <td>{{ usuario.Correo }}</td>
-                        <td>{{ usuario.get_Rol_display }}</td>
-                        <td class="acciones">
-                            <a href="{% url 'editar' usuario.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="{% url 'eliminar_usuario' usuario.Documento %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="8">No hay usuarios registrados.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="content-wrapper">
+        
+                <div class="content-wrapper">
             <!-- Botón para abrir el formulario de agregar usuario -->
             <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
         
@@ -99,10 +64,98 @@
                 <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
             </form>
         </div>
-    </div>
-</div>
+        
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Documento</th>
+                    <th>Celular</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.Nombre }}</td>
+                        <td>{{ usuario.Apellido }}</td>
+                        <td>{{ usuario.Documento }}</td>
+                        <td>{{ usuario.Celular }}</td>
+                        <td>{{ usuario.F_Nacimiento }}</td>
+                        <td>{{ usuario.Correo }}</td>
+                        <td>{{ usuario.get_Rol_display }}</td>
+                        <td class="acciones">
+                            <a href="{% url 'editar' usuario.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_usuario' usuario.Documento %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No hay usuarios registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+
+        <div id="paginationControls" class="pagination-controls"></div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tableBody = document.getElementById('userTableBody');
+        const rows = tableBody.querySelectorAll('tr');
+        const rowsPerPage = 5;
+        let currentPage = 1;
+
+        function displayRows(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.forEach((row, index) => {
+                if (index >= start && index < end) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePaginationButtons() {
+            const paginationControls = document.getElementById('paginationControls');
+            paginationControls.innerHTML = '';
+
+            const pageCount = Math.ceil(rows.length / rowsPerPage);
+
+            for (let i = 1; i <= pageCount; i++) {
+                const button = document.createElement('button');
+                button.innerText = i;
+                button.classList.add('pagination-button');
+
+                if (i === currentPage) {
+                    button.classList.add('active');
+                }
+
+                button.addEventListener('click', function() {
+                    currentPage = i;
+                    displayRows(currentPage);
+
+                    const buttons = paginationControls.querySelectorAll('.pagination-button');
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+
+                paginationControls.appendChild(button);
+            }
+        }
+
+        displayRows(currentPage);
+        generatePaginationButtons();
+    });
+
     document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
         document.getElementById('formAgregarUsuario').style.display = 'block';
         document.getElementById('btnAbrirFormulario').style.display = 'none';
