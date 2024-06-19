@@ -44,6 +44,27 @@
                         <td class="acciones">
                             <a href="{% url 'editar_cliente' cliente.Documento %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
                             <a href="{% url 'eliminar_cliente' cliente.Documento %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                            <a href="#" class="btn btn-info mostrar-vehiculos" data-documento="{{ cliente.Documento }}"><i class="fas fa-car"></i> Vehículos</a>
+                        </td>
+                    </tr>
+                    <tr class="vehiculos-row" id="vehiculos-{{ cliente.Documento }}" style="display: none;">
+                        <td colspan="8">
+                            <table class="vehiculos-table">
+                                <thead>
+                                    <tr>
+                                        <th>Placa</th>
+                                        <th>Modelo</th>
+                                        <th>Marca</th>
+                                        <th>Color</th>
+                                        <th>Transmisión</th>
+                                        <th>Tipo de Vehiculo</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="vehiculos-body">
+                                    <!-- Los datos de los vehículos se llenarán aquí -->
+                                </tbody>
+                            </table>
                         </td>
                     </tr>
                 {% empty %}
@@ -94,21 +115,21 @@
                 <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
             </form>
         </div>
-        
+
         <script>
             document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
                 document.getElementById('formAgregarCliente').style.display = 'block';
                 document.getElementById('btnAbrirFormulario').style.display = 'none';
             });
-        
+
             document.querySelector('.btn-cancelar').addEventListener('click', function() {
                 document.getElementById('formAgregarCliente').style.display = 'none';
                 document.getElementById('btnAbrirFormulario').style.display = 'block';
             });
-        
+
             document.getElementById('formAgregarCliente').addEventListener('submit', function(event) {
                 event.preventDefault();
-        
+
                 fetch('{% url "agregar_cliente" %}', {
                     method: 'POST',
                     headers: {
@@ -152,12 +173,55 @@
                     });
                 });
             });
+
+            document.querySelectorAll('.mostrar-vehiculos').forEach(function(element) {
+                element.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const documento = this.getAttribute('data-documento');
+                    const vehiculosRow = document.getElementById(`vehiculos-${documento}`);
+                    const vehiculosBody = vehiculosRow.querySelector('.vehiculos-body');
+                    
+                    if (vehiculosRow.style.display === 'none') {
+                        fetch(`/admin_panel/clientes/obtener_vehiculos/${documento}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                vehiculosBody.innerHTML = '';
+                                data.forEach(vehiculo => {
+                                    const editarUrl = `{% url 'editar_vehiculo' 'placa' %}`.replace('placa', vehiculo.placa);
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td>${vehiculo.placa}</td>
+                                        <td>${vehiculo.modelo}</td>
+                                        <td>${vehiculo.marca}</td>
+                                        <td>${vehiculo.color}</td>
+                                        <td>${vehiculo.transmision}</td>
+                                        <td>${vehiculo.id_tipo_vehiculo__nombre}</td>
+                                        <td>
+                                            <a href="${editarUrl}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                                        </td>
+                                    `;
+                                    vehiculosBody.appendChild(row);
+                                });
+                                vehiculosRow.style.display = '';
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al obtener vehículos',
+                                    text: 'Por favor, intenta nuevamente',
+                                    showConfirmButton: true
+                                });
+                            });
+                    } else {
+                        vehiculosRow.style.display = 'none';
+                    }
+                });
+            });
+            
         </script>
-
-
-        
-        
-        
+    </div>
+</div>
 
 </body>
 </html>

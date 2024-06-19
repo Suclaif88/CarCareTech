@@ -7,7 +7,7 @@ class TipoVehiculo(models.Model):
     descripcion = models.CharField(max_length=2000, null=True, blank=True)
 
     def __str__(self):
-        return str(self.id_tipo_vehiculo)
+        return str(self.nombre)
     
 class Vehiculo(models.Model):
     placa = models.CharField(max_length=7, primary_key=True)
