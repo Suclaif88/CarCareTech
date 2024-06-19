@@ -7,6 +7,7 @@
     <title>Editar Usuario</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
 </head>
@@ -43,7 +44,8 @@
             <div class="form-group">
                 <label for="id_rol">Rol:</label>
                 <select id="id_rol" name="rol" required>
-                    <option value="1" {% if usuario.Rol == 1 %} selected {% endif %}>Usuario</option>
+                    <option value="">Seleccione rol</option>
+                    <option value="1" {% if usuario.Rol == 1 %} selected {% endif %}>Mecanico</option>
                     <option value="2" {% if usuario.Rol == 2 %} selected {% endif %}>Administrador</option>
                 </select>
             </div>

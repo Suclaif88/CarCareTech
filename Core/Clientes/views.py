@@ -30,7 +30,7 @@ def editar_cliente(request, documento):
             correo = data.get('correo')
             direccion = data.get('direccion')
 
-            print("Datos recibidos:", data)
+            # print("Datos recibidos:", data)
 
             if nombre and apellido and celular and f_nacimiento and correo and direccion:
                 cliente.Nombre = nombre

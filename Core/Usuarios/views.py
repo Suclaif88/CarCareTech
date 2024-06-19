@@ -72,23 +72,35 @@ def editar_usuario(request, documento):
     usuario = get_object_or_404(Usuarios, Documento=documento)
 
     if request.method == 'POST':
-        nombre = request.POST.get('nombre')
-        apellido = request.POST.get('apellido')
-        celular = request.POST.get('celular')
-        f_nacimiento = request.POST.get('f_nacimiento')
-        correo = request.POST.get('correo')
-        rol = request.POST.get('rol')
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            
+            nombre = data.get('nombre')
+            apellido = data.get('apellido')
+            celular = data.get('celular')
+            f_nacimiento = data.get('f_nacimiento')
+            correo = data.get('correo')
+            rol = data.get('rol')
+            
+            # print("Datos recibidos:", data)
 
-        usuario.Nombre = nombre
-        usuario.Apellido = apellido
-        usuario.Celular = celular
-        usuario.F_Nacimiento = f_nacimiento
-        usuario.Correo = correo
-        usuario.Rol = rol
+            if nombre and apellido and celular and f_nacimiento and correo and rol:
+                usuario.Nombre = nombre
+                usuario.Apellido = apellido
+                usuario.Celular = celular
+                usuario.F_Nacimiento = f_nacimiento
+                usuario.Correo = correo
+                usuario.Rol = rol
 
-        usuario.save()
+                usuario.save()
 
-        return redirect('ad_usuarios')
+                return redirect('ad_usuarios')  
+            else:
+                return render(request, 'ADMIN/editar_usuario.html', {'usuario': usuario})
+            
+        except Exception as e:
+            print("Error al procesar los datos:", e)
+            return render(request, 'ADMIN/editar_usuario.html', {'usuario': usuario, 'error': 'Error al procesar los datos'})
 
     return render(request, 'ADMIN/editar_usuario.html', {'usuario': usuario})
 
