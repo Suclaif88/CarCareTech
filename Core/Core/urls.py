@@ -19,24 +19,25 @@ from django.urls import path
 from .views import index, about
 from Clientes.views import *
 from Usuarios.views import *
-
 from Vehiculo.views import  *
+from Productos.views import *
+
 from Empresa.views import datos_empresa
-from Productos.views import productos
 from Servicios.views import servicios
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', index, name='Inicio'),
+    path('', home_view, name='home_view'),
+    
     path('Productos/', productos, name='Productos'),
     path('Servicios/', servicios, name='Servicios'),
     path('SobreNosotros/',about, name='SobreNosotros'),
     
     path('login/', login_view, name='Login'),
-    path('admin_panel/', admin_view, name='admin_view'),
-    path('', home_view, name='home_view'),
     path('logout/', logout_view, name='logout'),
+    path('admin_panel/', admin_view, name='admin_view'),
     
     #URLS DE ADMIN USUARIOS
     path('admin_panel/usuarios/', AdUsuarios, name='ad_usuarios'),
@@ -51,9 +52,15 @@ urlpatterns = [
     path('admin_panel/clientes/agregar/', agregar_cliente, name='agregar_cliente'),
 
     #ADMIN VEHICULOS
-    path("admin_panel/vehiculos", AdVehiculos, name="ad_vehiculos"),
+    path('admin_panel/vehiculos', AdVehiculos, name='ad_vehiculos'),
     path('admin_panel/clientes/obtener_vehiculos/<str:documento>/', obtener_vehiculos, name='obtener_vehiculos'),
     path('admin_panel/vehiculos/editar/<str:placa>', editar_vehiculo, name='editar_vehiculo'),
+    
+    #ADMIN PRODUCTOS
+    path('admin_panel/productos', AdProductos, name='ad_productos'),
+    path('admin_panel/productos/editar/<str:id_producto>', editar_producto , name='editar_producto'),
+    path('admin_panel/productos/eliminar/<str:id_producto>/', eliminar_producto, name='eliminar_producto'),
+    path('admin_panel/productos/agregar/', agregar_producto, name='agregar_producto'),
 
     
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion

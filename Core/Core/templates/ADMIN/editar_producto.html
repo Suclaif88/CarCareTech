@@ -16,40 +16,38 @@
 {% include 'ADMIN/sidebar.html' %}
 
 <div class="content-wrapper">
-    <form method="post" id="editarClienteForm" class="formulario-editar">
+    <form method="post" id="editarProductoForm" class="formulario-editar">
         {% csrf_token %}
-        <input type="hidden" name="documento" value="{{ cliente.Documento }}">
+        <input type="hidden" name="id_producto" value="{{ producto.id_producto }}">
         <div class="form-group">
             <label for="id_nombre">Nombre:</label>
-            <input type="text" id="id_nombre" name="nombre" value="{{ cliente.Nombre }}" required>
+            <input type="text" id="id_nombre" name="nombre" value="{{ producto.nombre }}" required>
         </div>
         <div class="form-group">
-            <label for="id_apellido">Apellido:</label>
-            <input type="text" id="id_apellido" name="apellido" value="{{ cliente.Apellido }}" required>
+            <label for="id_precio">Precio:</label>
+            <input type="text" id="id_precio" name="precio" value="{{ producto.precio }}" required>
         </div>
         <div class="form-group">
-            <label for="id_celular">Celular:</label>
-            <input type="text" id="id_celular" name="celular" value="{{ cliente.Celular }}" required>
+            <label for="id_cantidad">Cantidad en Stock:</label>
+            <input type="text" id="id_cantidad" name="cantidad_stock" value="{{ producto.cantidad_stock }}" required>
         </div>
         <div class="form-group">
-            <label for="id_f_nacimiento">Fecha de Nacimiento:</label>
-            <input type="date" id="id_f_nacimiento" name="f_nacimiento" value="{{ cliente.F_Nacimiento }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_correo">Correo:</label>
-            <input type="email" id="id_correo" name="correo" value="{{ cliente.Correo }}" required>
-        </div>
-        <div class="form-group">
-            <label for="id_direccion">Dirección:</label>
-            <input type="text" id="id_direccion" name="direccion" value="{{ cliente.Direccion }}" required>
+            <label for="id_tipo_producto">Tipo de Producto:</label>
+            <select id="id_tipo_producto" name="id_tipo_producto" class="form-control" required>
+                <option value="" {% if not producto.id_tipo_producto %} selected {% endif %}>Selecciona un tipo de producto...</option>
+                {% for tipo in tipos_productos %}
+                    <option value="{{ tipo.id_tipo_producto }}" {% if tipo.id_tipo_producto == producto.id_tipo_producto.id_tipo_producto %} selected {% endif %}>
+                        {{ tipo.descripcion }}
+                    </option>
+                {% endfor %}
+            </select>            
         </div>
         <button type="submit" class="btn-submit">Guardar Cambios</button>
     </form>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('editarClienteForm').addEventListener('submit', function(event) {
+    document.getElementById('editarProductoForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         fetch(window.location.href, {
@@ -60,28 +58,26 @@
             },
             body: JSON.stringify({
                 nombre: document.getElementById('id_nombre').value,
-                apellido: document.getElementById('id_apellido').value,
-                celular: document.getElementById('id_celular').value,
-                f_nacimiento: document.getElementById('id_f_nacimiento').value,
-                correo: document.getElementById('id_correo').value,
-                direccion: document.getElementById('id_direccion').value
+                precio: document.getElementById('id_precio').value,
+                cantidad_stock: document.getElementById('id_cantidad').value,
+                id_tipo_producto: document.getElementById('id_tipo_producto').value
             })
         })
         .then(response => {
             if (response.ok) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Cliente actualizado',
+                    title: 'Producto actualizado',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 .then(() => {
-                    window.location.href = '{% url "ad_clientes" %}';
+                    window.location.href = '{% url "ad_productos" %}';
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al actualizar el cliente',
+                    title: 'Error al actualizar el producto',
                     text: 'Por favor, intenta nuevamente',
                     showConfirmButton: true
                 });

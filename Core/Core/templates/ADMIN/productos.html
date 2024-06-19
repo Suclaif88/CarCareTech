@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>CarCareTech-Admin</title>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2>Lista de Productos</h2>
+        <input type="text" id="searchInput" placeholder="Buscar producto..." class="search-bar">
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID Producto</th>
+                    <th>Cantidad en Stock</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Tipo de Producto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="productoTableBody">
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.id_producto }}</td>
+                        <td>{{ producto.cantidad_stock }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.id_tipo_producto.descripcion }}</td>
+                        <td class="acciones">
+                            <a href="{% url 'editar_producto' producto.id_producto %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_producto' producto.id_producto %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">No hay productos registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="content-wrapper">
+            <!-- Botón para abrir el formulario de agregar producto -->
+            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+        
+            <!-- Formulario para agregar producto oculto -->
+            <form method="post" action="{% url 'agregar_producto' %}" id="formAgregarProducto" class="formulario-agregar" style="display: none;">
+                {% csrf_token %}
+                <br>
+                <div class="form-group">
+                    <label for="id_nombre">Nombre:</label>
+                    <input type="text" id="id_nombre" name="nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_cantidad_stock">Cantidad en Stock:</label>
+                    <input type="number" id="id_cantidad_stock" name="cantidad_stock" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_precio">Precio:</label>
+                    <input type="number" step="0.01" id="id_precio" name="precio" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_tipo_producto">Tipo de Producto:</label>
+                    <select id="id_tipo_producto" name="id_tipo_producto" class="form-control" required>
+                        <option value="" disabled selected>Selecciona un tipo de producto</option>
+                        {% for tipo in tipos %}
+                            <option value="{{ tipo.id_tipo_producto }}">{{ tipo.descripcion }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                </div>
+                <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+                document.getElementById('formAgregarProducto').style.display = 'block';
+                document.getElementById('btnAbrirFormulario').style.display = 'none';
+            });
+
+            document.querySelector('.btn-cancelar').addEventListener('click', function() {
+                document.getElementById('formAgregarProducto').style.display = 'none';
+                document.getElementById('btnAbrirFormulario').style.display = 'block';
+            });
+
+            document.getElementById('formAgregarProducto').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                fetch('{% url "agregar_producto" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        nombre: document.getElementById('id_nombre').value,
+                        cantidad_stock: document.getElementById('id_cantidad_stock').value,
+                        precio: document.getElementById('id_precio').value,
+                        id_tipo_producto: document.getElementById('id_tipo_producto').value
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Error al agregar producto');
+                })
+                .then(data => {
+                    console.log(data);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Producto agregado correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al agregar producto',
+                        text: 'Por favor, intenta nuevamente',
+                        showConfirmButton: true
+                    });
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#productoTableBody tr');
+        
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+                    row.style.display = match ? '' : 'none';
+                });
+            });
+
+        </script>
+    </div>
+</div>
+
+</body>
+</html>

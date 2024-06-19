@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Eliminar Usuario</title>
+    <title>Eliminar Producto</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
@@ -18,22 +18,24 @@
 
 <div class="content-wrapper">
     <div class="center-content">
-        <h2>Eliminar Usuario</h2>
+        <h2>Eliminar Producto</h2>
         <div class="mensaje-eliminar">
-            <p>¿Estás seguro de que deseas eliminar este usuario?</p>
-            <p>Nombre: {{ usuario.Nombre }} {{ usuario.Apellido }}</p>
-            <p>Documento: {{ usuario.Documento }}</p>
+            <p>¿Estás seguro de que deseas eliminar este producto?</p>
+            <p>Nombre: {{ producto.nombre }}</p>
+            <p>Precio: {{ producto.precio }}</p>
+            <p>Cantidad en Stock: {{ producto.cantidad_stock }}</p>
+            <p>Tipo de Producto: {{ producto.id_tipo_producto.descripcion }}</p>
         </div>
         <div class="botones-eliminar">
             <button id="btnConfirmarEliminar" class="boton-confirmar"><i class="fas fa-trash-alt"></i> Confirmar Eliminar</button>
-            <a href="{% url 'ad_usuarios' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
+            <a href="{% url 'ad_productos' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const urlEliminarUsuario = "{% url 'eliminar_usuario' usuario.Documento %}";
+    const urlEliminarProducto = "{% url 'eliminar_producto' producto.id_producto %}";
 
     document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
         Swal.fire({
@@ -46,7 +48,7 @@
             confirmButtonText: 'Sí, eliminarlo'
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(urlEliminarUsuario, {
+                fetch(urlEliminarProducto, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,7 +64,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = '{% url 'ad_usuarios' %}';
+                        window.location.href = '{% url 'ad_productos' %}';
                     });
                 })
                 .catch(error => {
@@ -70,7 +72,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Hubo un problema al eliminar el usuario'
+                        text: 'Hubo un problema al eliminar el producto'
                     });
                 });
             }
