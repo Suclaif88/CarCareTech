@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title>Editar Vehículo</title>
 </head>
 <body>
@@ -48,6 +48,7 @@
     </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script>
     document.getElementById('editarVehiculoForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -67,7 +68,12 @@
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('La respuesta de la red no fue satisfactoria: ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
                 Swal.fire({
@@ -76,7 +82,7 @@
                     showConfirmButton: true,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = '{% url "ad_vehiculos" %}';
+                    window.location.href = '{% url "ad_clientes" %}';
                 });
             } else {
                 Swal.fire({
