@@ -21,6 +21,8 @@ from Clientes.views import *
 from Usuarios.views import *
 from Vehiculo.views import  *
 from Productos.views import *
+from Factura.views import *
+from Servicios.views import *
 
 from Empresa.views import datos_empresa
 from Servicios.views import servicios
