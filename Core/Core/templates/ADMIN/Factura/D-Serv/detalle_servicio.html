@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>CarCareTech-Admin</title>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+
+{% include 'ADMIN/Factura/btns-detalles.html' %}
+
+<div class="center-content">
+    <h2>Lista de Detalles Servicio</h2>
+    <input type="text" id="searchInput" placeholder="Buscar Detalle..." class="search-bar">
+
+    <div class="content-wrapper">
+        <!-- Botón para abrir el formulario de agregar detalle de servicio -->
+        <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+    
+        <!-- Formulario para agregar detalle de servicio oculto -->
+        <form method="post" action="{% url 'agregar_detalle_serv' %}" id="formAgregarDetalleServicio" class="formulario-agregar" style="display: none;">
+            {% csrf_token %}
+            <br>
+            <div class="form-group">
+                <label for="id_factura">Factura:</label>
+                <select id="id_factura" name="factura" class="form-control" required>
+                    <option value="" disabled selected>Seleccionar Factura</option>
+                    {% for factura in facturas %}
+                        <option value="{{ factura.id_factura }}">{{ factura.id_factura }} -- {{ factura.fecha }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_servicio">Servicio:</label>
+                <select id="id_servicio" name="servicio" class="form-control" required>
+                    <option value="" disabled selected>Seleccionar Servicio</option>
+                    {% for servicio in servicios %}
+                        <option value="{{ servicio.id_servicios }}">{{ servicio.nombre_servicio }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_precio">Precio:</label>
+                <input type="number" id="id_precio" name="precio" class="form-control" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="id_documento_mecanico">Documento Mecánico:</label>
+                <select id="id_documento_mecanico" name="documento_mecanico" class="form-control" required>
+                    <option value="" disabled selected>Seleccionar Documento Mecánico</option>
+                    {% for usuario in usuarios %}
+                        <option value="{{ usuario.Documento }}">{{ usuario.Documento }} - {{ usuario.Nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
+            <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
+        </form>
+    </div>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID Detalle Servicio</th>
+                <th>Precio</th>
+                <th>ID Factura</th>
+                <th>Servicio</th>
+                <th>Documento Mecánico</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="detalleServicioTableBody">
+            {% for detalle in detalles %}
+            <tr data-detalle-servicio-id="{{ detalle.id_detalle_servicio }}">
+                <td>{{ detalle.id_detalle_servicio }}</td>
+                <td>{{ detalle.precio }}</td>
+                <td>{{ detalle.id_factura_id }}</td>
+                <td>{{ detalle.id_servicio }}</td>
+                <td>{{ detalle.documento_mecanico }}</td>
+                <td class="acciones">
+                    <a href="{% url 'editar_detalle_serv' detalle.id_detalle_servicio %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                    <a href="{% url 'eliminar_detalle_serv' detalle.id_detalle_servicio %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay detalles de servicio registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div id="paginationControls" class="pagination-controls"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('#detalleServicioTableBody tr');
+    
+        function displayRows(page) {
+            const start = (page - 1) * 10;
+            const end = start + 10;
+    
+            rows.forEach((row, index) => {
+                if (index >= start && index < end) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    
+        function generatePaginationButtons() {
+            const paginationControls = document.getElementById('paginationControls');
+            paginationControls.innerHTML = '';
+    
+            const pageCount = Math.ceil(rows.length / 10);
+    
+            for (let i = 1; i <= pageCount; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+    
+                button.addEventListener('click', function() {
+                    displayRows(i);
+                });
+    
+                paginationControls.appendChild(button);
+            }
+        }
+    
+        displayRows(1);
+        generatePaginationButtons();
+    });
+    
+    document.getElementById('id_servicio').addEventListener('change', function() {
+        var servicioId = this.value;
+        
+        fetch('{% url 'obtener_precio_servicio' %}?servicio_id=' + servicioId)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('id_precio').value = data.precio;
+                document.getElementById('id_precio').readOnly = true;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+    
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#detalleServicioTableBody tr');
+    
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            let found = false;
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(filter)) {
+                    found = true;
+                }
+            });
+            if (found) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+    
+    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+        document.getElementById('formAgregarDetalleServicio').style.display = 'block';
+    });
+    
+    document.querySelector('.btn-cancelar').addEventListener('click', function() {
+        document.getElementById('formAgregarDetalleServicio').style.display = 'none';
+    });
+    
+    document.getElementById('formAgregarDetalleServicio').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const formData = {
+            factura: document.getElementById('id_factura').value,
+            servicio: document.getElementById('id_servicio').value,
+            precio: document.getElementById('id_precio').value,
+            documento_mecanico: document.getElementById('id_documento_mecanico').value
+        };
+    
+        fetch('{% url 'agregar_detalle_serv' %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Hubo un problema al agregar el detalle de servicio');
+            }
+            return response.json();
+        })
+        .then(data => {
+            Swal.fire({
+                title: '¡Guardado!',
+                text: data.message,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.reload();
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Hubo un problema al agregar el detalle de servicio'
+            });
+        });
+    });
+    </script>
+    
+</body>
+</html>

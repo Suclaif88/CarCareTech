@@ -256,10 +256,6 @@ nav.main-menu li.active > a,
     background-color: #c82333;
 }
 
-  /*---------------------------------------------*/
-
-/*TABLA USUARIOS*/
-
 .center-content {
     text-align: center;
     background-color: #ffffff;
@@ -271,6 +267,34 @@ nav.main-menu li.active > a,
     overflow-x: auto;
     margin-left: 100px;
 }
+
+/*BOTONES DE FACTURA DETALLES Y SERVICIOS*/
+.container {
+    text-align: center;
+}
+
+.custom-link {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #0077ff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-link:hover {
+    background-color: #001bb3;
+}
+
+/*---------------------------------------------*/
+/*---------------------------------------------*/
+
+/*TABLA USUARIOS y FACTURAA*/
 
 .user-table {
     width: 100%;
@@ -345,6 +369,7 @@ nav.main-menu li.active > a,
 
 .formulario-editar input[type="text"],
 .formulario-editar input[type="email"],
+.formulario-editar input[type="number"],
 .formulario-editar select,
 .formulario-editar input[type="date"] {
     width: 100%;
@@ -491,7 +516,7 @@ nav.main-menu li.active > a,
 
  /*---------------------------------------------*/
 
-         /* Estilos para la paginación */
+/* Estilos para la paginación */
          .pagination-controls {
             display: flex;
             justify-content: center;
@@ -541,4 +566,10 @@ nav.main-menu li.active > a,
         
         
 
-         /*---------------------------------------------*/
+/*---------------------------------------------*/
+
+/*TABLA FACTURA*/
+
+
+
+/*---------------------------------------------*/

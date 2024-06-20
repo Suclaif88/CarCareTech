@@ -21,6 +21,7 @@ from Clientes.views import *
 from Usuarios.views import *
 from Vehiculo.views import  *
 from Productos.views import *
+from Factura.views import *
 
 from Empresa.views import datos_empresa
 from Servicios.views import servicios
@@ -62,11 +63,23 @@ urlpatterns = [
     path('admin_panel/productos/eliminar/<str:id_producto>/', eliminar_producto, name='eliminar_producto'),
     path('admin_panel/productos/agregar/', agregar_producto, name='agregar_producto'),
 
+    #ADMIN FACTURA
+    path('admin_panel/factura', AdFactura, name='ad_factura'),
     
+
+        #ADMIN DETALLES SERVICIO
+        path('admin_panel/factura/detalle_servicio', AdDServicio, name='detalles_servicio'),
+        path('admin_panel/detalle_servicio/eliminar/<int:id_detalle_servicio>/', eliminar_detalle_serv, name='eliminar_detalle_serv'),
+        path('admin_panel/detalle_servicio/editar/<str:id_detalle_servicio>/', editar_detalle_serv, name='editar_detalle_serv'),
+        path('admin_panel/detalle_servicio/agregar/', agregar_detalle_serv, name='agregar_detalle_serv'),
+        path('obtener_precio_servicio/', obtener_precio_servicio, name='obtener_precio_servicio'),
+    
+        #ADMIN FACTURA DETALLES PRODUCTO
+        path('admin_panel/factura/detalle_producto', AdDProducto, name='detalles_producto'),
+        
+
+    #------------------------
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
     path('datos-empresa/', datos_empresa, name='Datos-Empresa'),#Vistas provicionales para comprobar informacion
     
 ]
-
-
-#HOLIIII

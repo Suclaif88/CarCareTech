@@ -7,4 +7,4 @@ class Servicios(models.Model):
     descripcion = models.TextField(max_length=1000, null=True, blank=True)
     
     def __str__(self):
-        return str(self.id_servicios)
+        return str(self.nombre_servicio)
