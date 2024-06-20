@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>CarCareTech-Admin</title>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2>Lista de Servicios</h2>
+        <input type="text" id="searchInput" placeholder="Buscar usuario..." class="search-bar">
+        
+                <div class="content-wrapper">
+            <!-- Botón para abrir el formulario de agregar usuario -->
+            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+        
+            <!-- Formulario para agregar usuario oculto -->
+            <form method="post" action="{% url 'agregar_servicio' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
+                {% csrf_token %}
+                <br>
+                <div class="form-group">
+                    <label for="id_nombre">Nombre:</label>
+                    <input type="text" id="id_nombre" name="nombre" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_precio">Precio:</label>
+                    <input type="text" id="id_precio" name="precio" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_descripcion">Descripcion:</label>
+                    <input type="text" id="id_descripcion" name="descripcion" class="form-control" required>
+                </div>
+                <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
+            </form>
+        </div>
+        
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>Id_Servicio</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Descripcion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+                {% for servicio in servicios %}
+                    <tr>
+                        <td>{{ servicio.id_servicios }}</td>
+                        <td>{{ servicio.nombre }}</td>
+                        <td>{{ servicio.precio }}</td>
+                        <td>{{ servicio.descripcion }}</td>
+
+                        <td class="acciones">
+                            <a href="{% url 'editar_servicio' servicio.id_servicios %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_servicio' servicio.id_servicios %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8">No hay servicio registrados.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+
+        <div id="paginationControls" class="pagination-controls"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tableBody = document.getElementById('userTableBody');
+        const rows = tableBody.querySelectorAll('tr');
+        const rowsPerPage = 6;
+        let currentPage = 1;
+
+        function displayRows(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+
+            rows.forEach((row, index) => {
+                if (index >= start && index < end) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function generatePaginationButtons() {
+            const paginationControls = document.getElementById('paginationControls');
+            paginationControls.innerHTML = '';
+
+            const pageCount = Math.ceil(rows.length / rowsPerPage);
+
+            for (let i = 1; i <= pageCount; i++) {
+                const button = document.createElement('button');
+                button.innerText = i;
+                button.classList.add('pagination-button');
+
+                if (i === currentPage) {
+                    button.classList.add('active');
+                }
+
+                button.addEventListener('click', function() {
+                    currentPage = i;
+                    displayRows(currentPage);
+
+                    const buttons = paginationControls.querySelectorAll('.pagination-button');
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+
+                paginationControls.appendChild(button);
+            }
+        }
+
+        displayRows(currentPage);
+        generatePaginationButtons();
+    });
+
+    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+        document.getElementById('formAgregarUsuario').style.display = 'block';
+        document.getElementById('btnAbrirFormulario').style.display = 'none';
+    });
+
+    document.querySelector('.btn-cancelar').addEventListener('click', function() {
+        document.getElementById('formAgregarUsuario').style.display = 'none';
+        document.getElementById('btnAbrirFormulario').style.display = 'block';
+    });
+
+    document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        fetch('{% url "agregar_servicio" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                nombre: document.getElementById('id_nombre').value,
+                precio: document.getElementById('id_precio').value,
+                descripcion: document.getElementById('id_descripcion').value,
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Error al agregar servicios');
+        })
+        .then(data => {
+            console.log(data);
+            Swal.fire({
+                icon: 'success',
+                title: 'Servicio agregado correctamente',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                location.reload();
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar servicio de',
+                text: 'Por favor, intenta nuevamente',
+                showConfirmButton: true
+            });
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#userTableBody tr');
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+            row.style.display = match ? '' : 'none';
+        });
+    });
+</script>
+
+</body>
+</html>

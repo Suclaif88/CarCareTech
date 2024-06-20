@@ -21,7 +21,6 @@ from Clientes.views import *
 from Usuarios.views import *
 from Vehiculo.views import  *
 from Productos.views import *
-from Factura.views import *
 
 from Empresa.views import datos_empresa
 from Servicios.views import servicios
@@ -56,12 +55,25 @@ urlpatterns = [
     path('admin_panel/vehiculos', AdVehiculos, name='ad_vehiculos'),
     path('admin_panel/clientes/obtener_vehiculos/<str:documento>/', obtener_vehiculos, name='obtener_vehiculos'),
     path('admin_panel/vehiculos/editar/<str:placa>', editar_vehiculo, name='editar_vehiculo'),
+
+    #ADMIN VEHICULOS APARTE
+    path('admin_panel/vehiculosa', AdVehiculosA, name='ad_vehiculosa'),
+    path('admin_panel/vehiculosa/agregar/', agregar_vehiculosa, name='agregar_vehiculosa'),
+    path('admin_panel/vehiculosa/editar/<str:placa>/', editar_vehiculosa, name='editar_vehiculosa'),
+    path('admin_panel/vehiculosa/eliminar/<str:placa>/', eliminar_vehiculosa, name='eliminar_vehiculosa'),  
     
     #ADMIN PRODUCTOS
     path('admin_panel/productos', AdProductos, name='ad_productos'),
     path('admin_panel/productos/editar/<str:id_producto>', editar_producto , name='editar_producto'),
     path('admin_panel/productos/eliminar/<str:id_producto>/', eliminar_producto, name='eliminar_producto'),
     path('admin_panel/productos/agregar/', agregar_producto, name='agregar_producto'),
+
+    #ADMIN SERVICIOS
+    path('admin_panel/servicios', AdServicios, name='ad_servicios'),
+    path('admin_panel/servicios/editar/<str:id_servicios>', editar_servicio , name='editar_servicio'),
+    path('admin_panel/servicios/eliminar/<str:id_servicios>/', eliminar_servicio, name='eliminar_servicio'),
+    path('admin_panel/servicios/agregar/', agregar_servicio, name='agregar_servicio'),
+
 
     #ADMIN FACTURA
     path('admin_panel/factura', AdFactura, name='ad_factura'),
