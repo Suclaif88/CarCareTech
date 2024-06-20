@@ -21,6 +21,7 @@ from Clientes.views import *
 from Usuarios.views import *
 from Vehiculo.views import  *
 from Productos.views import *
+from Servicios.views import *
 
 from Empresa.views import datos_empresa
 from Servicios.views import servicios
@@ -67,6 +68,13 @@ urlpatterns = [
     path('admin_panel/productos/editar/<str:id_producto>', editar_producto , name='editar_producto'),
     path('admin_panel/productos/eliminar/<str:id_producto>/', eliminar_producto, name='eliminar_producto'),
     path('admin_panel/productos/agregar/', agregar_producto, name='agregar_producto'),
+
+    #ADMIN SERVICIOS
+    path('admin_panel/servicios', AdServicios, name='ad_servicios'),
+    path('admin_panel/servicios/editar/<str:id_servicios>', editar_servicio , name='editar_servicio'),
+    path('admin_panel/servicios/eliminar/<str:id_servicios>/', eliminar_servicio, name='eliminar_servicio'),
+    path('admin_panel/servicios/agregar/', agregar_servicio, name='agregar_servicio'),
+
 
     
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
