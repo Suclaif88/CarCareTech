@@ -55,6 +55,12 @@ urlpatterns = [
     path('admin_panel/vehiculos', AdVehiculos, name='ad_vehiculos'),
     path('admin_panel/clientes/obtener_vehiculos/<str:documento>/', obtener_vehiculos, name='obtener_vehiculos'),
     path('admin_panel/vehiculos/editar/<str:placa>', editar_vehiculo, name='editar_vehiculo'),
+
+    #ADMIN VEHICULOS APARTE
+    path('admin_panel/vehiculosa', AdVehiculosA, name='ad_vehiculosa'),
+    path('admin_panel/vehiculosa/agregar/', agregar_vehiculosa, name='agregar_vehiculosa'),
+    path('admin_panel/vehiculosa/editar/<str:placa>/', editar_vehiculosa, name='editar_vehiculosa'),
+    path('admin_panel/vehiculosa/eliminar/<str:placa>/', eliminar_vehiculosa, name='eliminar_vehiculosa'),  
     
     #ADMIN PRODUCTOS
     path('admin_panel/productos', AdProductos, name='ad_productos'),
