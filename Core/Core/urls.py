@@ -23,6 +23,7 @@ from Vehiculo.views import  *
 from Productos.views import *
 from Factura.views import *
 from Servicios.views import *
+from Empresa.views import *
 
 from Empresa.views import datos_empresa
 from Servicios.views import servicios
@@ -76,6 +77,11 @@ urlpatterns = [
     path('admin_panel/servicios/eliminar/<str:id_servicios>/', eliminar_servicio, name='eliminar_servicio'),
     path('admin_panel/servicios/agregar/', agregar_servicio, name='agregar_servicio'),
 
+    #ADMIN EMPRESAS
+    path('admin_panel/empresas', AdEmpresas, name='ad_empresas'),
+    path('admin_panel/empresas/editar/<str:nit>', editar_empresa , name='editar_empresa'),
+    path('admin_panel/empresas/eliminar/<str:nit>/', eliminar_empresa, name='eliminar_empresa'),
+    path('admin_panel/empresas/agregar/', agregar_empresa, name='agregar_empresa'),
 
     #ADMIN FACTURA
     path('admin_panel/factura', AdFactura, name='ad_factura'),
