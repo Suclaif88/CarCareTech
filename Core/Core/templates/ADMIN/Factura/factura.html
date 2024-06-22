@@ -10,133 +10,139 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
     <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--OBTENER LA HORA-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
     <title>CarCareTech-Admin</title>
 </head>
 <body>
 
-{% include 'ADMIN/sidebar.html' %}
+    {% include 'ADMIN/sidebar.html' %}
 
-<div class="content-wrapper">
-
-{% include 'ADMIN/Factura/btns-detalles.html' %}
-
-</div>
-{% comment %} 
-    <div class="center-content">
-        <h2>Lista de Facturas</h2>
-        <input type="text" id="searchInput" placeholder="Buscar factura..." class="search-bar">
-        
-        <table class="user-table">
-            <thead>
-                <tr>
-                    <th>ID Factura</th>
-                    <th>Fecha</th>
-                    <th>Placa</th>
-                    <th>Documento</th>
-                    <th>NIT</th>
-                    <th>Total</th>
-                    <th>Subtotal</th>
-                    <th>IVA</th>
-                    <th>Descuento</th>
-                    <th>Método de Pago</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="invoiceTableBody">
-                {% for factura in facturas %}
+    <div class="content-wrapper">
+    
+        <div class="center-content">
+            <h2>Lista de Facturas</h2>
+            <input type="text" id="searchInput" placeholder="Buscar factura..." class="search-bar">
+    
+            <div class="content-wrapper">
+                <!-- Enlace para redirigir a la creación de nueva factura -->
+                <a href="{% url 'nueva_factura' %}" class="btn-agregar"><i class="fas fa-plus"></i> Agregar Factura</a>        
+                    
+            </div>
+            
+            <table class="user-table">
+                <thead>
                     <tr>
-                        <td>{{ factura.id_factura }}</td>
-                        <td>{{ factura.fecha }}</td>
-                        <td>{{ factura.placa }}</td>
-                        <td>{{ factura.documento_M }}</td>
-                        <td>{{ factura.NIT }}</td>
-                        <td>{{ factura.Total }}</td>
-                        <td>{{ factura.Subtotal }}</td>
-                        <td>{{ factura.Iva }}</td>
-                        <td>{{ factura.Descuento }}</td>
-                        <td>{{ factura.metodo_pago.tipo }}</td>
-                        <td class="acciones">
-                            <a href="{% url 'editar_factura' factura.id_factura %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="{% url 'eliminar_factura' factura.id_factura %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
-                        </td>
+                        <th>ID Factura</th>
+                        <th>Fecha</th>
+                        <th>Placa</th>
+                        <th>Documento</th>
+                        <th>NIT</th>
+                        <th>Total</th>
+                        <th>Subtotal</th>
+                        <th>IVA</th>
+                        <th>Descuento</th>
+                        <th>Método de Pago</th>
+                        <th>Acciones</th>
                     </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="11">No hay facturas registradas.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <br>
-
-        <div id="paginationControls" class="pagination-controls"></div>
-
+                </thead>
+                <tbody id="invoiceTableBody">
+                    {% for factura in facturas %}
+                        <tr>
+                            <td>{{ factura.id_factura }}</td>
+                            <td>{{ factura.fecha }}</td>
+                            <td>{{ factura.placa }}</td>
+                            <td>{{ factura.documento_M }}</td>
+                            <td>{{ factura.nit }}</td>
+                            <td>{{ factura.Total }}</td>
+                            <td>{{ factura.Subtotal }}</td>
+                            <td>{{ factura.Iva }}</td>
+                            <td>{{ factura.Descuento }}</td>
+                            <td>{{ factura.id_metodo_pago }}</td>
+                            <td class="acciones">
+                                {% comment %} <a href="{% url 'editar_factura' factura.id_factura %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                                <a href="{% url 'eliminar_factura' factura.id_factura %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a> {% endcomment %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="11">No hay facturas registradas.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+    
+            <div id="paginationControls" class="pagination-controls"></div>
+    
+        </div>
+    
     </div>
- {% endcomment %}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableBody = document.getElementById('invoiceTableBody');
-        const rows = tableBody.querySelectorAll('tr');
-        const rowsPerPage = 5;
-        let currentPage = 1;
-
-        function displayRows(page) {
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-
-            rows.forEach((row, index) => {
-                if (index >= start && index < end) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-
-        function generatePaginationButtons() {
-            const paginationControls = document.getElementById('paginationControls');
-            paginationControls.innerHTML = '';
-
-            const pageCount = Math.ceil(rows.length / rowsPerPage);
-
-            for (let i = 1; i <= pageCount; i++) {
-                const button = document.createElement('button');
-                button.innerText = i;
-                button.classList.add('pagination-button');
-
-                if (i === currentPage) {
-                    button.classList.add('active');
-                }
-
-                button.addEventListener('click', function() {
-                    currentPage = i;
-                    displayRows(currentPage);
-
-                    const buttons = paginationControls.querySelectorAll('.pagination-button');
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('invoiceTableBody');
+            const rows = tableBody.querySelectorAll('tr');
+            const rowsPerPage = 5;
+            let currentPage = 1;
+    
+            function displayRows(page) {
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+    
+                rows.forEach((row, index) => {
+                    if (index >= start && index < end) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
                 });
-
-                paginationControls.appendChild(button);
             }
-        }
-
-        displayRows(currentPage);
-        generatePaginationButtons();
-    });
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#invoiceTableBody tr');
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
-            row.style.display = match ? '' : 'none';
+    
+            function generatePaginationButtons() {
+                const paginationControls = document.getElementById('paginationControls');
+                paginationControls.innerHTML = '';
+    
+                const pageCount = Math.ceil(rows.length / rowsPerPage);
+    
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement('button');
+                    button.innerText = i;
+                    button.classList.add('pagination-button');
+    
+                    if (i === currentPage) {
+                        button.classList.add('active');
+                    }
+    
+                    button.addEventListener('click', function() {
+                        currentPage = i;
+                        displayRows(currentPage);
+    
+                        const buttons = paginationControls.querySelectorAll('.pagination-button');
+                        buttons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+    
+                    paginationControls.appendChild(button);
+                }
+            }
+    
+            displayRows(currentPage);
+            generatePaginationButtons();
         });
-    });
-</script>
-
-</body>
-</html>
+    
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#invoiceTableBody tr');
+    
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+                row.style.display = match ? '' : 'none';
+            });
+        });
+    </script>
+    
+    </body>
+    </html>

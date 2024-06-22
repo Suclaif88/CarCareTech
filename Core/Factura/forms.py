@@ -1,7 +1,17 @@
 from django import forms
-from .models import DetalleServicio
+from .models import Factura, DetalleProducto, DetalleServicio
+
+class FacturaForm(forms.ModelForm):
+    class Meta:
+        model = Factura
+        fields = ['fecha', 'placa', 'documento_M', 'id_metodo_pago', 'nit', 'Total', 'Subtotal', 'Iva', 'Descuento']
+
+class DetalleProductoForm(forms.ModelForm):
+    class Meta:
+        model = DetalleProducto
+        fields = ['producto', 'cantidad', 'precio']
 
 class DetalleServicioForm(forms.ModelForm):
     class Meta:
         model = DetalleServicio
-        fields = ['id_factura', 'id_servicio', 'precio', 'documento_mecanico']
+        fields = ['servicio', 'precio']

@@ -235,11 +235,13 @@ nav.main-menu li.active > a,
     color: #ffffff;
     margin-top: 10px;
     padding: 10px 20px;
+    text-decoration: none;
 }
 
 .btn-agregar:hover {
     background-color: #218838;
     color: #ffffff;
+    text-decoration: none;
 }
 
 .btn-delete {

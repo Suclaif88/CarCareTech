@@ -10,6 +10,6 @@ class Clientes(models.Model):
     Direccion = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.Documento}" 
+        return f"Cliente {self.Documento} - {self.Nombre}" 
 
 

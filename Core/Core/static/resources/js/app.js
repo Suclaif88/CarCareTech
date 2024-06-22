@@ -1,3 +1,4 @@
+//------------CARGADOR-------------------
 document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function() {
         var loader = document.getElementById('loader');
@@ -8,3 +9,13 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.style.overflow = 'auto';
     }, 500);
 });
+//--------------------------------------
+
+
+//------------AGREGAR FACTURA-------------------
+
+
+    
+
+
+//--------------------------------------
