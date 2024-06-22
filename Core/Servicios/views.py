@@ -50,15 +50,15 @@ def editar_servicio(request, id_servicios):
 
                 servicio.save()
 
-                return redirect('ad_usuarios')  
+                return redirect('ad_servicios')  
             else:
-                return render(request, 'ADMIN/editar_servicio.html', {'usuario': servicio})
+                return render(request, 'ADMIN/editar_servicio.html', {'servicio': servicio})
             
         except Exception as e:
             print("Error al procesar los datos:", e)
-            return render(request, 'ADMIN/editar_usuario.html', {'usuario': servicio, 'error': 'Error al procesar los datos'})
+            return render(request, 'ADMIN/editar_servicio.html', {'servicio': servicio, 'error': 'Error al procesar los datos'})
 
-    return render(request, 'ADMIN/editar_servicio.html', {'usuario': servicio})
+    return render(request, 'ADMIN/editar_servicio.html', {'servicio': servicio})
 
 #ELIMINAR
 def eliminar_servicio(request, id_servicios):

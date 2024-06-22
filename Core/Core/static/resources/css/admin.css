@@ -18,7 +18,7 @@ font-size:20px;
 }
 
 .main-menu {
-    background: #212121;
+    background: #2f4eff;
     border-right: 1px solid #e5e5e5;
     position: fixed;
     top: 0;
@@ -52,7 +52,7 @@ font-size:20px;
     display: table;
     border-collapse: collapse;
     border-spacing: 0;
-    color: #999;
+    color: #fff;
     font-family: Arial;
     font-size: 14px;
     text-decoration: none;
@@ -122,9 +122,9 @@ nav.main-menu li.active > a,
 .dropdown-menu > .active > a:focus,
 .no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
 .dashboard-page nav.dashboard-menu ul li.active a {
-    color: #fff;
-    background-color: #000000;
-    border-radius: 30px ;
+    color: #2f4eff;
+    background-color: white;
+    border-radius: 30px 0px 0px 30px;
 }
 
 

@@ -20,11 +20,12 @@
         <h2>Lista de Vehículos</h2>
         <input type="text" id="searchInput" placeholder="Buscar vehículo..." class="search-bar">
 
+        <div class="content-wrapper">
         <!-- Botón para abrir el formulario de agregar vehículo -->
 <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
 
 <!-- Formulario para agregar vehículo oculto -->
-<form method="post" action="{% url 'agregar_vehiculosa' %}" id="formAgregarVehiculo" class="formulario-agregar" style="display: none;">
+<form method="post" action="{% url 'agregar_vehiculosa' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
     {% csrf_token %}
     <br>
     <div class="form-group">
@@ -51,15 +52,15 @@
         <label for="id_documento">Documento Cliente:</label>
         <select id="id_documento" name="documento" class="form-control" required>
             {% for cliente in clientes %}
-            <option value="{{ cliente.documento }}">{{ cliente.Documento }} - {{ cliente.Nombre }}</option>
+            <option value="{{ cliente.Documento }}">{{ cliente.Documento }} - {{ cliente.Nombre }}</option>
             {% endfor %}
         </select>
     </div>
     <div class="form-group">
-        <label for="id_documento">Tipo Vehiculo</label>
+        <label for="id_id_tipo_vehiculo">Tipo Vehiculo</label>
         <select id="id_id_tipo_vehiculo" name="id_tipo_vehiculo" class="form-control" required>
             {% for tipo_vehiculo in tipos_vehiculo %}
-            <option value="{{ tipo_vehiculo.id }}">{{ tipo_vehiculo.nombre }}</option>
+            <option value="{{ tipo_vehiculo.id_tipo_vehiculo }}">{{ tipo_vehiculo.nombre }}</option>
             {% endfor %}
         </select>
     </div>
@@ -107,127 +108,126 @@
 
         <div id="paginationControls" class="pagination-controls"></div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tableBody = document.getElementById('userTableBody');
-        const rows = tableBody.querySelectorAll('tr');
-        const rowsPerPage = 5;
-        let currentPage = 1;
-
-        function displayRows(page) {
-            const start = (page - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-
-            rows.forEach((row, index) => {
-                if (index >= start && index < end) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const tableBody = document.getElementById('userTableBody');
+                const rows = tableBody.querySelectorAll('tr');
+                const rowsPerPage = 5;
+                let currentPage = 1;
+        
+                function displayRows(page) {
+                    const start = (page - 1) * rowsPerPage;
+                    const end = start + rowsPerPage;
+        
+                    rows.forEach((row, index) => {
+                        if (index >= start && index < end) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
                 }
+        
+                function generatePaginationButtons() {
+                    const paginationControls = document.getElementById('paginationControls');
+                    paginationControls.innerHTML = '';
+        
+                    const pageCount = Math.ceil(rows.length / rowsPerPage);
+        
+                    for (let i = 1; i <= pageCount; i++) {
+                        const button = document.createElement('button');
+                        button.innerText = i;
+                        button.classList.add('pagination-button');
+        
+                        if (i === currentPage) {
+                            button.classList.add('active');
+                        }
+        
+                        button.addEventListener('click', function() {
+                            currentPage = i;
+                            displayRows(currentPage);
+        
+                            const buttons = paginationControls.querySelectorAll('.pagination-button');
+                            buttons.forEach(btn => btn.classList.remove('active'));
+                            this.classList.add('active');
+                        });
+        
+                        paginationControls.appendChild(button);
+                    }
+                }
+        
+                displayRows(currentPage);
+                generatePaginationButtons();
             });
-        }
-
-        function generatePaginationButtons() {
-            const paginationControls = document.getElementById('paginationControls');
-            paginationControls.innerHTML = '';
-
-            const pageCount = Math.ceil(rows.length / rowsPerPage);
-
-            for (let i = 1; i <= pageCount; i++) {
-                const button = document.createElement('button');
-                button.innerText = i;
-                button.classList.add('pagination-button');
-
-                if (i === currentPage) {
-                    button.classList.add('active');
-                }
-
-                button.addEventListener('click', function() {
-                    currentPage = i;
-                    displayRows(currentPage);
-
-                    const buttons = paginationControls.querySelectorAll('.pagination-button');
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
+        
+            document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
+                document.getElementById('formAgregarUsuario').style.display = 'block';
+                document.getElementById('btnAbrirFormulario').style.display = 'none';
+            });
+        
+            document.querySelector('.btn-cancelar').addEventListener('click', function() {
+                document.getElementById('formAgregarUsuario').style.display = 'none';
+                document.getElementById('btnAbrirFormulario').style.display = 'block';
+            });
+        
+            document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
+                event.preventDefault();
+        
+                fetch('{% url "agregar_vehiculosa" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        placa: document.getElementById('id_placa').value,
+                        modelo: document.getElementById('id_modelo').value,
+                        marca: document.getElementById('id_marca').value,
+                        color: document.getElementById('id_color').value,
+                        transmision: document.getElementById('id_transmision').value,
+                        documento: document.getElementById('id_documento').value,
+                        id_tipo_vehiculo: document.getElementById('id_id_tipo_vehiculo').value
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Error al agregar vehículo');
+                })
+                .then(data => {
+                    console.log(data);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Vehículo agregado correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al agregar vehículo',
+                        text: 'Por favor, intenta nuevamente',
+                        showConfirmButton: true
+                    });
                 });
-
-                paginationControls.appendChild(button);
-            }
-        }
-
-        displayRows(currentPage);
-        generatePaginationButtons();
-    });
-
-    document.getElementById('btnAbrirFormulario').addEventListener('click', function() {
-        document.getElementById('formAgregarVehiculo').style.display = 'block';
-        document.getElementById('btnAbrirFormulario').style.display = 'none';
-    });
-    
-    document.querySelector('.btn-cancelar').addEventListener('click', function() {
-        document.getElementById('formAgregarVehiculo').style.display = 'none';
-        document.getElementById('btnAbrirFormulario').style.display = 'block';
-    });
-    
-    document.getElementById('formAgregarVehiculo').addEventListener('submit', function(event) {
-        event.preventDefault();
-    
-        fetch('{% url "agregar_vehiculosa" %}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({
-                placa: document.getElementById('id_placa').value,
-                modelo: document.getElementById('id_modelo').value,
-                marca: document.getElementById('id_marca').value,
-                color: document.getElementById('id_color').value,
-                transmision: document.getElementById('id_transmision').value,
-                documento: document.getElementById('id_documento').value,
-                id_tipo_vehiculo: document.getElementById('id_id_tipo_vehiculo').value
-            })
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Error al agregar vehículo');
-        })
-        .then(data => {
-            console.log(data);
-            Swal.fire({
-                icon: 'success',
-                title: 'Vehículo agregado correctamente',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                location.reload();
             });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al agregar vehículo',
-                text: 'Por favor, intenta nuevamente',
-                showConfirmButton: true
+        
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#userTableBody tr');
+        
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+                    row.style.display = match ? '' : 'none';
+                });
             });
-        });
-    });
-    
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll('#userTableBody tr');
-
-        rows.forEach(row => {
-            const cells = row.querySelectorAll('td');
-            const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
-            row.style.display = match ? '' : 'none';
-        });
-    });
-</script>
-
+        </script>
+        
 </body>
 </html>

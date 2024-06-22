@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Eliminar Empresa</title>
+    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+
+{% include 'ADMIN/sidebar.html' %}
+
+<div class="content-wrapper">
+    <div class="center-content">
+        <h2>Eliminar Empresa</h2>
+        <div class="mensaje-eliminar">
+            <p>¿Estás seguro de que deseas eliminar esta Empresa?</p>
+            <p>Nombre: {{ empresa.nombre }}</p>
+            <p>NIT: {{ empresa.nit }}</p>
+            <p>Direccion: {{empresa.direccion}}
+        </div>
+        <div class="botones-eliminar">
+            <button id="btnConfirmarEliminar" class="boton-confirmar"><i class="fas fa-trash-alt"></i> Confirmar Eliminar</button>
+            <a href="{% url 'ad_empresas' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const urlEliminarUsuario = "{% url 'eliminar_empresa' empresa.nit %}";
+
+    document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#007bff',
+            confirmButtonText: 'Sí, eliminarlo'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(urlEliminarUsuario, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire({
+                        title: '¡Eliminado!',
+                        text: data.mensaje,
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        window.location.href = '{% url 'ad_empresas' %}';
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Hubo un problema al eliminar el usuario'
+                    });
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

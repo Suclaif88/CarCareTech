@@ -66,6 +66,7 @@ def AdVehiculosA(request):
 
 @csrf_exempt
 def agregar_vehiculosa(request):
+
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
 
@@ -79,6 +80,8 @@ def agregar_vehiculosa(request):
 
         if placa and modelo and marca and color and transmision and documento and id_tipo_vehiculo:
             try:
+                id_tipo_vehiculo = TipoVehiculo.objects.get(pk=id_tipo_vehiculo)
+                documento = Clientes.objects.get(pk=documento)
                 nuevo_vehiculo = Vehiculo(
                     placa=placa,
                     modelo=modelo,

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Editar servicio</title>
+    <title>Editar Empresa</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
@@ -17,23 +17,27 @@
 
 <div class="content-wrapper">
     <div class="center-content">
-        <h2 class="form-title">Editar Servicio</h2>
+        <h2 class="form-title">Editar Empresa</h2>
         <form method="post" class="formulario-editar" id="editarUsuarioForm">
             {% csrf_token %}
-            <input type="hidden" name="id_servicio" value="{{ servicio.id_servicios }}">
+            <input type="hidden" name="nit" value="{{ empresa.nit }}">
             <div class="form-group">
                 <label for="id_nombre">Nombre:</label>
-                <input type="text" id="id_nombre" name="nombre" value="{{ servicio.nombre }}" required>
+                <input type="text" id="id_nombre" name="nombre" value="{{ empresa.nombre }}" required>
             </div>
             <div class="form-group">
-                <label for="id_precio">Precio:</label>
-                <input type="text" id="id_precio" name="precio" value="{{ servicio.precio }}" required>
+                <label for="id_telefono">Telefono:</label>
+                <input type="number" id="id_telefono" name="telefono" value="{{ empresa.telefono }}" required>
             </div>
             <div class="form-group">
-                <label for="id_descripcion">Descripcion:</label>
-                <input type="text" id="id_descripcion" name="descripcion" value="{{ servicio.descripcion }}" required>
+                <label for="id_correo">Correo:</label>
+                <input type="email" id="id_correo" name="correo" value="{{ empresa.correo }}" required>
             </div>
-            
+            <div class="form-group">
+                <label for="id_direccion">Direccion:</label>
+                <input type="text" id="id_direccion" name="direccion" value="{{ empresa.direccion }}" required>
+            </div>
+
             <button type="submit" class="btn-submit">Guardar Cambios</button>
         </form>
     </div>
@@ -52,25 +56,26 @@
             },
             body: JSON.stringify({
                 nombre: document.getElementById('id_nombre').value,
-                precio: document.getElementById('id_precio').value,
-                descripcion: document.getElementById('id_descripcion').value,
+                telefono: document.getElementById('id_telefono').value,
+                correo: document.getElementById('id_correo').value,
+                direccion: document.getElementById('id_direccion').value,
             })
         })
         .then(response => {
             if (response.ok) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Servicio Actualizado',
+                    title: 'Empresa actualizado',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 .then(() => {
-                    window.location.href = '{% url 'ad_servicios' %}';
+                    window.location.href = '{% url 'ad_empresas' %}';
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al actualizar el servicio',
+                    title: 'Error al actualizar la empresa',
                     text: 'Por favor, intenta nuevamente',
                     showConfirmButton: true
                 });
