@@ -90,6 +90,7 @@ urlpatterns = [
         path('obtener_precio_producto/', obtener_precio_producto, name='obtener_precio_producto'),
         path('obtener_precio_servicio/', obtener_precio_servicio, name='obtener_precio_servicio'),
         
+        path('admin_panel/factura/nuevo_factura/guardar/', guardar_factura, name='guardar_factura'),
 
     #------------------------
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion

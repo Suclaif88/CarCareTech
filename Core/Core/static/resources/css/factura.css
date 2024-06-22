@@ -103,3 +103,62 @@
 .table tbody tr:last-child {
     border-bottom: none;
 }
+
+.btnGP {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btnF{ grid-area: 1 / 2 / 2 / 3; }
+
+.btnF {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.btnF div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.btnF label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.btnF input,
+.btnF button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btnF button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btnF button:hover {
+    background-color: #0056b3;
+}
+
+
+

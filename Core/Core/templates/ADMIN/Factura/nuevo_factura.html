@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
     <link rel="stylesheet" href="{% static 'resources/css/factura.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -54,7 +53,7 @@
                 {% endfor %}
                 </select>
 
-                <button type="button" id="guardar-datos" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar Datos Provisionales</button>
+                <button type="button" id="guardar-datos" class="btn-primary btn-submit"><i class="fas fa-plus"></i> Generar Factura </button>
             </form>
 
             <div id="cuadros-datos-guardados" style="display: none;">
@@ -65,10 +64,7 @@
                 <div id="nit-empresa-guardado" class="dato-guardado"></div>
             </div>
 
-
         <div class="containerP" id="formularios" style="display: none;">
-
-
             <div class="form1">
                 <form id="form-productos">
                     <h3>Productos</h3>
@@ -77,20 +73,20 @@
                         <select id="id_producto" name="id_producto" class="form-control" onchange="actualizarPrecio()">
                             <option value="" disabled selected>Selecciona un producto</option>
                             {% for producto in productos %}
-                                <option value="{{ producto.id }}" data-precio="{{ producto.precio }}">{{ producto.nombre }}</option>
+                                <option value="{{ producto.id_producto }}" data-precio="{{ producto.precio }}">{{ producto.nombre }}</option>
                             {% endfor %}
                         </select>
                         <input type="hidden" id="id_producto_oculto" name="id_producto_oculto">
-                    </div>                                                                                             
+                    </div>                    
                     <div class="form-group">
                         <label for="Precio">Precio:</label>
                         <input type="text" id="Precio" name="Precio" class="form-control" readonly>
-                    </div>                  
+                    </div>
                     <div class="form-group">
                         <label for="cantidad">Cantidad:</label>
                         <input type="number" id="cantidad" name="cantidad" class="form-control">
                     </div>
-                    <button type="button" class="btn-primary btn-submit" onclick="agregarProducto()"><i class="fas fa-save"></i> Agregar</button>
+                    <button type="button" class="btn-agregar" onclick="agregarProducto()"><i class="fas fa-plus"></i> Agregar</button>
                 </form>
             </div>
             
@@ -115,79 +111,327 @@
                         <select id="id_documento_mecanico" name="documento_mecanico" class="form-control" required>
                             <option value="" disabled selected>Seleccionar Documento Mecánico</option>
                             {% for usuario in usuarios %}
-                                <option value="{{ usuario.Documento }}">{{ usuario.Documento }} - {{ usuario.Nombre }}</option>
+                                {% if usuario.Rol == 1 %}
+                                    <option value="{{ usuario.Documento }}">{{ usuario.Documento }} - {{ usuario.Nombre }}</option>
+                                {% endif %}
                             {% endfor %}
-                        </select>
+                        </select>                        
                     </div>
-                    <button type="button" class="btn-primary btn-submit" onclick="agregarServicio()"><i class="fas fa-save"></i> Agregar</button>
+                    <button type="button" class="btn-agregar" onclick="agregarServicio()"><i class="fas fa-plus"></i> Agregar</button>
                 </form>
             </div>            
         </div>
 
-
-
-
-    <div class="Tablas-de-selecciones" id="tablas-selecciones" style="display: none;">
-
-        <div class="t1">
-            <table id="tabla-productos" class="table">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-productos">
-                    <!-- Aquí se añadirán las filas dinámicamente -->
-                </tbody>
-            </table>
+        <div class="Tablas-de-selecciones" id="tablas-selecciones" style="display: none;">
+            <div class="t1">
+                <table id="tabla-productos" class="table">
+                    <thead>
+                        <tr>
+                            <th style="display: none;">ID Producto</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-productos">
+                        <!-- Aquí se añadirán las filas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="t2">
+                <table id="tabla-servicios" class="table">
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Precio</th>
+                            <th>Documento Mecanico</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-servicios">
+                        <!-- Aquí se añadirán las filas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <br>
+        
+        <div class="btnGP" id="btn-Final" style="display: none;">
+            <div class="btnF">
+                <div>
+                    <label>IVA (%):</label>
+                    <input type="number" id="iva" value="19" min="0">
+                </div>
+                <div>
+                    <label>Descuento:</label>
+                    <input type="number" id="descuento" value="0" min="0">
+                </div>
+                <div>
+                    <label>Subtotal:</label>
+                    <input type="text" id="subtotal" readonly>
+                </div>
+                <div>
+                    <label>Total:</label>
+                    <input type="text" id="total" readonly>
+                </div>
+                <button class="btn-guardar"><i class="fas fa-save"></i> Generar Factura</button>
+            </div>
         </div>
 
-        <div class="t2">
-            <table id="tabla-servicios" class="table">
-                <thead>
-                    <tr>
-                        <th>Servicio</th>
-                        <th>Precio</th>
-                        <th>Documento Mecanico</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-servicios">
-                    <!-- Aquí se añadirán las filas dinámicamente -->
-                </tbody>
-            </table>
-        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
 
-    </div>
+            document.addEventListener('DOMContentLoaded', function() {
+                var btnGuardar = document.querySelector('.btn-guardar');
+            
+                if (btnGuardar) {
+                    btnGuardar.addEventListener('click', function() {
+                        var datosFactura = JSON.parse(localStorage.getItem('datosFactura'));
+            
+                        if (datosFactura && datosFactura.fecha && datosFactura.placa && datosFactura.metodoPago && datosFactura.nitEmpresa) {
+                            var iva = parseFloat(document.getElementById('iva').value) || 19;
+                            var descuento = parseFloat(document.getElementById('descuento').value) || 0;
+                            var subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+            
+                            if (isNaN(subtotal) || subtotal <= 0) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error en el subtotal',
+                                    text: 'El subtotal debe ser un número mayor que 0',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ok'
+                                });
+                                return;
+                            }
+            
+                            var total = subtotal + (subtotal * (iva / 100)) - descuento;
+            
+                            datosFactura.Total = parseFloat(total.toFixed(2));
+                            datosFactura.Subtotal = parseFloat(subtotal.toFixed(2));
+                            datosFactura.Iva = iva;
+                            datosFactura.Descuento = descuento;
+            
+                            var detallesServicio = obtenerDetallesServicioDesdeHTML();
+                            if (detallesServicio.length > 0) {
+                                datosFactura.detalles_servicio = detallesServicio;
+                            }
+            
+                            var detallesProducto = obtenerDetallesProductoDesdeHTML();
+                            if (detallesProducto.length > 0) {
+                                datosFactura.detalles_producto = detallesProducto;
+                            }
+            
+                            //console.log('Datos de la factura a guardar:', datosFactura);
+            
+                            localStorage.setItem('datosFactura', JSON.stringify(datosFactura));
+            
+                            var urlGuardarFactura = '/admin_panel/factura/nuevo_factura/guardar/';
+            
+                            // Enviar datos al backend
+                            fetch(urlGuardarFactura, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(datosFactura)
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                //console.log('Respuesta del servidor:', data);
+                                if (data.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Factura guardada correctamente',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    }).then(() => {
+                                        localStorage.removeItem('datosFactura');
+                                        window.location.href = '/admin_panel/factura';
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error al guardar la factura',
+                                        text: 'Por favor intenta de nuevo',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Ok'
+                                    });
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error al guardar la factura:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al guardar la factura',
+                                    text: 'Por favor intenta de nuevo',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Ok'
+                                });
+                            });
+            
+                        } else {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Datos de factura incompletos',
+                                text: 'No se encontraron todos los datos necesarios en el local storage',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
+                    });
+                } else {
+                    console.error('Elemento .btn-guardar no encontrado');
+                }
+            });
+            
+            
+            function obtenerDetallesServicioDesdeHTML() {
+                var detallesServicio = [];
+                var tbodyServicios = document.getElementById('tbody-servicios');
+                var filasServicios = tbodyServicios.querySelectorAll('tr');
+            
+                filasServicios.forEach(function(fila) {
+                    var servicio = fila.cells[0].textContent.trim();
+                    var precio = parseFloat(fila.cells[1].textContent.trim());
+                    var documentoMecanico = fila.cells[2].textContent.trim();
+            
+                    detallesServicio.push({
+                        servicio: servicio,
+                        precio: precio,
+                        documentoMecanico: documentoMecanico
+                    });
+                });
+            
+                return detallesServicio;
+            }
+            
+            function obtenerDetallesProductoDesdeHTML() {
+                var detallesProducto = [];
+                var tbodyProductos = document.getElementById('tbody-productos');
+            
+                if (tbodyProductos) {
+                    var filasProductos = tbodyProductos.querySelectorAll('tr');
+                    
+                    filasProductos.forEach(function(fila) {
+                        var nombreProducto = fila.cells[1].textContent.trim();
+                        var precio = parseFloat(fila.cells[2].textContent.trim());
+                        var cantidad = parseInt(fila.cells[3].textContent.trim());
+            
+                        detallesProducto.push({
+                            producto: nombreProducto,
+                            precio: precio,
+                            cantidad: cantidad
+                        });
+                    });
+                } else {
+                    console.error('El elemento tbody-productos no se encontró o está vacío.');
+                }
+            
+                return detallesProducto;
+            }
+            
 
+            document.addEventListener('DOMContentLoaded', function() {
+                function calcularSubtotal() {
+                    var productos = document.querySelectorAll('#tbody-productos tr');
+                    var servicios = document.querySelectorAll('#tbody-servicios tr');
+                    var subtotal = 0;
+        
+                    productos.forEach(function(producto) {
+                        var precio = parseFloat(producto.children[2].textContent);
+                        var cantidad = parseInt(producto.children[3].textContent);
+                        subtotal += precio * cantidad;
+                    });
+        
+                    servicios.forEach(function(servicio) {
+                        var precio = parseFloat(servicio.children[1].textContent);
+                        subtotal += precio;
+                    });
+        
+                    document.getElementById('subtotal').value = subtotal.toFixed(2);
+                    calcularTotal();
+                }
+        
+                function calcularTotal() {
+                    var subtotal = parseFloat(document.getElementById('subtotal').value);
+                    var iva = parseFloat(document.getElementById('iva').value);
+                    var descuento = parseFloat(document.getElementById('descuento').value);
+                
+                    if (!isNaN(subtotal) && !isNaN(iva) && !isNaN(descuento)) {
+                        var total = subtotal + (subtotal * (iva / 100)) - descuento;
+    
+                        if (!isNaN(total)) {
+                            document.getElementById('total').value = total.toFixed(2);
+                        } else {
+                            document.getElementById('total').value = '';
+                        }
+                    } else {
+                        document.getElementById('total').value = '';
+                    }
+                }
 
+                /*
+    
+                    Dedicado a los incautos que quizas quieran ver como de algo tan simple sale
+                    algo tan complejo y hermoso saludos a todos mis compañeros y especialmente a mi instructor
+                    
+                */
+                
+                document.getElementById('iva').addEventListener('input', function() {
+                    calcularTotal();
+                });
+                
+                document.getElementById('descuento').addEventListener('input', function() {
+                    calcularTotal();
+                });
+                
+        
+                configurarEventListeners();
+    
+                function configurarEventListeners() {
+                    var tbodyProductos = document.getElementById('tbody-productos');
+                    var observerProductos = new MutationObserver(function() {
+                        calcularSubtotal();
+                    });
+        
+                    observerProductos.observe(tbodyProductos, {
+                        childList: true,
+                        subtree: true
+                    });
+        
+                    var tbodyServicios = document.getElementById('tbody-servicios');
+                    var observerServicios = new MutationObserver(function() {
+                        calcularSubtotal();
+                    });
+        
+                    observerServicios.observe(tbodyServicios, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
+        
+            });  
 
-
-        </div>
-    </div>
-
-    <script>
         function agregarProducto() {
             var productoId = document.getElementById('id_producto_oculto').value;
             var selectorProducto = document.getElementById('id_producto');
             var productoNombre = selectorProducto.options[selectorProducto.selectedIndex].text;
             var precio = document.getElementById('Precio').value;
             var cantidad = document.getElementById('cantidad').value;
-            
-            console.log('Producto ID:', productoId);
-            console.log('Producto Nombre:', productoNombre);
-            console.log('Precio:', precio);
-            console.log('Cantidad:', cantidad);
-            
+        
             if (productoId && cantidad) {
                 var fila = `<tr>
+                                <td style="display: none;">${productoId}</td>
                                 <td>${productoNombre}</td>
                                 <td>${precio}</td>
                                 <td>${cantidad}</td>
+                                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button></td>
                             </tr>`;
                 document.getElementById('tbody-productos').insertAdjacentHTML('beforeend', fila);
-                
+        
                 document.getElementById('id_producto').value = '';
                 document.getElementById('id_producto_oculto').value = '';
                 document.getElementById('Precio').value = '';
@@ -197,21 +441,21 @@
             }
         }
         
-        
         function agregarServicio() {
             var servicioId = document.getElementById('id_servicio').value;
             var servicioNombre = document.getElementById('id_servicio').options[document.getElementById('id_servicio').selectedIndex].text;
             var precio = document.getElementById('id_precio').value;
             var documentoMecanico = document.getElementById('id_documento_mecanico').value;
-    
+        
             if (servicioId && documentoMecanico) {
                 var fila = `<tr>
                                 <td>${servicioNombre}</td>
                                 <td>${precio}</td>
                                 <td>${documentoMecanico}</td>
+                                <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">Eliminar</button></td>
                             </tr>`;
                 document.getElementById('tbody-servicios').insertAdjacentHTML('beforeend', fila);
-                
+        
                 document.getElementById('id_servicio').value = '';
                 document.getElementById('id_precio').value = '';
                 document.getElementById('id_documento_mecanico').value = '';
@@ -219,6 +463,7 @@
                 alert('Por favor selecciona un servicio y especifica el documento mecánico.');
             }
         }
+        
 
         document.addEventListener('DOMContentLoaded', function() {
             var now = moment().tz('America/Bogota').format('YYYY-MM-DDTHH:mm');
@@ -233,7 +478,7 @@
         
                 var fecha = document.getElementById('id_fecha').value;
                 var placa = document.getElementById('id_placa').value;
-                var metodoPago = document.getElementById('id_id_metodo_pago').value;
+                var metodoPago = parseInt(document.getElementById('id_id_metodo_pago').value); // Parsear a entero
                 var nitEmpresa = document.getElementById('id_nit').value;
         
                 var datos = {
@@ -254,10 +499,10 @@
                 document.getElementById('nit-empresa-guardado').innerText = 'NIT de la Empresa: ' + nitEmpresa;
         
                 document.getElementById('form-datos-principales').style.display = 'none';
-                
+        
                 document.getElementById('formularios').style.display = 'grid';
                 document.getElementById('tablas-selecciones').style.display = 'grid';
-                
+                document.getElementById('btn-Final').style.display = 'grid';
             });
         
             document.getElementById('form-segundo-paso').addEventListener('submit', function(event) {
@@ -269,17 +514,20 @@
                 }
             });
         });
+        
 
         function actualizarPrecio() {
             var selectorProducto = document.getElementById('id_producto');
             var precioSeleccionado = selectorProducto.options[selectorProducto.selectedIndex].getAttribute('data-precio');
             var idProductoSeleccionado = selectorProducto.value;
         
+            //console.log('Precio seleccionado:', precioSeleccionado);
+            //console.log('ID del producto seleccionado:', idProductoSeleccionado);
+        
             document.getElementById('Precio').value = precioSeleccionado;
-            document.getElementById('id_producto_oculto').value = idProductoSeleccionado; // Actualizar el valor del input oculto
+            document.getElementById('id_producto_oculto').value = idProductoSeleccionado;
         }        
         
-
         document.getElementById('id_servicio').addEventListener('change', function() {
             var servicioId = this.value;
             
@@ -294,25 +542,12 @@
                 });
         });
 
-        document.getElementById('id_producto').addEventListener('change', function() {
-            var productoId = this.value;
-        
-            fetch('{% url 'obtener_precio_producto' %}?producto_id=' + productoId)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('Precio').value = data.precio;
-                    document.getElementById('Precio').readOnly = true;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-        
-        
-        
-        
 
+        function eliminarFila(button) {
+            var fila = button.closest('tr');
+            fila.parentNode.removeChild(fila);
+        }
+        
     </script>
-
 </body>
 </html>

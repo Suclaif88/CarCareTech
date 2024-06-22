@@ -1,7 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .forms import FacturaForm, DetalleProductoForm, DetalleServicioForm
-
-from django.db import models 
+from django.shortcuts import render, get_object_or_404
 from Vehiculo.models import Vehiculo
 from Clientes.models import Clientes
 from .models import Factura, DetalleProducto, DetalleServicio, MetodoPago
@@ -9,8 +6,11 @@ from Empresa.models import Empresa
 from Servicios.models import Servicios
 from Productos.models import Productos
 from Usuarios.models import Usuarios
-
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import logging
+logger = logging.getLogger(__name__)
 
 def AdFactura(request):
     facturas = Factura.objects.all()
@@ -25,8 +25,6 @@ def AdFactura(request):
     
     return render(request, 'ADMIN/Factura/factura.html', context)
  
- 
-
 
 def nueva_factura(request):
     vehiculos = Vehiculo.objects.all()
@@ -37,42 +35,12 @@ def nueva_factura(request):
     servicios = Servicios.objects.all()
     usuarios = Usuarios.objects.all()
     
-    proximo_id_factura = Factura.objects.latest('id_factura').id_factura + 1
-
-    if request.method == 'POST':
-        factura_form = FacturaForm(request.POST)
-        detalle_producto_form = DetalleProductoForm(request.POST)
-        detalle_servicio_form = DetalleServicioForm(request.POST)
-
-        if factura_form.is_valid() and detalle_producto_form.is_valid() and detalle_servicio_form.is_valid():
-            factura = factura_form.save()
-
-            detalle_producto = detalle_producto_form.save(commit=False)
-            detalle_producto.factura = factura
-            detalle_producto.save()
-
-            detalle_servicio = detalle_servicio_form.save(commit=False)
-            detalle_servicio.factura = factura
-            detalle_servicio.save()
-
-            subtotal_productos = DetalleProducto.objects.filter(factura=factura).aggregate(total=models.Sum(models.F('precio') * models.F('cantidad')))['total']
-            subtotal_servicios = DetalleServicio.objects.filter(factura=factura).aggregate(total=models.Sum('precio'))['total']
-            subtotal = (subtotal_productos if subtotal_productos else 0) + (subtotal_servicios if subtotal_servicios else 0)
-
-            factura.Subtotal = subtotal
-            factura.save()
-
-            return redirect('ad_factura')
-
-    else:
-        factura_form = FacturaForm()
-        detalle_producto_form = DetalleProductoForm()
-        detalle_servicio_form = DetalleServicioForm()
+    try:
+        proximo_id_factura = Factura.objects.latest('id_factura').id_factura + 1
+    except Factura.DoesNotExist:
+        proximo_id_factura = 1
 
     context = {
-        'factura_form': factura_form,
-        'detalle_producto_form': detalle_producto_form,
-        'detalle_servicio_form': detalle_servicio_form,
         'vehiculos': vehiculos,
         'clientes': clientes,
         'metodos_pago': metodos_pago,
@@ -82,21 +50,23 @@ def nueva_factura(request):
         'proximo_id_factura': proximo_id_factura,
         'usuarios': usuarios,
     }
-    
-    #print(context)
 
     return render(request, 'ADMIN/Factura/nuevo_factura.html', context)
 
 
 
 
+
 def obtener_precio_producto(request):
     producto_id = request.GET.get('producto_id')
+    if not producto_id:
+        return JsonResponse({'error': 'Producto ID no proporcionado'}, status=400)
     try:
-        producto = Productos.objects.get(id=producto_id)
-        return JsonResponse({'precio': producto.precio})
+        producto = Productos.objects.get(id_producto=producto_id)
+        return JsonResponse({'id': producto.id_producto, 'precio': producto.precio})
     except Productos.DoesNotExist:
         return JsonResponse({'error': 'Producto no encontrado'}, status=404)
+
 
 
 def obtener_precio_servicio(request):
@@ -104,3 +74,106 @@ def obtener_precio_servicio(request):
     servicio = get_object_or_404(Servicios, pk=servicio_id)
 
     return JsonResponse({'precio': servicio.precio})
+
+
+@csrf_exempt
+def guardar_factura(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            logger.info('Datos recibidos en el backend: %s', data)  # Registrar datos recibidos en el backend
+
+            required_fields = ['fecha', 'placa', 'metodoPago', 'nitEmpresa', 'Total', 'Subtotal', 'Iva', 'Descuento']
+            for field in required_fields:
+                if field not in data:
+                    raise KeyError(field)
+
+            numeric_fields = ['Total', 'Subtotal', 'Iva', 'Descuento']
+            for field in numeric_fields:
+                if not isinstance(data[field], (int, float)):
+                    raise ValueError(f'{field} debe ser numérico')
+                if data[field] < 0:
+                    raise ValueError(f'{field} no puede ser negativo')
+
+            vehiculo = Vehiculo.objects.get(placa=data['placa'])
+            metodo_pago = MetodoPago.objects.get(id_metodo_pago=data['metodoPago'])
+            empresa = Empresa.objects.get(nit=data['nitEmpresa'])
+
+            # instancia de Factura
+            factura = Factura.objects.create(
+                fecha=data['fecha'],
+                placa=vehiculo,
+                id_metodo_pago=metodo_pago,
+                nit=empresa,
+                Total=data['Total'],
+                Subtotal=data['Subtotal'],
+                Iva=data['Iva'],
+                Descuento=data['Descuento']
+            )
+
+            if 'detalles_servicio' in data:
+                for detalle_servicio_data in data['detalles_servicio']:
+                    servicio_nombre = detalle_servicio_data['servicio']
+                    precio = detalle_servicio_data['precio']
+                    documento_mecanico_id = detalle_servicio_data['documentoMecanico']
+
+                    servicio = Servicios.objects.get(nombre=servicio_nombre)
+                    
+                    DetalleServicio.objects.create(
+                        factura=factura,
+                        servicio=servicio,
+                        precio=precio,
+                        documento_mecanico_id=documento_mecanico_id
+                    )
+
+            if 'detalles_producto' in data:
+                for detalle_producto_data in data['detalles_producto']:
+                    producto_nombre = detalle_producto_data['producto']
+                    cantidad = detalle_producto_data['cantidad']
+                    precio_unitario = detalle_producto_data['precio']
+
+                    producto = Productos.objects.get(nombre=producto_nombre)
+
+                    DetalleProducto.objects.create(
+                        factura=factura,
+                        producto=producto,
+                        cantidad=cantidad,
+                        precio=precio_unitario
+                    )
+
+            return JsonResponse({'success': True, 'id_factura': factura.id_factura})
+
+        except MetodoPago.DoesNotExist:
+            error_msg = f'Método de pago con id {data["metodoPago"]} no encontrado'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+        except Servicios.DoesNotExist:
+            error_msg = f'Servicio no encontrado'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+        except Productos.DoesNotExist:
+            error_msg = f'Producto no encontrado'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+        except KeyError as e:
+            error_msg = f'Faltan datos requeridos: {e}'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+        except ValueError as e:
+            error_msg = f'Error de valor: {e}'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+        except Exception as e:
+            error_msg = f'Error inesperado: {str(e)}'
+            logger.error(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+
+    else:
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+

@@ -18,8 +18,7 @@ class Factura(models.Model):
     id_factura = models.AutoField(primary_key=True)
     fecha = models.DateTimeField()
     placa = models.ForeignKey(Vehiculo, on_delete=models.CASCADE, db_column='placa')
-    documento_M = models.ForeignKey(Usuarios, on_delete=models.CASCADE, db_column='Documento')
-    id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, db_column='id_metodo_pago')  # Asegúrate de apuntar a 'id_metodo_pago'
+    id_metodo_pago = models.ForeignKey(MetodoPago, on_delete=models.CASCADE, db_column='id_metodo_pago')
     nit = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column='nit')
     Total = models.FloatField()
     Subtotal = models.FloatField()
@@ -28,6 +27,7 @@ class Factura(models.Model):
 
     def __str__(self):
         return f'Factura {self.id_factura} - {self.fecha}'
+
 
 
 
