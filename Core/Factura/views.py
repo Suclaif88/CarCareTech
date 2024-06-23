@@ -216,6 +216,16 @@ def guardar_factura(request):
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
+
+def obtener_detalles(request,id_factura):
+    factura = Factura.objects.get(id_factura=id_factura)
+    servicios = DetalleServicio.objects.filter(factura=factura).values('servicio__nombre', 'precio', 'documento_mecanico')
+    productos = DetalleProducto.objects.filter(factura=factura).values('producto__nombre', 'precio', 'cantidad')
+    data = {
+        'servicios': list(servicios),
+        'productos': list(productos),
+    }
+    return JsonResponse(data)
 '''
 
 Si puedes mantener en su lugar tu cabeza cuando todos a tu alrededor,

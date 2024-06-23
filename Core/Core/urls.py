@@ -87,6 +87,7 @@ urlpatterns = [
     path('admin_panel/factura', AdFactura, name='ad_factura'),
     path('admin_panel/factura/editar/<int:id_factura>/', editar_factura, name='editar_factura'),
     path('admin_panel/factura/eliminar/<int:id_factura>/', eliminar_factura, name='eliminar_factura'),
+    path('admin_panel/factura/obtener_detalles/<int:id_factura>/', obtener_detalles, name='obtener_detalles'),   
     
     #CREACION DE FACTURA
     

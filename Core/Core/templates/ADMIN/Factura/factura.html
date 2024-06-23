@@ -58,6 +58,36 @@
                             <td class="acciones">
                                 <a href="{% url 'editar_factura' factura.id_factura %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
                                 <a href="{% url 'eliminar_factura' factura.id_factura %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                                <a href="#" class="btn btn-info mostrar-detalles" data-factura-id="{{ factura.id_factura }}"><i class="fas fa-info-circle"></i> Detalles</a>
+                            </td>
+                        </tr>
+                        <tr class="detalles-row" id="detalles-{{ factura.id_factura }}" style="display: none;">
+                            <td colspan="7">
+                                <table class="productos-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="productos-body" id="productoTableBody-{{ factura.id_factura }}">
+                                        <!-- Los detalles de los productos se llenarán aquí -->
+                                    </tbody>
+                                </table>
+                                <br><br>
+                                <table class="servicios-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Servicios</th>
+                                            <th>Precio</th>
+                                            <th>Mecanico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="servicios-body" id="servicioTableBody-{{ factura.id_factura }}">
+                                        <!-- Los detalles de los servicios se llenarán aquí -->
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
                     {% empty %}
@@ -78,14 +108,14 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('invoiceTableBody');
-            const rows = tableBody.querySelectorAll('tr');
+            const rows = tableBody.querySelectorAll('tr:not(.detalles-row)');
             const rowsPerPage = 5;
             let currentPage = 1;
-    
+        
             function displayRows(page) {
                 const start = (page - 1) * rowsPerPage;
                 const end = start + rowsPerPage;
-    
+        
                 rows.forEach((row, index) => {
                     if (index >= start && index < end) {
                         row.style.display = '';
@@ -94,49 +124,103 @@
                     }
                 });
             }
-    
+        
             function generatePaginationButtons() {
                 const paginationControls = document.getElementById('paginationControls');
                 paginationControls.innerHTML = '';
-    
+        
                 const pageCount = Math.ceil(rows.length / rowsPerPage);
-    
+        
                 for (let i = 1; i <= pageCount; i++) {
                     const button = document.createElement('button');
                     button.innerText = i;
                     button.classList.add('pagination-button');
-    
+        
                     if (i === currentPage) {
                         button.classList.add('active');
                     }
-    
+        
                     button.addEventListener('click', function() {
                         currentPage = i;
                         displayRows(currentPage);
-    
+        
                         const buttons = paginationControls.querySelectorAll('.pagination-button');
                         buttons.forEach(btn => btn.classList.remove('active'));
                         this.classList.add('active');
                     });
-    
+        
                     paginationControls.appendChild(button);
                 }
             }
-    
+        
             displayRows(currentPage);
             generatePaginationButtons();
-        });
-    
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const filter = this.value.toLowerCase();
-            const rows = document.querySelectorAll('#invoiceTableBody tr');
-    
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
-                row.style.display = match ? '' : 'none';
+        
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#invoiceTableBody tr:not(.detalles-row)');
+        
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+                    row.style.display = match ? '' : 'none';
+                });
+            });
+        
+            document.querySelectorAll('.mostrar-detalles').forEach(function(element) {
+                element.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const facturaId = this.getAttribute('data-factura-id');
+                    const detallesRow = document.getElementById(`detalles-${facturaId}`);
+                    const productosBody = detallesRow.querySelector('.productos-body');
+                    const serviciosBody = detallesRow.querySelector('.servicios-body');
+        
+                    if (detallesRow.style.display === 'none') {
+                        fetch(`/admin_panel/factura/obtener_detalles/${facturaId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                productosBody.innerHTML = '';
+                                serviciosBody.innerHTML = '';
+        
+                                data.productos.forEach(producto => {
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td>${producto.producto__nombre}</td>
+                                        <td>${producto.precio}</td>
+                                        <td>${producto.cantidad}</td>
+                                    `;
+                                    productosBody.appendChild(row);
+                                });
+        
+                                data.servicios.forEach(servicio => {
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td>${servicio.servicio__nombre}</td>
+                                        <td>${servicio.precio}</td>
+                                        <td>${servicio.documento_mecanico}</td>
+                                    `;
+                                    serviciosBody.appendChild(row);
+                                });
+        
+                                detallesRow.style.display = '';
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al obtener detalles',
+                                    text: 'Por favor, intenta nuevamente',
+                                    showConfirmButton: true
+                                });
+                            });
+                    } else {
+                        detallesRow.style.display = 'none';
+                    }
+                });
             });
         });
+        
+        
     </script>
     
     </body>
