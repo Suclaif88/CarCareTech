@@ -19,7 +19,7 @@ class Vehiculo(models.Model):
     id_tipo_vehiculo = models.ForeignKey(TipoVehiculo, on_delete=models.CASCADE, db_column='id_tipo_vehiculo')
 
     def __str__(self):
-        return f"Cliente {self.placa} - {self.documento}"
+        return f"{self.placa} - {self.documento}"
 
 
 
