@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>CarCareTech-Servicios</title>
 </head>
 <body>
@@ -21,7 +23,7 @@
             {% for servicio in servicios %}
             <div class="card">
                 <div class="card-content">
-                    <h2>{{ servicio.nombre_servicio }}</h2>
+                    <h2>{{ servicio.nombre }}</h2>
                     <p><strong>Precio:</strong> {{ servicio.precio|floatformat:"0" }}</p>
                     <p>{{ servicio.descripcion }}</p>
                 </div>

@@ -64,20 +64,22 @@ nav {
   .navbar .menu li {
     list-style: none;
     margin: 0 15px;
+    margin-top: 9px;
   }
   
   .navbar .menu li a {
     color: #000000;
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 500;
-    text-decoration: none;
+    text-decoration: solid;
     padding: 10px 15px;
-    transition: background 0.3s;
+    transition: background 0.5s, border-radius 0.5s;
   }
   
   .navbar .menu li a:hover {
     background-color: #555;
     border-radius: 200px;
+    color: white;
   }
   
   .logo img {
@@ -128,13 +130,12 @@ nav {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 10px;
 }
 
 .footer {
   background-color: #3d3d3d;
   color: #fff;
-  padding: 20px 0;
   border-top: 8px solid white;
 }
 
@@ -146,57 +147,98 @@ nav {
 
 .footer-section {
   flex-basis: 30%;
-  margin-bottom: 10px;
 }
 
 .footer-section.about h2 {
-  font-size: 24px;
+  font-size: 30px;
   margin-bottom: 10px;
 }
-
+.footer .logo img{
+  height: 120px ; 
+}
 .contact span {
   display: block;
   margin-bottom: 5px;
+  margin-top: -15px;
+  padding: 7px;
+  font-size: 20px;
 }
 
 .socials a {
   display: inline-block;
   margin-right: 10px;
   color: #fff;
-  font-size: 18px;
+  font-size: 20px;
+  padding: 7px;
 }
 
 .socials a:hover {
   color: #bbb;
 }
 
-.links h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.links ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.links ul li {
-  margin-bottom: 5px;
-}
-
-.links ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.links ul li a:hover {
-  text-decoration: underline;
-}
-
 .footer-bottom {
   margin-top: 20px;
   text-align: center;
   color: #bbb;
+}
+
+/*FORM SUGERENCIAS*/
+
+.sugerencia-boton {
+  background-color: #2f4eff;
+  color: white;
+  border: solid 2px;
+  border-color: white;
+  cursor: pointer;
+  font-size: 18px;
+  width: 15%;
+  height: 50px;
+  border-radius: 30px;
+  margin-top: 135px;
+  position: relative;
+  left: -130px;
+}
+
+.sugerencias {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-contenido {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+.modal-contenido h2{
+  padding: 5px;
+  text-align: center;
+}
+
+.cerrar {
+  color: #3d3d3d;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-contenido form{
+  padding: 5px;
 }
 
 /*---------------------------------------------*/
@@ -445,20 +487,23 @@ section.services {
 
 /*SOBRE NOSOTROS*/
 
-.section {
-  padding: 40px 20px;
-  text-align: center;
-}
 
-.about, .story {
-  padding: 80px 0;
+.story {
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+.about h2, p{
+  padding: 5px;
+}
+.story h2, p{
+  padding: 5px;
 }
 
 .about-content, .story-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 700px;
   margin: 0 auto;
   flex-direction: row;
   gap: 20px;
@@ -466,11 +511,10 @@ section.services {
 
 .about-content img, .story-content img {
   width: 80%;
-  max-width: 400px;
+  max-width: 200px;
 }
 
 .text-content {
-  max-width: 600px;
   text-align: left;
 }
 
@@ -504,6 +548,9 @@ section.services {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+.unique-form-group textarea {
+  width: 100%;
 }
 .unique-button {
   display: block;

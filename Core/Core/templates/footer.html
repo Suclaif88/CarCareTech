@@ -2,13 +2,16 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section about">
-          <h2 class="logo">CarCareTech</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eu sapien non tortor malesuada fringilla.
-          </p>
+          <h2>
+            CarCareTech
+          </h2>
+          <div class="logo">
+            <img src="../static/resources/img/favicon.png" alt="Favicon">
+          </div>  
+
           <div class="contact">
-            <span><i class="fas fa-phone"></i> 123-456-789</span>
-            <span><i class="fas fa-envelope"></i> info@example.com</span>
+            <span><i class="fas fa-phone"></i> 319 5442623</span>
+            <span><i class="fas fa-envelope"></i> carcaretech@gmail.com</span>
           </div>
           <div class="socials">
             <a href="https://www.facebook.com/?locale=es_LA"><i class="fab fa-facebook"></i></a>
@@ -17,18 +20,79 @@
             <a href="https://co.linkedin.com/"><i class="fab fa-linkedin"></i></a>
           </div>
         </div>
-        <div class="footer-section links">
-            <h2>Enlaces</h2>
-          <ul>
-            <li><a href="{% url "Inicio" %}">Inicio</a></li>
-            <li><a href="{% url "Servicios" %}">Servicios</a></li>
-            <li><a href="{% url "SobreNosotros" %}">Nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
-          </ul>
-        </div>
+        <button id="sugerenciaBtn" class="sugerencia-boton">Sugerencias</button>
       </div>
       <div class="footer-bottom">
         &copy; 2024 CarCareTech. Todos los derechos reservados.
       </div>
     </div>
   </footer>
+
+  <div id="sugerenciaModal " class="sugerencias">
+    <div class="modal-contenido">
+      <div class="unique-form-group">
+      <span class="cerrar">&times;</span>
+      <h2>Enviar Sugerencia</h2>
+      <form id="sugerenciaForm">
+        <label for="name">Nombre:</label>
+        <br>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="suggestion">Sugerencia:</label>
+        <br>
+        <textarea id="suggestion" name="suggestion" required></textarea>
+        <br><br>
+        <button type="submit" class="unique-button">Enviar</button>
+      </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Obtener elementos del DOM
+    var modal = document.getElementById("sugerenciaModal ");
+    var btn = document.getElementById("sugerenciaBtn");
+    var span = document.getElementsByClassName("cerrar")[0];
+  
+    // Abrir el modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+  
+    // Cerrar el modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+  
+    // Cerrar el modal al hacer clic fuera de él
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+  
+    // Enviar el formulario
+    document.getElementById("sugerenciaForm").onsubmit = function(event) {
+      event.preventDefault();
+      
+      // Simulamos una respuesta exitosa aquí
+      var data = { success: true };
+  
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sugerencia enviada',
+          showConfirmButton: true,
+          timer: 1500
+        }).then((result) => {
+          modal.style.display = "none"; // Cerrar el modal después de mostrar la alerta
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al enviar sugerencia',
+          text: 'Por favor, inténtelo de nuevo.'
+        });
+      }
+    };
+  </script>
