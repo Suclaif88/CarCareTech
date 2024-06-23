@@ -63,13 +63,23 @@ urlpatterns = [
     path('admin_panel/vehiculosa', AdVehiculosA, name='ad_vehiculosa'),
     path('admin_panel/vehiculosa/agregar/', agregar_vehiculosa, name='agregar_vehiculosa'),
     path('admin_panel/vehiculosa/editar/<str:placa>/', editar_vehiculosa, name='editar_vehiculosa'),
-    path('admin_panel/vehiculosa/eliminar/<str:placa>/', eliminar_vehiculosa, name='eliminar_vehiculosa'),  
+    path('admin_panel/vehiculosa/eliminar/<str:placa>/', eliminar_vehiculosa, name='eliminar_vehiculosa'),
+
+    path('admin_panel/tipos_vehiculos', AdTVehiculos, name='ad_tvehiculos'),
+    path('admin_panel/tipos_vehiculos/agregar/', agregar_tvehiculo, name='agregar_tvehiculo'),
+    path('admin_panel/tipos_vehiculos/editar/<int:id_tipo_vehiculo>/', editar_tvehiculo, name='editar_tvehiculo'),
+    path('admin_panel/tipos_vehculos/eliminar/<int:id_tipo_vehiculo>/', eliminar_tvehiculo, name='eliminar_tvehiculo'),  
     
     #ADMIN PRODUCTOS
     path('admin_panel/productos', AdProductos, name='ad_productos'),
     path('admin_panel/productos/editar/<str:id_producto>', editar_producto , name='editar_producto'),
     path('admin_panel/productos/eliminar/<str:id_producto>/', eliminar_producto, name='eliminar_producto'),
     path('admin_panel/productos/agregar/', agregar_producto, name='agregar_producto'),
+
+    path('admin_panel/tipos_productos', AdTProductos, name='ad_tproductos'),
+    path('admin_panel/tipos_productos/agregar/', agregar_tproducto, name='agregar_tproducto'),
+    path('admin_panel/tipos_productos/editar/<int:id_tipo_producto>/', editar_tproducto, name='editar_tproducto'),
+    path('admin_panel/tipos_productos/eliminar/<int:id_tipo_producto>/', eliminar_tproducto, name='eliminar_tproducto'), 
 
     #ADMIN SERVICIOS
     path('admin_panel/servicios', AdServicios, name='ad_servicios'),

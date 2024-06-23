@@ -20,7 +20,7 @@
     
         <div class="center-content">
             <h2>Lista de Facturas</h2>
-            <input type="text" id="searchInput" placeholder="Buscar factura..." class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar Facturas..." class="search-bar">
     
             <div class="content-wrapper">
               
@@ -62,7 +62,7 @@
                             </td>
                         </tr>
                         <tr class="detalles-row" id="detalles-{{ factura.id_factura }}" style="display: none;">
-                            <td colspan="7">
+                            <td colspan="10">
                                 <table class="productos-table">
                                     <thead>
                                         <tr>
@@ -81,7 +81,7 @@
                                         <tr>
                                             <th>Servicios</th>
                                             <th>Precio</th>
-                                            <th>Mecanico</th>
+                                            <th>Mecánico</th>
                                         </tr>
                                     </thead>
                                     <tbody class="servicios-body" id="servicioTableBody-{{ factura.id_factura }}">
@@ -109,64 +109,72 @@
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('invoiceTableBody');
             const rows = tableBody.querySelectorAll('tr:not(.detalles-row)');
-            const rowsPerPage = 5;
+            const rowsPerPage =20;
             let currentPage = 1;
-        
+    
             function displayRows(page) {
                 const start = (page - 1) * rowsPerPage;
                 const end = start + rowsPerPage;
-        
+            
+                let visibleRows = 0;
+                let facturaCount = 0;
                 rows.forEach((row, index) => {
-                    if (index >= start && index < end) {
-                        row.style.display = '';
+                    if (!row.classList.contains('detalles-row')) {
+                        facturaCount++;
+                        if (facturaCount > start && facturaCount <= end) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                        visibleRows++;
                     } else {
                         row.style.display = 'none';
                     }
                 });
             }
-        
+    
             function generatePaginationButtons() {
                 const paginationControls = document.getElementById('paginationControls');
                 paginationControls.innerHTML = '';
-        
+    
                 const pageCount = Math.ceil(rows.length / rowsPerPage);
-        
+    
                 for (let i = 1; i <= pageCount; i++) {
                     const button = document.createElement('button');
                     button.innerText = i;
                     button.classList.add('pagination-button');
-        
+    
                     if (i === currentPage) {
                         button.classList.add('active');
                     }
-        
+    
                     button.addEventListener('click', function() {
                         currentPage = i;
                         displayRows(currentPage);
-        
+    
                         const buttons = paginationControls.querySelectorAll('.pagination-button');
                         buttons.forEach(btn => btn.classList.remove('active'));
                         this.classList.add('active');
                     });
-        
+    
                     paginationControls.appendChild(button);
                 }
             }
-        
+    
             displayRows(currentPage);
             generatePaginationButtons();
-        
+    
             document.getElementById('searchInput').addEventListener('input', function() {
                 const filter = this.value.toLowerCase();
                 const rows = document.querySelectorAll('#invoiceTableBody tr:not(.detalles-row)');
-        
+    
                 rows.forEach(row => {
                     const cells = row.querySelectorAll('td');
                     const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
                     row.style.display = match ? '' : 'none';
                 });
             });
-        
+    
             document.querySelectorAll('.mostrar-detalles').forEach(function(element) {
                 element.addEventListener('click', function(event) {
                     event.preventDefault();
@@ -174,14 +182,14 @@
                     const detallesRow = document.getElementById(`detalles-${facturaId}`);
                     const productosBody = detallesRow.querySelector('.productos-body');
                     const serviciosBody = detallesRow.querySelector('.servicios-body');
-        
+    
                     if (detallesRow.style.display === 'none') {
                         fetch(`/admin_panel/factura/obtener_detalles/${facturaId}/`)
                             .then(response => response.json())
                             .then(data => {
                                 productosBody.innerHTML = '';
                                 serviciosBody.innerHTML = '';
-        
+    
                                 data.productos.forEach(producto => {
                                     const row = document.createElement('tr');
                                     row.innerHTML = `
@@ -191,7 +199,7 @@
                                     `;
                                     productosBody.appendChild(row);
                                 });
-        
+    
                                 data.servicios.forEach(servicio => {
                                     const row = document.createElement('tr');
                                     row.innerHTML = `
@@ -201,7 +209,7 @@
                                     `;
                                     serviciosBody.appendChild(row);
                                 });
-        
+    
                                 detallesRow.style.display = '';
                             })
                             .catch(error => {
@@ -219,9 +227,7 @@
                 });
             });
         });
-        
-        
     </script>
     
-    </body>
+</body>
     </html>

@@ -5,6 +5,76 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+#TIPOS VEHICULOS
+def AdTVehiculos(request):
+    tvehiculos = TipoVehiculo.objects.all()
+    return render(request, 'ADMIN/tvehiculos.html', {'tvehiculos': tvehiculos})
+
+def editar_tvehiculo(request, id_tipo_vehiculo):
+    tvehiculo = get_object_or_404(TipoVehiculo, id_tipo_vehiculo=id_tipo_vehiculo)
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            
+            nombre = data.get('nombre')
+            numero_ruedas = data.get('numero_ruedas')
+            descripcion = data.get('descripcion')
+            
+            # print("Datos recibidos:", data)
+
+            if nombre and numero_ruedas and descripcion:
+                tvehiculo.nombre = nombre
+                tvehiculo.numero_ruedas = numero_ruedas
+                tvehiculo.descripcion = descripcion
+
+                tvehiculo.save()
+
+                return redirect('ad_tvehiculos')  
+            else:
+                return render(request, 'ADMIN/editar_tvehiculo.html', {'tvehiculo': tvehiculo})
+            
+        except Exception as e:
+            print("Error al procesar los datos:", e)
+            return render(request, 'ADMIN/editar_tvehiculo.html', {'tvehiculo': tvehiculo, 'error': 'Error al procesar los datos'})
+
+    return render(request, 'ADMIN/editar_tvehiculo.html', {'tvehiculo': tvehiculo})
+
+
+def eliminar_tvehiculo(request, id_tipo_vehiculo):
+    tvehiculo = get_object_or_404(TipoVehiculo, id_tipo_vehiculo=id_tipo_vehiculo)
+    
+    if request.method == 'POST':
+        tvehiculo.delete()
+        return JsonResponse({'mensaje': 'Tipo de Vehiculo eliminado correctamente'})
+    return render(request, 'ADMIN/eliminar_tvehiculo.html', {'tvehiculo': tvehiculo})
+
+
+@csrf_exempt
+def agregar_tvehiculo(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        nombre = data.get('nombre')
+        numero_ruedas = data.get('numero_ruedas')
+        descripcion = data.get('descripcion')
+
+
+        if nombre and numero_ruedas and descripcion:
+            try:
+                nuevo_tvehiculo = TipoVehiculo(
+                    nombre=nombre,
+                    numero_ruedas=numero_ruedas,
+                    descripcion=descripcion,
+                )
+                nuevo_tvehiculo.save()
+                return JsonResponse({'message': 'Tipo de Vehiculo agregado correctamente'}, status=201)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
 def lista_vehiculo(request):
     vehiculo = Vehiculo.objects.all()
     return render(request, 'lista_vehiculo.html', {'vehiculos': vehiculo})

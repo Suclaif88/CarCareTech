@@ -17,15 +17,18 @@
 
 <div class="content-wrapper">
     <div class="center-content">
-        <h2>Lista de Empresas</h2>
-        <input type="text" id="searchInput" placeholder="Buscar Empresas..." class="search-bar">
+        <h2>Lista de Tipos de Vehiculo</h2>
+        <input type="text" id="searchInput" placeholder="Buscar Tipo de Vehiculo..." class="search-bar">
         
             <div class="content-wrapper">
-            <!-- Botón para abrir el formulario de agregar usuario -->
-            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+                <div class="botones">
+                    <!-- Botón para abrir el formulario de agregar vehículo -->
+                        <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+                        <a href="{% url 'ad_vehiculosa' %}"><button class="btn-agregar"><i class="fas fa-mouse-pointer"></i> Vehiculos</button></a>
+                    </div>
         
             <!-- Formulario para agregar usuario oculto -->
-            <form method="post" action="{% url 'agregar_empresa' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
+            <form method="post" action="{% url 'agregar_tvehiculo' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
                 {% csrf_token %}
                 <br>
                 <div class="form-group">
@@ -33,22 +36,13 @@
                     <input type="text" id="id_nombre" name="nombre" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="id_nit">NIT:</label>
-                    <input type="text" id="id_nit" name="nit" class="form-control" required>
+                    <label for="id_numero_ruedas">Numero de Ruedas:</label>
+                    <input type="text" id="id_numero_ruedas" name="numero_ruedas" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label for="id_telefono">Telefono:</label>
-                    <input type="number" id="id_telefono" name="telefono" class="form-control" required>
+                    <label for="id_descripcion">Descripcion:</label>
+                    <input type="text" id="id_descripcion" name="descripcion" class="form-control" required>
                 </div>
-                <div class="form-group">
-                    <label for="id_correo">Correo:</label>
-                    <input type="email" id="id_correo" name="correo" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_direccion">Direccion:</label>
-                    <input type="text" id="id_direccion" name="direccion" class="form-control" required>
-                </div>
-
                 <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
                 <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
             </form>
@@ -57,30 +51,28 @@
         <table class="user-table">
             <thead>
                 <tr>
+                    <th>Id Tipo Vehiculo</th>
                     <th>Nombre</th>
-                    <th>NIT</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Direccion</th>
+                    <th>Ruedas</th>
+                    <th>Descripcion</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="userTableBody">
-                {% for empresa in empresa %}
+                {% for tvehiculo in tvehiculos %}
                     <tr>
-                        <td>{{ empresa.nombre }}</td>
-                        <td>{{ empresa.nit }}</td>
-                        <td>{{ empresa.telefono }}</td>
-                        <td>{{ empresa.correo }}</td>
-                        <td>{{ empresa.direccion }}</td>
+                        <td>{{ tvehiculo.id_tipo_vehiculo }}</td>
+                        <td>{{ tvehiculo.nombre }}</td>
+                        <td>{{ tvehiculo.numero_ruedas }}</td>
+                        <td>{{ tvehiculo.descripcion }}</td>
                         <td class="acciones">
-                            <a href="{% url 'editar_empresa' empresa.nit %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="{% url 'eliminar_empresa' empresa.nit %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                            <a href="{% url 'editar_tvehiculo' tvehiculo.id_tipo_vehiculo %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_tvehiculo' tvehiculo.id_tipo_vehiculo %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
                         </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="8">No hay empresas registrados.</td>
+                        <td colspan="8">No hay usuarios registrados.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -154,7 +146,7 @@
     document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        fetch('{% url "agregar_empresa" %}', {
+        fetch('{% url "agregar_tvehiculo" %}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,23 +154,21 @@
             },
             body: JSON.stringify({
                 nombre: document.getElementById('id_nombre').value,
-                nit: document.getElementById('id_nit').value,
-                telefono: document.getElementById('id_telefono').value,
-                correo: document.getElementById('id_correo').value,
-                direccion: document.getElementById('id_direccion').value,
+                numero_ruedas: document.getElementById('id_numero_ruedas').value,
+                descripcion: document.getElementById('id_descripcion').value,
             })
         })
         .then(response => {
             if (response.ok) {
                 return response.json();
             }
-            throw new Error('Error al agregar empresa');
+            throw new Error('Error al agregar Tipo de Vehiculo');
         })
         .then(data => {
             console.log(data);
             Swal.fire({
                 icon: 'success',
-                title: 'Empresa agregada correctamente',
+                title: 'Tipo de Vehiculo agregado correctamente',
                 showConfirmButton: false,
                 timer: 1500
             }).then(() => {
@@ -189,7 +179,7 @@
             console.error('Error:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Error al agregar empresa',
+                title: 'Error al agregar Tipo de Vehiculo',
                 text: 'Por favor, intenta nuevamente',
                 showConfirmButton: true
             });

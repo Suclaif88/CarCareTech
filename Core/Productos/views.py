@@ -6,6 +6,95 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import *
 import json
 
+#TIPO DE PRODUTO
+
+def AdTProductos(request):
+    tproductos = TipoProducto.objects.all()
+    return render(request, 'ADMIN/tproductos.html', {'tproductos': tproductos})
+
+
+#-----EDITAR-----------------------
+
+def editar_tproducto(request, id_tipo_producto):
+    tproducto = get_object_or_404(TipoProducto, id_tipo_producto=id_tipo_producto)
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            
+            descripcion = data.get('descripcion')
+            
+            # print("Datos recibidos:", data)
+
+            if descripcion:
+                tproducto.descripcion = descripcion
+
+
+                tproducto.save()
+
+                return redirect('ad_tproductos')  
+            else:
+                return render(request, 'ADMIN/editar_tproducto.html', {'tproducto': tproducto})
+            
+        except Exception as e:
+            print("Error al procesar los datos:", e)
+            return render(request, 'ADMIN/editar_tproducto.html', {'tproducto': tproducto, 'error': 'Error al procesar los datos'})
+
+    return render(request, 'ADMIN/editar_tproducto.html', {'tproducto': tproducto})
+
+#-----ELIMINAR-----------------------
+
+def eliminar_tproducto(request, id_tipo_producto):
+    tproducto = get_object_or_404(TipoProducto, id_tipo_producto=id_tipo_producto)
+    
+    if request.method == 'POST':
+        tproducto.delete()
+        return JsonResponse({'mensaje': 'Tipo de Producto eliminado correctamente'})
+    return render(request, 'ADMIN/eliminar_tproducto.html', {'tproducto': tproducto})
+
+
+#-----AGREGAR------------------------
+
+@csrf_exempt
+def agregar_tproducto(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        descripcion = data.get('descripcion')
+
+        if descripcion:
+            try:
+                nuevo_tproducto = TipoProducto(
+                    descripcion=descripcion,
+
+                )
+                nuevo_tproducto.save()
+                return JsonResponse({'message': 'Tipo de Producto agregado correctamente'}, status=201)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def productos(request):
     producto = Productos.objects.all()
     if 'usuario_autenticado' in request.session:

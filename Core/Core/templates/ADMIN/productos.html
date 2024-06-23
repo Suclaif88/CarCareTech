@@ -18,11 +18,13 @@
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Lista de Productos</h2>
-        <input type="text" id="searchInput" placeholder="Buscar producto..." class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar Productos..." class="search-bar">
         <div class="content-wrapper">
-            <!-- Botón para abrir el formulario de agregar producto -->
-            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
-        
+            <div class="botones">
+                <!-- Botón para abrir el formulario de agregar vehículo -->
+                    <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+                    <a href="{% url 'ad_tproductos' %}"><button class="btn-agregar"><i class="fas fa-mouse-pointer"></i> Tipos de Productos</button></a>
+            </div>
             <!-- Formulario para agregar producto oculto -->
             <form method="post" action="{% url 'agregar_producto' %}" id="formAgregarProducto" class="formulario-agregar" style="display: none;">
                 {% csrf_token %}

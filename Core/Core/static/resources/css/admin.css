@@ -447,7 +447,7 @@ nav.main-menu li.active > a,
 }
 
 .formulario-agregar .btn-cancelar {
-    background-color: #6c757d;
+    background-color: #dc3545;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -456,7 +456,7 @@ nav.main-menu li.active > a,
 }
 
 .formulario-agregar .btn-cancelar:hover {
-    background-color: #5a6268;
+    background-color: #a01616;
 }
 
 /* Estilos para el botón de agregar */

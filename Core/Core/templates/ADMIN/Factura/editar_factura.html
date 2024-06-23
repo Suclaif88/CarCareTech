@@ -16,6 +16,9 @@
     {% include 'ADMIN/sidebar.html' %}
 
     <div class="content-wrapper">
+        <div class="center-content">
+            <h2 class="form-title">Editar Factura</h2>
+            <br>
         <form method="post" id="editarFacturaForm" class="formulario-editar">
             {% csrf_token %}
             <input type="hidden" name="id_factura" value="{{ factura.id_factura }}">
@@ -67,6 +70,7 @@
             <button type="button" class="btn boton-cancelar" onclick="window.location.href='{% url "ad_factura" %}'">Cancelar</button>
         </form>
     </div>
+</div>
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>

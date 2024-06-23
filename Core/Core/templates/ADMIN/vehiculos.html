@@ -18,11 +18,14 @@
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Lista de Vehículos</h2>
-        <input type="text" id="searchInput" placeholder="Buscar vehículo..." class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar Vehículos..." class="search-bar">
 
         <div class="content-wrapper">
+        <div class="botones">
         <!-- Botón para abrir el formulario de agregar vehículo -->
-<button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+            <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
+            <a href="{% url 'ad_tvehiculos' %}"><button class="btn-agregar"><i class="fas fa-mouse-pointer"></i> Tipos de Vehiculos</button></a>
+        </div>
 
 <!-- Formulario para agregar vehículo oculto -->
 <form method="post" action="{% url 'agregar_vehiculosa' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
@@ -51,14 +54,16 @@
     <div class="form-group">
         <label for="id_documento">Documento Cliente:</label>
         <select id="id_documento" name="documento" class="form-control" required>
+            <option value="" disabled selected>Seleccionar Rol</option>
             {% for cliente in clientes %}
-            <option value="{{ cliente.Documento }}">{{ cliente.Documento }} - {{ cliente.Nombre }}</option>
+            <option value="{{ cliente.Documento }}">{{ cliente.Nombre }} - {{ cliente.Documento }}</option>
             {% endfor %}
         </select>
     </div>
     <div class="form-group">
         <label for="id_id_tipo_vehiculo">Tipo Vehiculo</label>
         <select id="id_id_tipo_vehiculo" name="id_tipo_vehiculo" class="form-control" required>
+            <option value="" disabled selected>Seleccionar Rol</option>
             {% for tipo_vehiculo in tipos_vehiculo %}
             <option value="{{ tipo_vehiculo.id_tipo_vehiculo }}">{{ tipo_vehiculo.nombre }}</option>
             {% endfor %}

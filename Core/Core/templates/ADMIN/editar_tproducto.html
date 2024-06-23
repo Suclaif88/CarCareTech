@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Editar Empresa</title>
+    <title>Editar Tipo de Producto</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/css/admin.css' %}">
@@ -18,30 +18,18 @@
 
 <div class="content-wrapper">
     <div class="center-content">
-        <h2 class="form-title">Editar Empresa</h2>
+        <h2 class="form-title">Editar Tipo de Producto</h2>
         <br>
         <form method="post" class="formulario-editar" id="editarUsuarioForm">
             {% csrf_token %}
-            <input type="hidden" name="nit" value="{{ empresa.nit }}">
+            <input type="hidden" name="documento" value="{{ tproducto.id_tipo_producto }}">
             <div class="form-group">
-                <label for="id_nombre">Nombre:</label>
-                <input type="text" id="id_nombre" name="nombre" value="{{ empresa.nombre }}" required>
+                <label for="id_descripcion">Descripcion:</label>
+                <input type="text" id="id_descripcion" name="nombre" value="{{ tproducto.descripcion}}" required>
             </div>
-            <div class="form-group">
-                <label for="id_telefono">Telefono:</label>
-                <input type="number" id="id_telefono" name="telefono" value="{{ empresa.telefono }}" required>
-            </div>
-            <div class="form-group">
-                <label for="id_correo">Correo:</label>
-                <input type="email" id="id_correo" name="correo" value="{{ empresa.correo }}" required>
-            </div>
-            <div class="form-group">
-                <label for="id_direccion">Direccion:</label>
-                <input type="text" id="id_direccion" name="direccion" value="{{ empresa.direccion }}" required>
-            </div>
-
             <button type="submit" class="btn-submit">Guardar Cambios</button>
-            <button type="button" class="btn boton-cancelar" onclick="window.location.href='{% url "ad_empresas" %}'">Cancelar</button>
+            <button type="button" class="btn boton-cancelar" onclick="window.location.href='{% url "ad_tproductos" %}'">Cancelar</button>
+
         </form>
     </div>
 </div>
@@ -58,27 +46,24 @@
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             body: JSON.stringify({
-                nombre: document.getElementById('id_nombre').value,
-                telefono: document.getElementById('id_telefono').value,
-                correo: document.getElementById('id_correo').value,
-                direccion: document.getElementById('id_direccion').value,
+                descripcion: document.getElementById('id_descripcion').value
             })
         })
         .then(response => {
             if (response.ok) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Empresa actualizado',
+                    title: 'Tipo de Producto actualizado',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 .then(() => {
-                    window.location.href = '{% url 'ad_empresas' %}';
+                    window.location.href = '{% url 'ad_tproductos' %}';
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al actualizar la empresa',
+                    title: 'Error al actualizar el tipo de producto',
                     text: 'Por favor, intenta nuevamente',
                     showConfirmButton: true
                 });
