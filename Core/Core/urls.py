@@ -85,13 +85,19 @@ urlpatterns = [
 
     #ADMIN FACTURA
     path('admin_panel/factura', AdFactura, name='ad_factura'),
+    path('admin_panel/factura/editar/<int:id_factura>/', editar_factura, name='editar_factura'),
+    path('admin_panel/factura/eliminar/<int:id_factura>/', eliminar_factura, name='eliminar_factura'),
+    
+    #CREACION DE FACTURA
     
     path('admin_panel/factura/nuevo_factura/', nueva_factura, name='nueva_factura'),
         path('obtener_precio_producto/', obtener_precio_producto, name='obtener_precio_producto'),
         path('obtener_precio_servicio/', obtener_precio_servicio, name='obtener_precio_servicio'),
         
         path('admin_panel/factura/nuevo_factura/guardar/', guardar_factura, name='guardar_factura'),
-
+    
+    #------------------------
+        
     #------------------------
     path('vehiculos/', lista_vehiculo, name='lista_vehiculo'),#Vistas provicionales para comprobar informacion
     path('datos-empresa/', datos_empresa, name='Datos-Empresa'),#Vistas provicionales para comprobar informacion

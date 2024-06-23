@@ -23,7 +23,50 @@ def AdFactura(request):
         'detalles_producto': detalles_producto,
     }
     
-    return render(request, 'ADMIN/Factura/factura.html', context)
+    return render(request, 'ADMIN/Factura/factura.html', context) 
+
+@csrf_exempt
+def editar_factura(request, id_factura):
+    factura = get_object_or_404(Factura, id_factura=id_factura)
+    metodos_pago = MetodoPago.objects.all()
+    vehiculos = Vehiculo.objects.all()
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            factura.fecha = data['fecha']
+            factura.Total = data['total']
+            factura.Subtotal = data['subtotal']
+            factura.Iva = data['iva']
+            factura.Descuento = data['descuento']
+            factura.nit = Empresa.objects.get(nit=data['nit'])
+            factura.placa = Vehiculo.objects.get(placa=data['placa'])
+            factura.id_metodo_pago = MetodoPago.objects.get(id_metodo_pago=data['metodo_pago'])
+            factura.save()
+
+            return JsonResponse({'success': True})
+
+        except Empresa.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Empresa no encontrada'})
+        except Vehiculo.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Vehiculo no encontrado'})
+        except MetodoPago.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Metodo de Pago no encontrado'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return render(request, 'ADMIN/Factura/editar_factura.html', {'factura': factura, 'metodos_pago': metodos_pago, 'vehiculos': vehiculos})
+
+
+@csrf_exempt
+def eliminar_factura(request, id_factura):
+    factura = get_object_or_404(Factura, id_factura=id_factura)
+
+    if request.method == 'POST':
+        factura.delete()
+        return JsonResponse({'success': True, 'mensaje': 'Factura eliminada correctamente'})
+
+    return render(request, 'ADMIN/Factura/eliminar_factura.html', {'factura': factura})
  
 
 def nueva_factura(request):
@@ -53,10 +96,6 @@ def nueva_factura(request):
 
     return render(request, 'ADMIN/Factura/nuevo_factura.html', context)
 
-
-
-
-
 def obtener_precio_producto(request):
     producto_id = request.GET.get('producto_id')
     if not producto_id:
@@ -81,7 +120,7 @@ def guardar_factura(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            logger.info('Datos recibidos en el backend: %s', data)  # Registrar datos recibidos en el backend
+            logger.info('Datos recibidos en el backend: %s', data)
 
             required_fields = ['fecha', 'placa', 'metodoPago', 'nitEmpresa', 'Total', 'Subtotal', 'Iva', 'Descuento']
             for field in required_fields:
@@ -177,3 +216,16 @@ def guardar_factura(request):
         return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 
+'''
+
+Si puedes mantener en su lugar tu cabeza cuando todos a tu alrededor,
+han perdido la suya y te culpan de ello.
+Si crees en ti mismo cuando todo el mundo duda de ti,
+pero también dejas lugar a sus dudas.
+
+Si puedes esperar y no cansarte de la espera;
+o si, siendo engañado, no respondes con engaños,
+o si, siendo odiado, no te domina el odio
+Y aún así no pareces demasiado bueno o demasiado sabio.
+
+'''
