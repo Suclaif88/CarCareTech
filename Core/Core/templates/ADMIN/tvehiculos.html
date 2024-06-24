@@ -15,12 +15,12 @@
 
 {% include 'ADMIN/sidebar.html' %}
 
+<section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Lista de Tipos de Vehiculo</h2>
         <input type="text" id="searchInput" placeholder="Buscar Tipo de Vehiculo..." class="search-bar">
-        
-            <div class="content-wrapper">
+        <div class="centraragregar">
                 <div class="botones">
                     <!-- Botón para abrir el formulario de agregar vehículo -->
                         <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
@@ -47,7 +47,6 @@
                 <button type="button" class="btn-secondary btn-cancelar"><i class="fas fa-times"></i> Cancelar</button>
             </form>
         </div>
-        
         <table class="user-table">
             <thead>
                 <tr>
@@ -80,6 +79,9 @@
         <br>
 
         <div id="paginationControls" class="pagination-controls"></div>
+    </div>
+</div>
+    </section>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Eliminar Servicio</title>
+    <title>Eliminar Metodo de Pago</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
@@ -19,16 +19,15 @@
 <section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
-        <h2>Eliminar Servicio</h2>
+        <h2>Eliminar Metodo de Pago</h2>
         <div class="mensaje-eliminar">
-            <p>¿Estás seguro de que deseas eliminar este servicio?</p>
-            <p>Id_Servicio: {{servicio.id_servicios}}</p>
-            <p>Nombre: {{ servicio.nombre }}</p>
-            <p>Precio: {{ servicio.precio }}</p>
+            <p>¿Estás seguro de que deseas eliminar este metodo de pago?</p>
+            <p>Id: {{ mpago.id_metodo_pago }}</p>
+            <p>Tipo de Metodo de Pago: {{ mpago.tipo }}</p>
         </div>
         <div class="botones-eliminar">
             <button id="btnConfirmarEliminar" class="boton-confirmar"><i class="fas fa-trash-alt"></i> Confirmar Eliminar</button>
-            <a href="{% url 'ad_servicios' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
+            <a href="{% url 'ad_mpago' %}" class="boton-cancelar"><i class="fas fa-times"></i> Cancelar</a>
         </div>
     </div>
 </div>
@@ -36,7 +35,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    const urlEliminarUsuario = "{% url 'eliminar_servicio' servicio.id_servicios %}";
+    const urlEliminarUsuario = "{% url 'eliminar_mpago' mpago.id_metodo_pago %}";
 
     document.getElementById('btnConfirmarEliminar').addEventListener('click', function() {
         Swal.fire({
@@ -65,7 +64,7 @@
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => {
-                        window.location.href = '{% url 'ad_servicios' %}';
+                        window.location.href = '{% url 'ad_mpago' %}';
                     });
                 })
                 .catch(error => {
@@ -73,7 +72,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        text: 'Hubo un problema al eliminar el usuario'
+                        text: 'Hubo un problema al eliminar el metodo de pago'
                     });
                 });
             }

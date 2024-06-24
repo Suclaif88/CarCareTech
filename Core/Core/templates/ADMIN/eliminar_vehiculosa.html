@@ -15,7 +15,7 @@
 <body>
 
 {% include 'ADMIN/sidebar.html' %}
-
+<section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Eliminar Vehículo</h2>
@@ -36,7 +36,7 @@
         </div>
     </div>
 </div>
-
+</section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const urlEliminarVehiculo = "{% url 'eliminar_vehiculosa' vehiculo.placa %}";

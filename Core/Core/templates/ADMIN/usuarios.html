@@ -15,12 +15,12 @@
 
 {% include 'ADMIN/sidebar.html' %}
 
+<section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Lista de Usuarios</h2>
         <input type="text" id="searchInput" placeholder="Buscar Usuarios..." class="search-bar">
-        
-            <div class="content-wrapper">
+        <div class="centraragregar">
             <!-- Botón para abrir el formulario de agregar usuario -->
             <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
         
@@ -103,6 +103,7 @@
         <br>
 
         <div id="paginationControls" class="pagination-controls"></div>
+    </section>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

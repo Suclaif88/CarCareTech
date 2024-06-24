@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Editar servicio</title>
+    <title>Editar Metodo de Pago</title>
     <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="stylesheet" href="{% static 'resources/css/styles.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/css/admin.css' %}">
-    <link rel="stylesheet" href="{% static 'resources/css/admin.css' %}">
     <link rel="icon" type="image/png" href="{% static 'resources/img/favicon.png' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
@@ -20,31 +19,22 @@
 <section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
-        <h2 class="form-title">Editar Servicio</h2>
+        <h2 class="form-title">Editar Metodo de Pago</h2>
         <br>
         <form method="post" class="formulario-editar" id="editarUsuarioForm">
             {% csrf_token %}
-            <input type="hidden" name="id_servicio" value="{{ servicio.id_servicios }}">
+            <input type="hidden" name="documento" value="{{ mpago.id_metodo_pago }}">
             <div class="form-group">
-                <label for="id_nombre">Nombre:</label>
-                <input type="text" id="id_nombre" name="nombre" value="{{ servicio.nombre }}" required>
+                <label for="id_tipo">Tipo de Metodo de Pago:</label>
+                <input type="text" id="id_tipo" name="tipo" value="{{ mpago.tipo }}" required>
             </div>
-            <div class="form-group">
-                <label for="id_precio">Precio:</label>
-                <input type="text" id="id_precio" name="precio" value="{{ servicio.precio }}" required>
-            </div>
-            <div class="form-group">
-                <label for="id_descripcion">Descripcion:</label>
-                <input type="text" id="id_descripcion" name="descripcion" value="{{ servicio.descripcion }}" required>
-            </div>
-            
             <button type="submit" class="btn-submit">Guardar Cambios</button>
-            <button type="button" class="btn boton-cancelar" onclick="window.location.href='{% url "ad_servicios" %}'">Cancelar</button>
+            <button type="button" class="btn boton-cancelar" onclick="window.location.href='{% url "ad_mpago" %}'">Cancelar</button>
+
         </form>
     </div>
 </div>
 </section>
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.getElementById('editarUsuarioForm').addEventListener('submit', function(event) {
@@ -57,26 +47,24 @@
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             body: JSON.stringify({
-                nombre: document.getElementById('id_nombre').value,
-                precio: document.getElementById('id_precio').value,
-                descripcion: document.getElementById('id_descripcion').value,
+                tipo: document.getElementById('id_tipo').value
             })
         })
         .then(response => {
             if (response.ok) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Servicio Actualizado',
+                    title: 'Metodo de Pago actualizado',
                     showConfirmButton: false,
                     timer: 1500
                 })
                 .then(() => {
-                    window.location.href = '{% url 'ad_servicios' %}';
+                    window.location.href = '{% url 'ad_mpago' %}';
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al actualizar el servicio',
+                    title: 'Error al actualizar el metodo de pago',
                     text: 'Por favor, intenta nuevamente',
                     showConfirmButton: true
                 });

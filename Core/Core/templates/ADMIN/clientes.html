@@ -14,13 +14,12 @@
 <body>
 
 {% include 'ADMIN/sidebar.html' %}
-
+<section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Lista de Clientes</h2>
         <input type="text" id="searchInput" placeholder="Buscar Clientes..." class="search-bar">
-
-        <div class="content-wrapper">
+        <div class="centraragregar">
             <!-- Botón para abrir el formulario de agregar cliente -->
             <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
         
@@ -118,7 +117,7 @@
             </tbody>
         </table>
         <div id="paginationControls" class="pagination-controls"></div>
-
+    </section>
         <script>
             const rowsPerPage = 10;
             const clienteTableBody = document.getElementById('clienteTableBody');

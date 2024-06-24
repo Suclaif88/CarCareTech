@@ -15,18 +15,16 @@
 <body>
 
     {% include 'ADMIN/sidebar.html' %}
-
+    <section class="fondo">
     <div class="content-wrapper">
     
         <div class="center-content">
             <h2>Lista de Facturas</h2>
             <input type="text" id="searchInput" placeholder="Buscar Facturas..." class="search-bar">
     
-            <div class="content-wrapper">
               
                 <a href="{% url 'nueva_factura' %}" class="btn-agregar"><i class="fas fa-plus"></i> Agregar Factura</a>        
                     
-            </div>
             
             <table class="user-table">
                 <thead>
@@ -104,6 +102,7 @@
         </div>
     
     </div>
+</section>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {

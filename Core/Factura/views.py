@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from Vehiculo.models import Vehiculo
 from Clientes.models import Clientes
 from .models import Factura, DetalleProducto, DetalleServicio, MetodoPago
@@ -11,6 +11,67 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import logging
 logger = logging.getLogger(__name__)
+
+#METODOS DE PAGO
+def AdMpago(request):
+    mpagos = MetodoPago.objects.all()
+    return render(request, 'ADMIN/metodospago.html', {'mpagos': mpagos})
+
+def editar_mpago(request, id_metodo_pago):
+    mpago = get_object_or_404(MetodoPago, id_metodo_pago=id_metodo_pago)
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            
+            tipo = data.get('tipo')
+            
+            # print("Datos recibidos:", data)
+
+            if tipo:
+                mpago.tipo = tipo
+                
+                mpago.save()
+
+                return redirect('ad_mpago')  
+            else:
+                return render(request, 'ADMIN/editar_mpago.html', {'mpago': mpago})
+            
+        except Exception as e:
+            print("Error al procesar los datos:", e)
+            return render(request, 'ADMIN/editar_mpago.html', {'mpago': mpago, 'error': 'Error al procesar los datos'})
+
+    return render(request, 'ADMIN/editar_mpago.html', {'mpago': mpago})
+
+
+def eliminar_mpago(request, id_metodo_pago):
+    mpago = get_object_or_404(MetodoPago, id_metodo_pago=id_metodo_pago)
+    
+    if request.method == 'POST':
+        mpago.delete()
+        return JsonResponse({'mensaje': 'Metodo de Pago eliminado correctamente'})
+    return render(request, 'ADMIN/eliminar_mpago.html', {'mpago': mpago})
+
+
+@csrf_exempt
+def agregar_mpago(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+
+        tipo = data.get('tipo')
+
+        if tipo:
+            try:
+                nuevo_tvehiculo = MetodoPago(
+                    tipo=tipo,
+                )
+                nuevo_tvehiculo.save()
+                return JsonResponse({'message': 'Metodo de Pago agregado correctamente'}, status=201)
+            except Exception as e:
+                return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 
 def AdFactura(request):
     facturas = Factura.objects.all()

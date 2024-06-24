@@ -18,35 +18,19 @@
 <section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
-        <h2>Lista de Empresas</h2>
-        <input type="text" id="searchInput" placeholder="Buscar Empresas..." class="search-bar">
+        <h2>Lista de Metodos de Pago</h2>
+        <input type="text" id="searchInput" placeholder="Buscar Metodo de Pago..." class="search-bar">
         <div class="centraragregar">
             <!-- Botón para abrir el formulario de agregar usuario -->
             <button id="btnAbrirFormulario" class="btn-agregar"><i class="fas fa-plus"></i> Agregar</button>
         
             <!-- Formulario para agregar usuario oculto -->
-            <form method="post" action="{% url 'agregar_empresa' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
+            <form method="post" action="{% url 'agregar_mpago' %}" id="formAgregarUsuario" class="formulario-agregar" style="display: none;">
                 {% csrf_token %}
                 <br>
                 <div class="form-group">
-                    <label for="id_nombre">Nombre:</label>
-                    <input type="text" id="id_nombre" name="nombre" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_nit">NIT:</label>
-                    <input type="text" id="id_nit" name="nit" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_telefono">Telefono:</label>
-                    <input type="number" id="id_telefono" name="telefono" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_correo">Correo:</label>
-                    <input type="email" id="id_correo" name="correo" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="id_direccion">Direccion:</label>
-                    <input type="text" id="id_direccion" name="direccion" class="form-control" required>
+                    <label for="id_tipo">Tipo de Metodo de Pago:</label>
+                    <input type="text" id="id_tipo" name="tipo" class="form-control" required>
                 </div>
 
                 <button type="submit" class="btn-primary btn-submit"><i class="fas fa-save"></i> Guardar</button>
@@ -57,30 +41,24 @@
         <table class="user-table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>NIT</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Direccion</th>
+                    <th>Id Metodo de Pago</th>
+                    <th>Tipo</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="userTableBody">
-                {% for empresa in empresa %}
+                {% for mpago in mpagos %}
                     <tr>
-                        <td>{{ empresa.nombre }}</td>
-                        <td>{{ empresa.nit }}</td>
-                        <td>{{ empresa.telefono }}</td>
-                        <td>{{ empresa.correo }}</td>
-                        <td>{{ empresa.direccion }}</td>
+                        <td>{{ mpago.id_metodo_pago }}</td>
+                        <td>{{ mpago.tipo }}</td>
                         <td class="acciones">
-                            <a href="{% url 'editar_empresa' empresa.nit %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
-                            <a href="{% url 'eliminar_empresa' empresa.nit %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
+                            <a href="{% url 'editar_mpago' mpago.id_metodo_pago %}" class="btn btn-primary"><i class="fas fa-edit"></i> Editar</a>
+                            <a href="{% url 'eliminar_mpago' mpago.id_metodo_pago %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Eliminar</a>
                         </td>
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="8">No hay empresas registrados.</td>
+                        <td colspan="8">No hay metodos de pago registrados.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -88,7 +66,6 @@
         <br>
 
         <div id="paginationControls" class="pagination-controls"></div>
-
     </section>
 
 <script>
@@ -156,31 +133,27 @@
     document.getElementById('formAgregarUsuario').addEventListener('submit', function(event) {
         event.preventDefault();
 
-        fetch('{% url "agregar_empresa" %}', {
+        fetch('{% url "agregar_mpago" %}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRFToken': '{{ csrf_token }}'
             },
             body: JSON.stringify({
-                nombre: document.getElementById('id_nombre').value,
-                nit: document.getElementById('id_nit').value,
-                telefono: document.getElementById('id_telefono').value,
-                correo: document.getElementById('id_correo').value,
-                direccion: document.getElementById('id_direccion').value,
+                tipo: document.getElementById('id_tipo').value,
             })
         })
         .then(response => {
             if (response.ok) {
                 return response.json();
             }
-            throw new Error('Error al agregar empresa');
+            throw new Error('Error al metodo de pago');
         })
         .then(data => {
             console.log(data);
             Swal.fire({
                 icon: 'success',
-                title: 'Empresa agregada correctamente',
+                title: 'Metodo de Pago agregado correctamente',
                 showConfirmButton: false,
                 timer: 1500
             }).then(() => {
@@ -191,7 +164,7 @@
             console.error('Error:', error);
             Swal.fire({
                 icon: 'error',
-                title: 'Error al agregar empresa',
+                title: 'Error al agregar metodo de pago',
                 text: 'Por favor, intenta nuevamente',
                 showConfirmButton: true
             });

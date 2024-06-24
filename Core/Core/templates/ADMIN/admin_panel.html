@@ -15,15 +15,17 @@
 
 {% include 'ADMIN/sidebar.html' %}
 
+<section class="fondo">
 <div class="content-wrapper">
     <div class="center-content">
         <h2>Bienvenido al Panel Administrativo</h2>
         <p>Bienvenido, {{ usuario.Nombre }} {{ usuario.Apellido }}</p>
         <p>Documento: {{ usuario.Documento }}</p>
         <p>Rol: {{ usuario.get_Rol_display }}</p>
-        <a href="{% url 'logout' %}" class="btn">Logout</a>
+        <a href="{% url 'logout' %}" class="btn">Cerrar Sesión</a>
     </div>
 </div>
+</section>
 
 
 </body>

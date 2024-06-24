@@ -87,6 +87,12 @@ urlpatterns = [
     path('admin_panel/servicios/eliminar/<str:id_servicios>/', eliminar_servicio, name='eliminar_servicio'),
     path('admin_panel/servicios/agregar/', agregar_servicio, name='agregar_servicio'),
 
+    #ADMIN METDOS DE PAGO
+    path('admin_panel/metodos_pago/', AdMpago, name='ad_mpago'),
+    path('admin_panel/metodos_pago/editar/<int:id_metodo_pago>/', editar_mpago, name='editar_mpago'),
+    path('admin_panel/metodos_pago/eliminar/<int:id_metodo_pago>/', eliminar_mpago, name='eliminar_mpago'),
+    path('admin_panel/metodos_pago/agregar/', agregar_mpago, name='agregar_mpago'),
+
     #ADMIN EMPRESAS
     path('admin_panel/empresas', AdEmpresas, name='ad_empresas'),
     path('admin_panel/empresas/editar/<str:nit>', editar_empresa , name='editar_empresa'),

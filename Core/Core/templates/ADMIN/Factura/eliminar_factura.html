@@ -13,7 +13,7 @@
 </head>
 <body>
     {% include 'ADMIN/sidebar.html' %}
-
+<section class="fondo">
     <div class="content-wrapper">
         <div class="center-content">
             <h2>Eliminar Factura</h2>
@@ -29,7 +29,7 @@
             </div>
         </div>
     </div>
-    
+</section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const urlEliminarFactura = "{% url 'eliminar_factura' factura.id_factura %}";

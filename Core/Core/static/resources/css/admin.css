@@ -1,3 +1,11 @@
+.fondo{
+    height: 100vh;
+    width: 100%;
+    background-color: #b5b5b5;
+}
+body{
+    margin: 0;
+}
 /*SIDEBAR ADMIN*/
 .fa-2x {
 font-size: 2em;
@@ -153,7 +161,7 @@ nav.main-menu li.active > a,
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #b5b5b5;
     padding: 20px;
     overflow: hidden;
 }
@@ -405,7 +413,15 @@ nav.main-menu li.active > a,
 
  /*FORMULARIO AGREGAR*/
 
- .formulario-agregar {
+ .centraragregar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.formulario-agregar {
     margin-top: 20px;
     padding: 20px;
     background-color: #f0f0f0;

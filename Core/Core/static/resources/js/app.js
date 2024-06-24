@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
         loader.style.display = 'none';
         content.style.display = 'block';
         document.body.style.overflow = 'auto';
-    }, 500);
+    }, 350);
 });
 //--------------------------------------
 
