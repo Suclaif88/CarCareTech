@@ -192,9 +192,9 @@
                         var datosFactura = JSON.parse(localStorage.getItem('datosFactura'));
             
                         if (datosFactura && datosFactura.fecha && datosFactura.placa && datosFactura.metodoPago && datosFactura.nitEmpresa) {
-                            var iva = parseFloat(document.getElementById('iva').value) || 19;
-                            var descuento = parseFloat(document.getElementById('descuento').value) || 0;
                             var subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+                            var iva = parseFloat(subtotal * 0.19) || 19;
+                            var descuento = parseFloat(document.getElementById('descuento').value) || 0;
             
                             if (isNaN(subtotal) || subtotal <= 0) {
                                 Swal.fire({
@@ -208,7 +208,7 @@
                             }
             
                             var total = subtotal + (subtotal * (iva / 100)) - descuento;
-            
+                            
                             datosFactura.Total = parseFloat(total.toFixed(2));
                             datosFactura.Subtotal = parseFloat(subtotal.toFixed(2));
                             datosFactura.Iva = iva;
@@ -224,7 +224,7 @@
                                 datosFactura.detalles_producto = detallesProducto;
                             }
             
-                            //console.log('Datos de la factura a guardar:', datosFactura);
+                            //console.log('Datos de la factura a guardar:', datosFactura); //depuracion
             
                             localStorage.setItem('datosFactura', JSON.stringify(datosFactura));
             
