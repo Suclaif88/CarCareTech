@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 23:14:02
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 7.4.29
+-- Tiempo de generación: 24-06-2024 a las 20:28:34
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,30 +18,188 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `taller`
+-- Base de datos: `carcaretech`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `clientes`
+-- Estructura de tabla para la tabla `auth_group`
 --
 
-CREATE TABLE `clientes` (
-  `Documento` char(10) NOT NULL,
+CREATE TABLE `auth_group` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auth_group_permissions`
+--
+
+CREATE TABLE `auth_group_permissions` (
+  `id` bigint(20) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auth_permission`
+--
+
+CREATE TABLE `auth_permission` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `content_type_id` int(11) NOT NULL,
+  `codename` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `auth_permission`
+--
+
+INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALUES
+(1, 'Can add log entry', 1, 'add_logentry'),
+(2, 'Can change log entry', 1, 'change_logentry'),
+(3, 'Can delete log entry', 1, 'delete_logentry'),
+(4, 'Can view log entry', 1, 'view_logentry'),
+(5, 'Can add permission', 2, 'add_permission'),
+(6, 'Can change permission', 2, 'change_permission'),
+(7, 'Can delete permission', 2, 'delete_permission'),
+(8, 'Can view permission', 2, 'view_permission'),
+(9, 'Can add group', 3, 'add_group'),
+(10, 'Can change group', 3, 'change_group'),
+(11, 'Can delete group', 3, 'delete_group'),
+(12, 'Can view group', 3, 'view_group'),
+(13, 'Can add user', 4, 'add_user'),
+(14, 'Can change user', 4, 'change_user'),
+(15, 'Can delete user', 4, 'delete_user'),
+(16, 'Can view user', 4, 'view_user'),
+(17, 'Can add content type', 5, 'add_contenttype'),
+(18, 'Can change content type', 5, 'change_contenttype'),
+(19, 'Can delete content type', 5, 'delete_contenttype'),
+(20, 'Can view content type', 5, 'view_contenttype'),
+(21, 'Can add session', 6, 'add_session'),
+(22, 'Can change session', 6, 'change_session'),
+(23, 'Can delete session', 6, 'delete_session'),
+(24, 'Can view session', 6, 'view_session'),
+(25, 'Can add clientes', 7, 'add_clientes'),
+(26, 'Can change clientes', 7, 'change_clientes'),
+(27, 'Can delete clientes', 7, 'delete_clientes'),
+(28, 'Can view clientes', 7, 'view_clientes'),
+(29, 'Can add usuarios', 8, 'add_usuarios'),
+(30, 'Can change usuarios', 8, 'change_usuarios'),
+(31, 'Can delete usuarios', 8, 'delete_usuarios'),
+(32, 'Can view usuarios', 8, 'view_usuarios'),
+(33, 'Can add tipo vehiculo', 9, 'add_tipovehiculo'),
+(34, 'Can change tipo vehiculo', 9, 'change_tipovehiculo'),
+(35, 'Can delete tipo vehiculo', 9, 'delete_tipovehiculo'),
+(36, 'Can view tipo vehiculo', 9, 'view_tipovehiculo'),
+(37, 'Can add vehiculo', 10, 'add_vehiculo'),
+(38, 'Can change vehiculo', 10, 'change_vehiculo'),
+(39, 'Can delete vehiculo', 10, 'delete_vehiculo'),
+(40, 'Can view vehiculo', 10, 'view_vehiculo'),
+(41, 'Can add empresa', 11, 'add_empresa'),
+(42, 'Can change empresa', 11, 'change_empresa'),
+(43, 'Can delete empresa', 11, 'delete_empresa'),
+(44, 'Can view empresa', 11, 'view_empresa'),
+(45, 'Can add tipo producto', 12, 'add_tipoproducto'),
+(46, 'Can change tipo producto', 12, 'change_tipoproducto'),
+(47, 'Can delete tipo producto', 12, 'delete_tipoproducto'),
+(48, 'Can view tipo producto', 12, 'view_tipoproducto'),
+(49, 'Can add productos', 13, 'add_productos'),
+(50, 'Can change productos', 13, 'change_productos'),
+(51, 'Can delete productos', 13, 'delete_productos'),
+(52, 'Can view productos', 13, 'view_productos'),
+(53, 'Can add servicios', 14, 'add_servicios'),
+(54, 'Can change servicios', 14, 'change_servicios'),
+(55, 'Can delete servicios', 14, 'delete_servicios'),
+(56, 'Can view servicios', 14, 'view_servicios'),
+(57, 'Can add metodo pago', 15, 'add_metodopago'),
+(58, 'Can change metodo pago', 15, 'change_metodopago'),
+(59, 'Can delete metodo pago', 15, 'delete_metodopago'),
+(60, 'Can view metodo pago', 15, 'view_metodopago'),
+(61, 'Can add factura', 16, 'add_factura'),
+(62, 'Can change factura', 16, 'change_factura'),
+(63, 'Can delete factura', 16, 'delete_factura'),
+(64, 'Can view factura', 16, 'view_factura'),
+(65, 'Can add detalle servicio', 17, 'add_detalleservicio'),
+(66, 'Can change detalle servicio', 17, 'change_detalleservicio'),
+(67, 'Can delete detalle servicio', 17, 'delete_detalleservicio'),
+(68, 'Can view detalle servicio', 17, 'view_detalleservicio'),
+(69, 'Can add detalle producto', 18, 'add_detalleproducto'),
+(70, 'Can change detalle producto', 18, 'change_detalleproducto'),
+(71, 'Can delete detalle producto', 18, 'delete_detalleproducto'),
+(72, 'Can view detalle producto', 18, 'view_detalleproducto');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auth_user`
+--
+
+CREATE TABLE `auth_user` (
+  `id` int(11) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `last_login` datetime(6) DEFAULT NULL,
+  `is_superuser` tinyint(1) NOT NULL,
+  `username` varchar(150) NOT NULL,
+  `first_name` varchar(150) NOT NULL,
+  `last_name` varchar(150) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `is_staff` tinyint(1) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `date_joined` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auth_user_groups`
+--
+
+CREATE TABLE `auth_user_groups` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auth_user_user_permissions`
+--
+
+CREATE TABLE `auth_user_user_permissions` (
+  `id` bigint(20) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes_clientes`
+--
+
+CREATE TABLE `clientes_clientes` (
+  `Documento` varchar(10) NOT NULL,
   `Nombre` varchar(25) DEFAULT NULL,
   `Apellido` varchar(30) DEFAULT NULL,
-  `Celular` char(10) DEFAULT NULL,
+  `Celular` varchar(10) DEFAULT NULL,
   `F_Nacimiento` date DEFAULT NULL,
   `Correo` varchar(50) DEFAULT NULL,
   `Direccion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `clientes`
+-- Volcado de datos para la tabla `clientes_clientes`
 --
 
-INSERT INTO `clientes` (`Documento`, `Nombre`, `Apellido`, `Celular`, `F_Nacimiento`, `Correo`, `Direccion`) VALUES
+INSERT INTO `clientes_clientes` (`Documento`, `Nombre`, `Apellido`, `Celular`, `F_Nacimiento`, `Correo`, `Direccion`) VALUES
 ('1033180822', 'Juan', 'Hernandez', '3023442828', '2006-12-05', 'juanh@gmail.com', 'Cra47a #70-86'),
 ('1033180823', 'Ana', 'Martinez', '3023442829', '1990-03-15', 'ana.martinez@gmail.com', 'Calle 50 #20-15'),
 ('1033180824', 'Carlos', 'Lopez', '3023442830', '1985-07-23', 'carlos.lopez@gmail.com', 'Av. Siempre Viva #742'),
@@ -71,479 +229,225 @@ INSERT INTO `clientes` (`Documento`, `Nombre`, `Apellido`, `Celular`, `F_Nacimie
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `datos_empresa`
+-- Estructura de tabla para la tabla `django_admin_log`
 --
 
-CREATE TABLE `datos_empresa` (
-  `NIT` char(9) NOT NULL,
-  `Nombre` varchar(25) DEFAULT NULL,
-  `Telefono` varchar(10) DEFAULT NULL,
-  `Correo` varchar(50) DEFAULT NULL,
-  `Direccion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `datos_empresa`
---
-
-INSERT INTO `datos_empresa` (`NIT`, `Nombre`, `Telefono`, `Correo`, `Direccion`) VALUES
-('147258369', 'Ruedas y Tuercas', '3195442623', 'ruedas.tuercas@gmail.com', 'Cra76 #53-200');
+CREATE TABLE `django_admin_log` (
+  `id` int(11) NOT NULL,
+  `action_time` datetime(6) NOT NULL,
+  `object_id` longtext DEFAULT NULL,
+  `object_repr` varchar(200) NOT NULL,
+  `action_flag` smallint(5) UNSIGNED NOT NULL CHECK (`action_flag` >= 0),
+  `change_message` longtext NOT NULL,
+  `content_type_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_producto`
+-- Estructura de tabla para la tabla `django_content_type`
 --
 
-CREATE TABLE `detalle_producto` (
-  `Id_Detalle_Producto` tinyint(3) UNSIGNED NOT NULL,
-  `Id_Factura` int(11) DEFAULT NULL,
-  `Id_producto` smallint(6) DEFAULT NULL,
-  `Precio` double DEFAULT NULL,
-  `Cantidad` tinyint(3) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `django_content_type` (
+  `id` int(11) NOT NULL,
+  `app_label` varchar(100) NOT NULL,
+  `model` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `detalle_producto`
+-- Volcado de datos para la tabla `django_content_type`
 --
 
-INSERT INTO `detalle_producto` (`Id_Detalle_Producto`, `Id_Factura`, `Id_producto`, `Precio`, `Cantidad`) VALUES
-(1, 1, 4, 27000, 3),
-(2, 1, 25, 500000, 2),
-(3, 1, 9, 85000, 1),
-(4, 2, 2, 35000, 3),
-(5, 2, 14, 300000, 1),
-(6, 2, 21, 150000, 2),
-(7, 3, 22, 300000, 4),
-(8, 3, 25, 500000, 3),
-(9, 3, 5, 50000, 2),
-(10, 4, 21, 150000, 2),
-(11, 4, 5, 50000, 2),
-(12, 4, 28, 160000, 2),
-(13, 5, 16, 95000, 3),
-(14, 5, 28, 160000, 2),
-(15, 5, 7, 120000, 1),
-(16, 6, 10, 130000, 1),
-(17, 6, 12, 250000, 3),
-(18, 6, 3, 100000, 1),
-(19, 7, 18, 135000, 2),
-(20, 7, 2, 35000, 3),
-(21, 7, 26, 35000, 1),
-(22, 8, 12, 250000, 3),
-(23, 8, 3, 100000, 1),
-(24, 8, 29, 250000, 2),
-(25, 9, 26, 35000, 1),
-(26, 9, 23, 175000, 4),
-(27, 9, 29, 250000, 2),
-(28, 10, 6, 80000, 2),
-(29, 10, 26, 35000, 2),
-(30, 10, 26, 35000, 3),
-(31, 11, 28, 160000, 4),
-(32, 11, 12, 250000, 3),
-(33, 11, 18, 135000, 1),
-(34, 12, 30, 375000, 2),
-(35, 12, 25, 500000, 4),
-(36, 12, 4, 27000, 2),
-(37, 13, 10, 130000, 1),
-(38, 13, 5, 50000, 4),
-(39, 13, 18, 135000, 2),
-(40, 14, 24, 180000, 2),
-(41, 14, 22, 300000, 1),
-(42, 14, 11, 170000, 3),
-(43, 15, 13, 200000, 3),
-(44, 15, 19, 75000, 3),
-(45, 15, 28, 160000, 2),
-(46, 16, 1, 25000, 4),
-(47, 16, 20, 90000, 3),
-(48, 16, 7, 120000, 3),
-(49, 17, 14, 300000, 1),
-(50, 17, 28, 160000, 1),
-(51, 17, 30, 375000, 3),
-(52, 18, 8, 100000, 3),
-(53, 18, 19, 75000, 2),
-(54, 18, 12, 250000, 1),
-(55, 19, 13, 200000, 1),
-(56, 19, 27, 45000, 1),
-(57, 19, 30, 375000, 3),
-(58, 20, 25, 500000, 4),
-(59, 20, 3, 100000, 4),
-(60, 20, 7, 120000, 2),
-(61, 21, 22, 300000, 1),
-(62, 21, 27, 45000, 3),
-(63, 21, 22, 300000, 1),
-(64, 22, 27, 45000, 1),
-(65, 22, 8, 100000, 4),
-(66, 22, 27, 45000, 3),
-(67, 23, 13, 200000, 1),
-(68, 23, 1, 25000, 1),
-(69, 23, 30, 375000, 1),
-(70, 24, 2, 35000, 2),
-(71, 24, 20, 90000, 4),
-(72, 24, 2, 35000, 2),
-(73, 25, 3, 100000, 1),
-(74, 25, 20, 90000, 4),
-(75, 25, 10, 130000, 4),
-(76, 26, 12, 250000, 3),
-(77, 26, 18, 135000, 4),
-(78, 26, 7, 120000, 2),
-(79, 27, 1, 25000, 1),
-(80, 27, 2, 35000, 3),
-(81, 27, 3, 100000, 2),
-(82, 28, 24, 180000, 1),
-(83, 28, 6, 80000, 2),
-(84, 28, 4, 27000, 2),
-(85, 29, 3, 100000, 1),
-(86, 29, 14, 300000, 3),
-(87, 29, 13, 200000, 4),
-(88, 30, 19, 75000, 4),
-(89, 30, 16, 95000, 1),
-(90, 30, 24, 180000, 3),
-(91, 31, 10, 130000, 3),
-(92, 31, 8, 100000, 3),
-(93, 31, 26, 35000, 3),
-(94, 32, 16, 95000, 3),
-(95, 32, 5, 50000, 2),
-(96, 32, 26, 35000, 3),
-(97, 33, 6, 80000, 4),
-(98, 33, 12, 250000, 1),
-(99, 33, 13, 200000, 1),
-(100, 34, 10, 130000, 3),
-(101, 34, 21, 150000, 1),
-(102, 34, 17, 110000, 1),
-(103, 35, 14, 300000, 1),
-(104, 35, 5, 50000, 2),
-(105, 35, 27, 45000, 2),
-(106, 36, 27, 45000, 2),
-(107, 36, 25, 500000, 2),
-(108, 36, 17, 110000, 4),
-(109, 37, 8, 100000, 1),
-(110, 37, 1, 25000, 2),
-(111, 37, 21, 150000, 3),
-(112, 38, 17, 110000, 4),
-(113, 38, 9, 85000, 3),
-(114, 38, 15, 275000, 1),
-(115, 39, 12, 250000, 4),
-(116, 39, 23, 175000, 2),
-(117, 39, 28, 160000, 3),
-(118, 40, 3, 100000, 4),
-(119, 40, 18, 135000, 4),
-(120, 40, 17, 110000, 2),
-(121, 41, 14, 300000, 2),
-(122, 41, 3, 100000, 1),
-(123, 41, 5, 50000, 3),
-(124, 42, 9, 85000, 1),
-(125, 42, 27, 45000, 1),
-(126, 42, 22, 300000, 2),
-(127, 43, 29, 250000, 3),
-(128, 43, 6, 80000, 3),
-(129, 43, 11, 170000, 4),
-(130, 44, 18, 135000, 4),
-(131, 44, 14, 300000, 2),
-(132, 44, 30, 375000, 2),
-(133, 45, 7, 120000, 1),
-(134, 45, 27, 45000, 4),
-(135, 45, 2, 35000, 4),
-(136, 46, 21, 150000, 3),
-(137, 46, 3, 100000, 4),
-(138, 46, 9, 85000, 1),
-(139, 47, 18, 135000, 3),
-(140, 47, 8, 100000, 2),
-(141, 47, 7, 120000, 2),
-(142, 48, 26, 35000, 1),
-(143, 48, 27, 45000, 4),
-(144, 48, 24, 180000, 2),
-(145, 49, 8, 100000, 1),
-(146, 49, 19, 75000, 4),
-(147, 49, 29, 250000, 4),
-(148, 50, 8, 100000, 4),
-(149, 50, 6, 80000, 2),
-(150, 50, 21, 150000, 4);
+INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
+(1, 'admin', 'logentry'),
+(3, 'auth', 'group'),
+(2, 'auth', 'permission'),
+(4, 'auth', 'user'),
+(7, 'Clientes', 'clientes'),
+(5, 'contenttypes', 'contenttype'),
+(11, 'Empresa', 'empresa'),
+(18, 'Factura', 'detalleproducto'),
+(17, 'Factura', 'detalleservicio'),
+(16, 'Factura', 'factura'),
+(15, 'Factura', 'metodopago'),
+(13, 'Productos', 'productos'),
+(12, 'Productos', 'tipoproducto'),
+(14, 'Servicios', 'servicios'),
+(6, 'sessions', 'session'),
+(8, 'Usuarios', 'usuarios'),
+(9, 'Vehiculo', 'tipovehiculo'),
+(10, 'Vehiculo', 'vehiculo');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `detalle_servicio`
+-- Estructura de tabla para la tabla `django_migrations`
 --
 
-CREATE TABLE `detalle_servicio` (
-  `Id_Detalle_Servicio` tinyint(3) UNSIGNED NOT NULL,
-  `Id_Factura` int(11) DEFAULT NULL,
-  `Id_Servicio` smallint(6) DEFAULT NULL,
-  `Precio` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `django_migrations` (
+  `id` bigint(20) NOT NULL,
+  `app` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `applied` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `detalle_servicio`
+-- Volcado de datos para la tabla `django_migrations`
 --
 
-INSERT INTO `detalle_servicio` (`Id_Detalle_Servicio`, `Id_Factura`, `Id_Servicio`, `Precio`) VALUES
-(1, 1, 2, 60000),
-(2, 1, 1, 50000),
-(3, 1, 5, 55000),
-(4, 2, 1, 50000),
-(5, 2, 4, 45000),
-(6, 2, 6, 70000),
-(7, 3, 2, 60000),
-(8, 3, 3, 40000),
-(9, 3, 1, 50000),
-(10, 4, 5, 55000),
-(11, 4, 1, 50000),
-(12, 4, 4, 45000),
-(13, 5, 2, 60000),
-(14, 5, 3, 40000),
-(15, 5, 4, 45000),
-(16, 6, 6, 70000),
-(17, 6, 2, 60000),
-(18, 6, 1, 50000),
-(19, 7, 5, 55000),
-(20, 7, 3, 40000),
-(21, 7, 2, 60000),
-(22, 8, 3, 40000),
-(23, 8, 1, 50000),
-(24, 8, 4, 45000),
-(25, 9, 1, 50000),
-(26, 9, 1, 50000),
-(27, 9, 1, 50000),
-(28, 10, 3, 40000),
-(29, 10, 1, 50000),
-(30, 10, 6, 70000),
-(31, 11, 4, 45000),
-(32, 11, 6, 70000),
-(33, 11, 1, 50000),
-(34, 12, 6, 70000),
-(35, 12, 1, 50000),
-(36, 12, 6, 70000),
-(37, 13, 1, 50000),
-(38, 13, 1, 50000),
-(39, 13, 5, 55000),
-(40, 14, 5, 55000),
-(41, 14, 1, 50000),
-(42, 14, 3, 40000),
-(43, 15, 1, 50000),
-(44, 15, 4, 45000),
-(45, 15, 2, 60000),
-(46, 16, 2, 60000),
-(47, 16, 4, 45000),
-(48, 16, 5, 55000),
-(49, 17, 4, 45000),
-(50, 17, 6, 70000),
-(51, 17, 2, 60000),
-(52, 18, 2, 60000),
-(53, 18, 5, 55000),
-(54, 18, 4, 45000),
-(55, 19, 1, 50000),
-(56, 19, 6, 70000),
-(57, 19, 2, 60000),
-(58, 20, 5, 55000),
-(59, 20, 1, 50000),
-(60, 20, 4, 45000),
-(61, 21, 1, 50000),
-(62, 21, 5, 55000),
-(63, 21, 3, 40000),
-(64, 22, 6, 70000),
-(65, 22, 5, 55000),
-(66, 22, 4, 45000),
-(67, 23, 5, 55000),
-(68, 23, 2, 60000),
-(69, 23, 5, 55000),
-(70, 24, 6, 70000),
-(71, 24, 4, 45000),
-(72, 24, 4, 45000),
-(73, 25, 2, 60000),
-(74, 25, 2, 60000),
-(75, 25, 4, 45000),
-(76, 26, 6, 70000),
-(77, 26, 3, 40000),
-(78, 26, 4, 45000),
-(79, 27, 6, 70000),
-(80, 27, 2, 60000),
-(81, 27, 6, 70000),
-(82, 28, 2, 60000),
-(83, 28, 3, 40000),
-(84, 28, 2, 60000),
-(85, 29, 1, 50000),
-(86, 29, 3, 40000),
-(87, 29, 2, 60000),
-(88, 30, 5, 55000),
-(89, 30, 4, 45000),
-(90, 30, 5, 55000),
-(91, 31, 3, 40000),
-(92, 31, 6, 70000),
-(93, 31, 2, 60000),
-(94, 32, 6, 70000),
-(95, 32, 3, 40000),
-(96, 32, 1, 50000),
-(97, 33, 3, 40000),
-(98, 33, 1, 50000),
-(99, 33, 5, 55000),
-(100, 34, 6, 70000),
-(101, 34, 5, 55000),
-(102, 34, 5, 55000),
-(103, 35, 2, 60000),
-(104, 35, 5, 55000),
-(105, 35, 6, 70000),
-(106, 36, 5, 55000),
-(107, 36, 6, 70000),
-(108, 36, 1, 50000),
-(109, 37, 4, 45000),
-(110, 37, 1, 50000),
-(111, 37, 2, 60000),
-(112, 38, 2, 60000),
-(113, 38, 3, 40000),
-(114, 38, 6, 70000),
-(115, 39, 2, 60000),
-(116, 39, 5, 55000),
-(117, 39, 1, 50000),
-(118, 40, 3, 40000),
-(119, 40, 2, 60000),
-(120, 40, 3, 40000),
-(121, 41, 2, 60000),
-(122, 41, 1, 50000),
-(123, 41, 6, 70000),
-(124, 42, 4, 45000),
-(125, 42, 2, 60000),
-(126, 42, 1, 50000),
-(127, 43, 3, 40000),
-(128, 43, 3, 40000),
-(129, 43, 6, 70000),
-(130, 44, 4, 45000),
-(131, 44, 4, 45000),
-(132, 44, 1, 50000),
-(133, 45, 4, 45000),
-(134, 45, 2, 60000),
-(135, 45, 3, 40000),
-(136, 46, 1, 50000),
-(137, 46, 4, 45000),
-(138, 46, 1, 50000),
-(139, 47, 2, 60000),
-(140, 47, 4, 45000),
-(141, 47, 2, 60000),
-(142, 48, 5, 55000),
-(143, 48, 5, 55000),
-(144, 48, 4, 45000),
-(145, 49, 6, 70000),
-(146, 49, 3, 40000),
-(147, 49, 5, 55000),
-(148, 50, 3, 40000),
-(149, 50, 5, 55000),
-(150, 50, 3, 40000);
+INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
+(1, 'Clientes', '0001_initial', '2024-06-24 17:53:05.484086'),
+(2, 'Empresa', '0001_initial', '2024-06-24 17:53:05.878725'),
+(3, 'Vehiculo', '0001_initial', '2024-06-24 17:53:10.867237'),
+(4, 'Usuarios', '0001_initial', '2024-06-24 17:53:11.157722'),
+(5, 'Servicios', '0001_initial', '2024-06-24 17:53:12.120800'),
+(6, 'Productos', '0001_initial', '2024-06-24 17:53:19.160178'),
+(7, 'Factura', '0001_initial', '2024-06-24 17:53:45.548498'),
+(8, 'contenttypes', '0001_initial', '2024-06-24 17:53:50.602136'),
+(9, 'auth', '0001_initial', '2024-06-24 17:54:30.371523'),
+(10, 'admin', '0001_initial', '2024-06-24 17:54:33.124662'),
+(11, 'admin', '0002_logentry_remove_auto_add', '2024-06-24 17:54:33.194161'),
+(12, 'admin', '0003_logentry_add_action_flag_choices', '2024-06-24 17:54:33.372349'),
+(13, 'contenttypes', '0002_remove_content_type_name', '2024-06-24 17:54:37.596726'),
+(14, 'auth', '0002_alter_permission_name_max_length', '2024-06-24 17:54:41.472270'),
+(15, 'auth', '0003_alter_user_email_max_length', '2024-06-24 17:54:41.623062'),
+(16, 'auth', '0004_alter_user_username_opts', '2024-06-24 17:54:41.686826'),
+(17, 'auth', '0005_alter_user_last_login_null', '2024-06-24 17:54:42.604398'),
+(18, 'auth', '0006_require_contenttypes_0002', '2024-06-24 17:54:42.718171'),
+(19, 'auth', '0007_alter_validators_add_error_messages', '2024-06-24 17:54:42.795735'),
+(20, 'auth', '0008_alter_user_username_max_length', '2024-06-24 17:54:42.959575'),
+(21, 'auth', '0009_alter_user_last_name_max_length', '2024-06-24 17:54:43.145827'),
+(22, 'auth', '0010_alter_group_name_max_length', '2024-06-24 17:54:43.503113'),
+(23, 'auth', '0011_update_proxy_permissions', '2024-06-24 17:54:43.552589'),
+(24, 'auth', '0012_alter_user_first_name_max_length', '2024-06-24 17:54:43.831930'),
+(25, 'sessions', '0001_initial', '2024-06-24 17:54:47.105681');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `factura`
+-- Estructura de tabla para la tabla `django_session`
 --
 
-CREATE TABLE `factura` (
-  `Id_factura` int(11) NOT NULL,
-  `Fecha` datetime DEFAULT NULL,
-  `Placa` char(7) DEFAULT NULL,
-  `Documento_M` char(10) DEFAULT NULL,
-  `Id_Metodo_Pago` tinyint(3) UNSIGNED DEFAULT NULL,
-  `NIT` char(9) DEFAULT NULL,
-  `Total` double DEFAULT NULL,
-  `Subtotal` double DEFAULT NULL,
-  `Iva` double DEFAULT NULL,
-  `Descuento` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `django_session` (
+  `session_key` varchar(40) NOT NULL,
+  `session_data` longtext NOT NULL,
+  `expire_date` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `factura`
+-- Volcado de datos para la tabla `django_session`
 --
 
-INSERT INTO `factura` (`Id_factura`, `Fecha`, `Placa`, `Documento_M`, `Id_Metodo_Pago`, `NIT`, `Total`, `Subtotal`, `Iva`, `Descuento`) VALUES
-(1, '2024-06-04 07:00:00', 'ABC123', '1078324098', 1, '147258369', 1051490, 1331000, 252890, 532400),
-(2, '2024-06-04 08:20:00', 'ABC901', '1078324098', 1, '147258369', 1161300, 1470000, 279300, 588000),
-(3, '2024-06-04 08:40:00', 'BCD678', '1078324098', 3, '147258369', 2330500, 2950000, 560500, 1180000),
-(4, '2024-06-04 09:00:00', 'BCD890', '1033178014', 1, '147258369', 687300, 870000, 165300, 348000),
-(5, '2024-06-04 09:20:00', 'CDE567', '1097213045', 2, '147258369', 687300, 870000, 165300, 348000),
-(6, '2024-06-04 09:40:00', 'DEF234', '1078324098', 3, '147258369', 916400, 1160000, 220400, 464000),
-(7, '2024-06-04 10:00:00', 'DEF456', '1078324098', 1, '147258369', 446350, 565000, 107350, 226000),
-(8, '2024-06-04 10:20:00', 'EFG123', '1097213045', 3, '147258369', 1173150, 1485000, 282150, 594000),
-(9, '2024-06-04 10:40:00', 'EFG901', '1078324098', 2, '147258369', 1094150, 1385000, 263150, 554000),
-(10, '2024-06-04 11:00:00', 'FGH890', '1033178014', 1, '147258369', 391050, 495000, 94050, 198000),
-(11, '2024-06-04 11:20:00', 'GHI567', '1045296032', 3, '147258369', 1335100, 1690000, 321100, 676000),
-(12, '2024-06-04 11:40:00', 'GHI789', '1045296032', 2, '147258369', 2365260, 2994000, 568860, 1197600),
-(13, '2024-06-04 12:00:00', 'HIJ234', '1033178014', 3, '147258369', 596450, 755000, 143450, 302000),
-(14, '2024-06-04 12:20:00', 'HIJ456', '1045296032', 1, '147258369', 1038850, 1315000, 249850, 526000),
-(15, '2024-06-04 12:40:00', 'IJK123', '1097213045', 2, '147258369', 1027000, 1300000, 247000, 520000),
-(16, '2024-06-04 13:00:00', 'JKL012', '1078324098', 3, '147258369', 703100, 890000, 169100, 356000),
-(17, '2024-06-04 13:20:00', 'JKL890', '1097213045', 2, '147258369', 1390400, 1760000, 334400, 704000),
-(18, '2024-06-04 13:40:00', 'KLM567', '1078324098', 1, '147258369', 679400, 860000, 163400, 344000),
-(19, '2024-06-04 14:00:00', 'KLM789', '1097213045', 2, '147258369', 1224500, 1550000, 294500, 620000),
-(20, '2024-06-04 14:20:00', 'LMN456', '1045296032', 3, '147258369', 2204100, 2790000, 530100, 1116000),
-(21, '2024-06-04 14:40:00', 'MNO123', '1097213045', 1, '147258369', 695200, 880000, 167200, 352000),
-(22, '2024-06-04 15:00:00', 'MNO345', '1033178014', 3, '147258369', 592500, 750000, 142500, 300000),
-(23, '2024-06-04 15:20:00', 'NOP012', '1078324098', 2, '147258369', 608300, 770000, 146300, 308000),
-(24, '2024-06-04 15:40:00', 'OPQ789', '1033178014', 1, '147258369', 521400, 660000, 125400, 264000),
-(25, '2024-06-04 16:00:00', 'PQR456', '1097213045', 3, '147258369', 904550, 1145000, 217550, 458000),
-(26, '2024-06-04 16:20:00', 'PQR678', '1078324098', 1, '147258369', 1331150, 1685000, 320150, 674000),
-(27, '2024-06-04 16:40:00', 'QRS345', '1097213045', 2, '147258369', 418700, 585000, 100700, 212000),
-(28, '2024-06-04 17:00:00', 'RST012', '1078324098', 3, '147258369', 437660, 1080000, 105260, 221600),
-(29, '2024-06-04 17:20:00', 'STU789', '1045296032', 1, '147258369', 1540500, 1970000, 370500, 780000),
-(30, '2024-06-04 17:40:00', 'STU901', '1078324098', 2, '147258369', 861100, 1090000, 207100, 436000),
-(31, '2024-06-04 08:10:00', 'TUV678', '1097213045', 3, '147258369', 762350, 965000, 183350, 386000),
-(32, '2024-06-04 08:30:00', 'UVW345', '1033178014', 1, '147258369', 513500, 650000, 123500, 260000),
-(33, '2024-06-04 08:50:00', 'VWX012', '1045296032', 2, '147258369', 722850, 915000, 173850, 366000),
-(34, '2024-06-04 09:10:00', 'VWX234', '1078324098', 1, '147258369', 655700, 830000, 157700, 332000),
-(35, '2024-06-04 09:30:00', 'WXY901', '1078324098', 3, '147258369', 533250, 675000, 128250, 270000),
-(36, '2024-06-04 09:50:00', 'XYZ678', '1097213045', 2, '147258369', 1346950, 1705000, 323950, 682000),
-(37, '2024-06-04 10:10:00', 'YZA345', '1033178014', 1, '147258369', 596450, 755000, 143450, 302000),
-(38, '2024-06-04 10:30:00', 'YZA567', '1097213045', 2, '147258369', 900600, 1140000, 216600, 456000),
-(39, '2024-06-04 10:50:00', 'ZAB234', '1078324098', 3, '147258369', 1576050, 1995000, 379050, 798000),
-(40, '2024-06-04 11:10:00', 'ABC123', '1097213045', 2, '147258369', 1027000, 1300000, 247000, 520000),
-(41, '2024-06-04 11:30:00', 'EFG901', '1045296032', 1, '147258369', 813700, 1030000, 195700, 412000),
-(42, '2024-06-04 11:50:00', 'ABC123', '1078324098', 3, '147258369', 699150, 890000, 168150, 354000),
-(43, '2024-06-04 12:10:00', 'VWX234', '1045296032', 1, '147258369', 1437800, 1815000, 345800, 728000),
-(44, '2024-06-04 12:30:00', 'ZAB234', '1033178014', 2, '147258369', 1603700, 2030000, 385700, 812000),
-(45, '2024-06-04 12:50:00', 'STU789', '1078324098', 3, '147258369', 462150, 585000, 111150, 234000),
-(46, '2024-06-04 13:10:00', 'CDE567', '1045296032', 1, '147258369', 853200, 1080000, 205200, 432000),
-(47, '2024-06-04 13:30:00', 'KLM567', '1078324098', 2, '147258369', 797900, 1010000, 191900, 404000),
-(48, '2024-06-04 13:50:00', 'STU789', '1045296032', 3, '147258369', 576700, 730000, 138700, 292000),
-(49, '2024-06-04 14:10:00', 'MNO345', '1033178014', 2, '147258369', 1236350, 1565000, 297350, 626000),
-(50, '2024-06-04 14:30:00', 'ABC123', '1078324098', 1, '147258369', 1023050, 1295000, 246050, 518000);
+INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('4wst3r0p8j85cevx325ti8hk57vidxdj', 'eyJ1c3VhcmlvX2F1dGVudGljYWRvIjoiMTEifQ:1sLo3i:PXRrrBFh3_5gFQcEiCBHNuCklrR7d-nBmRjAsUHfahY', '2024-07-08 18:04:54.164483');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `mecanico`
+-- Estructura de tabla para la tabla `empresa_empresa`
 --
 
-CREATE TABLE `mecanico` (
-  `Documento` char(10) NOT NULL,
-  `Nombre` varchar(25) DEFAULT NULL,
-  `Apellido` varchar(30) DEFAULT NULL,
-  `Celular` varchar(10) DEFAULT NULL,
-  `F_Nacimiento` date DEFAULT NULL,
-  `Correo` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `empresa_empresa` (
+  `nit` varchar(9) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(50) DEFAULT NULL,
+  `direccion` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `mecanico`
+-- Volcado de datos para la tabla `empresa_empresa`
 --
 
-INSERT INTO `mecanico` (`Documento`, `Nombre`, `Apellido`, `Celular`, `F_Nacimiento`, `Correo`) VALUES
-('1033178014', 'Sebastian', 'Roldan', '3225319812', '2005-04-24', 'sebasr@gmail.com'),
-('1045296032', 'Laura', 'Gomez', '3112459876', '1998-08-12', 'lauragomez@example.com'),
-('1078324098', 'Andres', 'Lopez', '3006741234', '1996-12-03', 'andreslopez@example.com'),
-('1097213045', 'Maria', 'Martinez', '3105896743', '2000-03-17', 'mariamartinez@example.com');
+INSERT INTO `empresa_empresa` (`nit`, `nombre`, `telefono`, `correo`, `direccion`) VALUES
+('147258369', 'CarCareTech', '3195442623', 'carcaretech@gmail.com', 'Cra76 #53-200');
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `metodo_pago`
+-- Estructura de tabla para la tabla `factura_detalleproducto`
 --
 
-CREATE TABLE `metodo_pago` (
-  `Id_Metodo_Pago` tinyint(3) UNSIGNED NOT NULL,
-  `Tipo` char(8) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `factura_detalleproducto` (
+  `id_detalle_producto` int(11) NOT NULL,
+  `precio` double DEFAULT NULL,
+  `cantidad` smallint(5) UNSIGNED DEFAULT NULL CHECK (`cantidad` >= 0),
+  `producto_id` int(11) NOT NULL,
+  `factura_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `metodo_pago`
+-- Volcado de datos para la tabla `factura_detalleproducto`
 --
 
-INSERT INTO `metodo_pago` (`Id_Metodo_Pago`, `Tipo`) VALUES
+INSERT INTO `factura_detalleproducto` (`id_detalle_producto`, `precio`, `cantidad`, `producto_id`, `factura_id`) VALUES
+(1, 25000, 5, 1, 1),
+(2, 50000, 10, 5, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factura_detalleservicio`
+--
+
+CREATE TABLE `factura_detalleservicio` (
+  `id_detalle_servicio` int(11) NOT NULL,
+  `precio` decimal(20,0) DEFAULT NULL,
+  `documento_mecanico_id` varchar(10) NOT NULL,
+  `servicio_id` int(11) NOT NULL,
+  `factura_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `factura_detalleservicio`
+--
+
+INSERT INTO `factura_detalleservicio` (`id_detalle_servicio`, `precio`, `documento_mecanico_id`, `servicio_id`, `factura_id`) VALUES
+(1, 50000, '1045296032', 1, 1),
+(2, 60000, '1078324098', 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factura_factura`
+--
+
+CREATE TABLE `factura_factura` (
+  `id_factura` int(11) NOT NULL,
+  `fecha` datetime(6) NOT NULL,
+  `Total` double NOT NULL,
+  `Subtotal` double NOT NULL,
+  `Iva` double NOT NULL,
+  `Descuento` double NOT NULL,
+  `nit` varchar(9) NOT NULL,
+  `placa` varchar(7) NOT NULL,
+  `id_metodo_pago` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `factura_factura`
+--
+
+INSERT INTO `factura_factura` (`id_factura`, `fecha`, `Total`, `Subtotal`, `Iva`, `Descuento`, `nit`, `placa`, `id_metodo_pago`) VALUES
+(1, '2024-06-24 13:13:00.000000', 874650, 735000, 19, 0, '147258369', 'ABC123', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `factura_metodopago`
+--
+
+CREATE TABLE `factura_metodopago` (
+  `id_metodo_pago` int(11) NOT NULL,
+  `tipo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `factura_metodopago`
+--
+
+INSERT INTO `factura_metodopago` (`id_metodo_pago`, `tipo`) VALUES
 (1, 'Efectivo'),
 (2, 'Debito'),
 (3, 'Credito');
@@ -551,71 +455,93 @@ INSERT INTO `metodo_pago` (`Id_Metodo_Pago`, `Tipo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `productos`
+-- Estructura de tabla para la tabla `productos_productos`
 --
 
-CREATE TABLE `productos` (
-  `Id_producto` smallint(6) NOT NULL,
-  `Id_tipo_producto` tinyint(3) UNSIGNED DEFAULT NULL,
-  `Cantidad_Stock` smallint(6) DEFAULT NULL,
-  `Nombre` varchar(30) DEFAULT NULL,
-  `Precio` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `productos_productos` (
+  `id_producto` int(11) NOT NULL,
+  `cantidad_stock` smallint(5) UNSIGNED NOT NULL CHECK (`cantidad_stock` >= 0),
+  `nombre` varchar(200) DEFAULT NULL,
+  `precio` decimal(10,0) DEFAULT NULL,
+  `id_tipo_producto` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `productos`
+-- Volcado de datos para la tabla `productos_productos`
 --
 
-INSERT INTO `productos` (`Id_producto`, `Id_tipo_producto`, `Cantidad_Stock`, `Nombre`, `Precio`) VALUES
-(1, 1, 50, 'Llave inglesa', 25000),
-(2, 1, 30, 'Destornillador de Estrella', 35000),
-(3, 1, 20, 'Juego de llaves Allen', 100000),
-(4, 1, 40, 'Alicate de corte', 27000),
-(5, 1, 25, 'Martillo de bola', 50000),
-(6, 2, 100, 'Aceite para motor 5W-30', 80000),
-(7, 2, 80, 'Aceite para transmisión', 120000),
-(8, 2, 70, 'Lubricante multiusos', 100000),
-(9, 2, 60, 'Grasa para rodamientos', 85000),
-(10, 2, 50, 'Líquido de frenos', 130000),
-(11, 3, 25, 'Neumático 195/65R15', 170000),
-(12, 3, 30, 'Neumático 205/55R16', 250000),
-(13, 3, 15, 'Neumático 215/60R17', 200000),
-(14, 3, 20, 'Neumático 225/45R18', 300000),
-(15, 3, 10, 'Neumático 235/50R19', 275000),
-(16, 4, 75, 'Filtro de aire', 95000),
-(17, 4, 65, 'Filtro de aceite', 110000),
-(18, 4, 85, 'Filtro de combustible', 135000),
-(19, 4, 55, 'Filtro de cabina', 75000),
-(20, 4, 50, 'Filtro hidráulico', 90000),
-(21, 5, 20, 'Batería 12V 60Ah', 150000),
-(22, 5, 15, 'Batería 12V 70Ah', 300000),
-(23, 5, 10, 'Batería 12V 80Ah', 175000),
-(24, 5, 12, 'Batería AGM 12V 60Ah', 180000),
-(25, 5, 8, 'Batería AGM 12V 70Ah', 500000),
-(26, 1, 35, 'Corta tubos', 35000),
-(27, 1, 40, 'Llave de tubo', 45000),
-(28, 2, 95, 'Anticongelante', 160000),
-(29, 2, 70, 'Aceite hidráulico', 250000),
-(30, 3, 18, 'Neumático 245/45R20', 375000);
+INSERT INTO `productos_productos` (`id_producto`, `cantidad_stock`, `nombre`, `precio`, `id_tipo_producto`) VALUES
+(1, 50, 'Llave inglesa', 25000, 1),
+(2, 30, 'Destornillador de Estrella', 35000, 1),
+(3, 20, 'Juego de llaves Allen', 100000, 1),
+(4, 40, 'Alicate de corte', 27000, 1),
+(5, 25, 'Martillo de bola', 50000, 1),
+(6, 100, 'Aceite para motor 5W-30', 80000, 2),
+(7, 80, 'Aceite para transmisión', 120000, 2),
+(8, 70, 'Lubricante multiusos', 100000, 2),
+(9, 60, 'Grasa para rodamientos', 85000, 2),
+(10, 50, 'Líquido de frenos', 130000, 2),
+(11, 25, 'Neumático 195/65R15', 170000, 3),
+(12, 30, 'Neumático 205/55R16', 250000, 3),
+(13, 15, 'Neumático 215/60R17', 200000, 3),
+(14, 20, 'Neumático 225/45R18', 300000, 3),
+(15, 10, 'Neumático 235/50R19', 275000, 3),
+(16, 75, 'Filtro de aire', 95000, 4),
+(17, 65, 'Filtro de aceite', 110000, 4),
+(18, 85, 'Filtro de combustible', 135000, 4),
+(19, 55, 'Filtro de cabina', 75000, 4),
+(20, 50, 'Filtro hidráulico', 90000, 4),
+(21, 20, 'Batería 12V 60Ah', 150000, 5),
+(22, 15, 'Batería 12V 70Ah', 300000, 5),
+(23, 10, 'Batería 12V 80Ah', 175000, 5),
+(24, 12, 'Batería AGM 12V 60Ah', 180000, 5),
+(25, 8, 'Batería AGM 12V 70Ah', 500000, 5),
+(26, 35, 'Corta tubos', 35000, 1),
+(27, 40, 'Llave de tubo', 45000, 1),
+(28, 95, 'Anticongelante', 160000, 2),
+(29, 70, 'Aceite hidráulico', 250000, 2),
+(30, 18, 'Neumático 245/45R20', 375000, 3);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `servicios`
+-- Estructura de tabla para la tabla `productos_tipoproducto`
 --
 
-CREATE TABLE `servicios` (
-  `Id_Servicios` smallint(6) NOT NULL,
-  `Nombre_Servicio` varchar(50) DEFAULT NULL,
-  `Precio` double DEFAULT NULL,
-  `Descripcion` varchar(1000) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `productos_tipoproducto` (
+  `id_tipo_producto` int(11) NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `servicios`
+-- Volcado de datos para la tabla `productos_tipoproducto`
 --
 
-INSERT INTO `servicios` (`Id_Servicios`, `Nombre_Servicio`, `Precio`, `Descripcion`) VALUES
+INSERT INTO `productos_tipoproducto` (`id_tipo_producto`, `descripcion`) VALUES
+(1, 'Herramientas manuales'),
+(2, 'Aceites y lubricantes'),
+(3, 'Neumáticos'),
+(4, 'Filtros'),
+(5, 'Baterías');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `servicios_servicios`
+--
+
+CREATE TABLE `servicios_servicios` (
+  `id_servicios` int(11) NOT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `precio` decimal(10,0) DEFAULT NULL,
+  `descripcion` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `servicios_servicios`
+--
+
+INSERT INTO `servicios_servicios` (`id_servicios`, `nombre`, `precio`, `descripcion`) VALUES
 (1, 'Mecanica General', 50000, 'Evaluacion general del vehiculo'),
 (2, 'Latoneria', 60000, 'Reparacion de hundidos y pintura'),
 (3, 'Cambio de Aceite', 40000, 'Sustitucion del aceite del motor'),
@@ -626,43 +552,48 @@ INSERT INTO `servicios` (`Id_Servicios`, `Nombre_Servicio`, `Precio`, `Descripci
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_producto`
+-- Estructura de tabla para la tabla `usuarios_usuarios`
 --
 
-CREATE TABLE `tipo_producto` (
-  `Id_tipo_producto` tinyint(3) UNSIGNED NOT NULL,
-  `Descripcion` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `usuarios_usuarios` (
+  `Documento` varchar(10) NOT NULL,
+  `Nombre` varchar(25) DEFAULT NULL,
+  `Apellido` varchar(30) DEFAULT NULL,
+  `Celular` varchar(10) DEFAULT NULL,
+  `F_Nacimiento` date DEFAULT NULL,
+  `Correo` varchar(50) DEFAULT NULL,
+  `Rol` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_producto`
+-- Volcado de datos para la tabla `usuarios_usuarios`
 --
 
-INSERT INTO `tipo_producto` (`Id_tipo_producto`, `Descripcion`) VALUES
-(1, 'Herramientas manuales'),
-(2, 'Aceites y lubricantes'),
-(3, 'Neumáticos'),
-(4, 'Filtros'),
-(5, 'Baterías');
+INSERT INTO `usuarios_usuarios` (`Documento`, `Nombre`, `Apellido`, `Celular`, `F_Nacimiento`, `Correo`, `Rol`) VALUES
+('10', 'Juan', 'Hernandez', '302', '1111-11-11', 'hgfds@gmail.com', 2),
+('1045296032', 'Laura', 'Gomez', '3112459876', '1998-08-12', 'lauragomez@example.com', 1),
+('1078324098', 'Andres', 'Lopez', '3006741234', '1996-12-03', 'andreslopez@example.com', 1),
+('1097213045', 'Maria', 'Martinez', '3105896743', '2000-03-17', 'mariamartinez@example.com', 1),
+('11', 'Sebastian', 'Roldan', '3225319812', '2005-04-24', 'sebasr@gmail.com', 2);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipo_vehiculo`
+-- Estructura de tabla para la tabla `vehiculo_tipovehiculo`
 --
 
-CREATE TABLE `tipo_vehiculo` (
-  `Id_Tipo_Vehiculo` tinyint(3) UNSIGNED NOT NULL,
-  `Nombre` varchar(15) DEFAULT NULL,
-  `Numero_Ruedas` tinyint(3) UNSIGNED DEFAULT NULL,
-  `Descripcion` varchar(2000) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `vehiculo_tipovehiculo` (
+  `id_tipo_vehiculo` int(11) NOT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `numero_ruedas` smallint(5) UNSIGNED DEFAULT NULL CHECK (`numero_ruedas` >= 0),
+  `descripcion` varchar(2000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `tipo_vehiculo`
+-- Volcado de datos para la tabla `vehiculo_tipovehiculo`
 --
 
-INSERT INTO `tipo_vehiculo` (`Id_Tipo_Vehiculo`, `Nombre`, `Numero_Ruedas`, `Descripcion`) VALUES
+INSERT INTO `vehiculo_tipovehiculo` (`id_tipo_vehiculo`, `nombre`, `numero_ruedas`, `descripcion`) VALUES
 (1, 'Carro', 4, 'Camionetas tipo Campero, Automovil, Bus'),
 (2, 'Motocicleta', 2, 'Motocicletas de distintas cilindradas y estilos'),
 (3, 'Camion', 6, 'Camiones de carga pesada y ligera'),
@@ -673,24 +604,24 @@ INSERT INTO `tipo_vehiculo` (`Id_Tipo_Vehiculo`, `Nombre`, `Numero_Ruedas`, `Des
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `vehiculo`
+-- Estructura de tabla para la tabla `vehiculo_vehiculo`
 --
 
-CREATE TABLE `vehiculo` (
-  `Placa` char(7) NOT NULL,
-  `Modelo` varchar(25) DEFAULT NULL,
-  `Marca` varchar(25) DEFAULT NULL,
-  `Color` varchar(25) DEFAULT NULL,
-  `Transmision` char(10) NOT NULL,
-  `Documento` char(10) DEFAULT NULL,
-  `Id_Tipo_Vehiculo` tinyint(3) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `vehiculo_vehiculo` (
+  `placa` varchar(7) NOT NULL,
+  `modelo` varchar(25) DEFAULT NULL,
+  `marca` varchar(25) DEFAULT NULL,
+  `color` varchar(25) DEFAULT NULL,
+  `transmision` varchar(30) DEFAULT NULL,
+  `Documento` varchar(10) NOT NULL,
+  `id_tipo_vehiculo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `vehiculo`
+-- Volcado de datos para la tabla `vehiculo_vehiculo`
 --
 
-INSERT INTO `vehiculo` (`Placa`, `Modelo`, `Marca`, `Color`, `Transmision`, `Documento`, `Id_Tipo_Vehiculo`) VALUES
+INSERT INTO `vehiculo_vehiculo` (`placa`, `modelo`, `marca`, `color`, `transmision`, `Documento`, `id_tipo_vehiculo`) VALUES
 ('ABC123', '2020', 'Toyota', 'Rojo', 'Automática', '1033180822', 1),
 ('ABC901', '2019', 'Trek', 'Azul', 'Automática', '1033180824', 4),
 ('BCD678', '2020', 'Case IH', 'Rojo', 'Automática', '1033180833', 6),
@@ -736,179 +667,340 @@ INSERT INTO `vehiculo` (`Placa`, `Modelo`, `Marca`, `Color`, `Transmision`, `Doc
 --
 
 --
--- Indices de la tabla `clientes`
+-- Indices de la tabla `auth_group`
 --
-ALTER TABLE `clientes`
+ALTER TABLE `auth_group`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Indices de la tabla `auth_group_permissions`
+--
+ALTER TABLE `auth_group_permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
+  ADD KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`);
+
+--
+-- Indices de la tabla `auth_permission`
+--
+ALTER TABLE `auth_permission`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`);
+
+--
+-- Indices de la tabla `auth_user`
+--
+ALTER TABLE `auth_user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
+-- Indices de la tabla `auth_user_groups`
+--
+ALTER TABLE `auth_user_groups`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
+  ADD KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`);
+
+--
+-- Indices de la tabla `auth_user_user_permissions`
+--
+ALTER TABLE `auth_user_user_permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `auth_user_user_permissions_user_id_permission_id_14a6b632_uniq` (`user_id`,`permission_id`),
+  ADD KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`);
+
+--
+-- Indices de la tabla `clientes_clientes`
+--
+ALTER TABLE `clientes_clientes`
   ADD PRIMARY KEY (`Documento`);
 
 --
--- Indices de la tabla `datos_empresa`
+-- Indices de la tabla `django_admin_log`
 --
-ALTER TABLE `datos_empresa`
-  ADD PRIMARY KEY (`NIT`);
+ALTER TABLE `django_admin_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `django_admin_log_content_type_id_c4bce8eb_fk_django_co` (`content_type_id`),
+  ADD KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`);
 
 --
--- Indices de la tabla `detalle_producto`
+-- Indices de la tabla `django_content_type`
 --
-ALTER TABLE `detalle_producto`
-  ADD PRIMARY KEY (`Id_Detalle_Producto`),
-  ADD KEY `FK__Detalle_P__Id_Fa__5441852A` (`Id_Factura`),
-  ADD KEY `FK__Detalle_P__Id_pr__5535A963` (`Id_producto`);
+ALTER TABLE `django_content_type`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`);
 
 --
--- Indices de la tabla `detalle_servicio`
+-- Indices de la tabla `django_migrations`
 --
-ALTER TABLE `detalle_servicio`
-  ADD PRIMARY KEY (`Id_Detalle_Servicio`),
-  ADD KEY `FK__Detalle_S__Id_Fa__5070F446` (`Id_Factura`),
-  ADD KEY `FK__Detalle_S__Id_Se__5165187F` (`Id_Servicio`);
+ALTER TABLE `django_migrations`
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `factura`
+-- Indices de la tabla `django_session`
 --
-ALTER TABLE `factura`
-  ADD PRIMARY KEY (`Id_factura`),
-  ADD KEY `FK__Factura__Placa__4AB81AF0` (`Placa`),
-  ADD KEY `FK__Factura__Documen__4BAC3F29` (`Documento_M`),
-  ADD KEY `FK__Factura__Id_Meto__4CA06362` (`Id_Metodo_Pago`),
-  ADD KEY `FK__Factura__NIT__4D94879B` (`NIT`);
+ALTER TABLE `django_session`
+  ADD PRIMARY KEY (`session_key`),
+  ADD KEY `django_session_expire_date_a5c62663` (`expire_date`);
 
 --
--- Indices de la tabla `mecanico`
+-- Indices de la tabla `empresa_empresa`
 --
-ALTER TABLE `mecanico`
+ALTER TABLE `empresa_empresa`
+  ADD PRIMARY KEY (`nit`);
+
+--
+-- Indices de la tabla `factura_detalleproducto`
+--
+ALTER TABLE `factura_detalleproducto`
+  ADD PRIMARY KEY (`id_detalle_producto`),
+  ADD KEY `Factura_detalleprodu_producto_id_785fceb0_fk_Productos` (`producto_id`),
+  ADD KEY `Factura_detalleprodu_factura_id_53cf187b_fk_Factura_f` (`factura_id`);
+
+--
+-- Indices de la tabla `factura_detalleservicio`
+--
+ALTER TABLE `factura_detalleservicio`
+  ADD PRIMARY KEY (`id_detalle_servicio`),
+  ADD KEY `Factura_detalleservi_documento_mecanico_i_68375984_fk_Usuarios_` (`documento_mecanico_id`),
+  ADD KEY `Factura_detalleservi_servicio_id_ae146b22_fk_Servicios` (`servicio_id`),
+  ADD KEY `Factura_detalleservi_factura_id_a5866ac5_fk_Factura_f` (`factura_id`);
+
+--
+-- Indices de la tabla `factura_factura`
+--
+ALTER TABLE `factura_factura`
+  ADD PRIMARY KEY (`id_factura`),
+  ADD KEY `Factura_factura_nit_d7f32b5e_fk_Empresa_empresa_nit` (`nit`),
+  ADD KEY `Factura_factura_placa_3a5ccf6b_fk_Vehiculo_vehiculo_placa` (`placa`),
+  ADD KEY `Factura_factura_id_metodo_pago_7f7937ec_fk_Factura_m` (`id_metodo_pago`);
+
+--
+-- Indices de la tabla `factura_metodopago`
+--
+ALTER TABLE `factura_metodopago`
+  ADD PRIMARY KEY (`id_metodo_pago`);
+
+--
+-- Indices de la tabla `productos_productos`
+--
+ALTER TABLE `productos_productos`
+  ADD PRIMARY KEY (`id_producto`),
+  ADD KEY `Productos_productos_id_tipo_producto_c75ef1b3_fk_Productos` (`id_tipo_producto`);
+
+--
+-- Indices de la tabla `productos_tipoproducto`
+--
+ALTER TABLE `productos_tipoproducto`
+  ADD PRIMARY KEY (`id_tipo_producto`);
+
+--
+-- Indices de la tabla `servicios_servicios`
+--
+ALTER TABLE `servicios_servicios`
+  ADD PRIMARY KEY (`id_servicios`);
+
+--
+-- Indices de la tabla `usuarios_usuarios`
+--
+ALTER TABLE `usuarios_usuarios`
   ADD PRIMARY KEY (`Documento`);
 
 --
--- Indices de la tabla `metodo_pago`
+-- Indices de la tabla `vehiculo_tipovehiculo`
 --
-ALTER TABLE `metodo_pago`
-  ADD PRIMARY KEY (`Id_Metodo_Pago`);
+ALTER TABLE `vehiculo_tipovehiculo`
+  ADD PRIMARY KEY (`id_tipo_vehiculo`);
 
 --
--- Indices de la tabla `productos`
+-- Indices de la tabla `vehiculo_vehiculo`
 --
-ALTER TABLE `productos`
-  ADD PRIMARY KEY (`Id_producto`),
-  ADD KEY `FK__Productos__Id_ti__403A8C7D` (`Id_tipo_producto`);
-
---
--- Indices de la tabla `servicios`
---
-ALTER TABLE `servicios`
-  ADD PRIMARY KEY (`Id_Servicios`);
-
---
--- Indices de la tabla `tipo_producto`
---
-ALTER TABLE `tipo_producto`
-  ADD PRIMARY KEY (`Id_tipo_producto`);
-
---
--- Indices de la tabla `tipo_vehiculo`
---
-ALTER TABLE `tipo_vehiculo`
-  ADD PRIMARY KEY (`Id_Tipo_Vehiculo`);
-
---
--- Indices de la tabla `vehiculo`
---
-ALTER TABLE `vehiculo`
-  ADD PRIMARY KEY (`Placa`),
-  ADD KEY `FK__Vehiculo__Docume__3A81B327` (`Documento`),
-  ADD KEY `FK__Vehiculo__Id_Tip__3B75D760` (`Id_Tipo_Vehiculo`);
+ALTER TABLE `vehiculo_vehiculo`
+  ADD PRIMARY KEY (`placa`),
+  ADD KEY `Vehiculo_vehiculo_Documento_60495f0a_fk_Clientes_` (`Documento`),
+  ADD KEY `Vehiculo_vehiculo_id_tipo_vehiculo_e39adc51_fk_Vehiculo_` (`id_tipo_vehiculo`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `detalle_producto`
+-- AUTO_INCREMENT de la tabla `auth_group`
 --
-ALTER TABLE `detalle_producto`
-  MODIFY `Id_Detalle_Producto` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+ALTER TABLE `auth_group`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `detalle_servicio`
+-- AUTO_INCREMENT de la tabla `auth_group_permissions`
 --
-ALTER TABLE `detalle_servicio`
-  MODIFY `Id_Detalle_Servicio` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+ALTER TABLE `auth_group_permissions`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `factura`
+-- AUTO_INCREMENT de la tabla `auth_permission`
 --
-ALTER TABLE `factura`
-  MODIFY `Id_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+ALTER TABLE `auth_permission`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
--- AUTO_INCREMENT de la tabla `metodo_pago`
+-- AUTO_INCREMENT de la tabla `auth_user`
 --
-ALTER TABLE `metodo_pago`
-  MODIFY `Id_Metodo_Pago` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+ALTER TABLE `auth_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `productos`
+-- AUTO_INCREMENT de la tabla `auth_user_groups`
 --
-ALTER TABLE `productos`
-  MODIFY `Id_producto` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+ALTER TABLE `auth_user_groups`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `servicios`
+-- AUTO_INCREMENT de la tabla `auth_user_user_permissions`
 --
-ALTER TABLE `servicios`
-  MODIFY `Id_Servicios` smallint(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `auth_user_user_permissions`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `tipo_producto`
+-- AUTO_INCREMENT de la tabla `django_admin_log`
 --
-ALTER TABLE `tipo_producto`
-  MODIFY `Id_tipo_producto` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `django_admin_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `tipo_vehiculo`
+-- AUTO_INCREMENT de la tabla `django_content_type`
 --
-ALTER TABLE `tipo_vehiculo`
-  MODIFY `Id_Tipo_Vehiculo` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+ALTER TABLE `django_content_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT de la tabla `django_migrations`
+--
+ALTER TABLE `django_migrations`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de la tabla `factura_detalleproducto`
+--
+ALTER TABLE `factura_detalleproducto`
+  MODIFY `id_detalle_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `factura_detalleservicio`
+--
+ALTER TABLE `factura_detalleservicio`
+  MODIFY `id_detalle_servicio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `factura_factura`
+--
+ALTER TABLE `factura_factura`
+  MODIFY `id_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `factura_metodopago`
+--
+ALTER TABLE `factura_metodopago`
+  MODIFY `id_metodo_pago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `productos_productos`
+--
+ALTER TABLE `productos_productos`
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT de la tabla `productos_tipoproducto`
+--
+ALTER TABLE `productos_tipoproducto`
+  MODIFY `id_tipo_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `servicios_servicios`
+--
+ALTER TABLE `servicios_servicios`
+  MODIFY `id_servicios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `vehiculo_tipovehiculo`
+--
+ALTER TABLE `vehiculo_tipovehiculo`
+  MODIFY `id_tipo_vehiculo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `detalle_producto`
+-- Filtros para la tabla `auth_group_permissions`
 --
-ALTER TABLE `detalle_producto`
-  ADD CONSTRAINT `FK__Detalle_P__Id_Fa__5441852A` FOREIGN KEY (`Id_Factura`) REFERENCES `factura` (`Id_factura`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Detalle_P__Id_pr__5535A963` FOREIGN KEY (`Id_producto`) REFERENCES `productos` (`Id_producto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `auth_group_permissions`
+  ADD CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  ADD CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`);
 
 --
--- Filtros para la tabla `detalle_servicio`
+-- Filtros para la tabla `auth_permission`
 --
-ALTER TABLE `detalle_servicio`
-  ADD CONSTRAINT `FK__Detalle_S__Id_Fa__5070F446` FOREIGN KEY (`Id_Factura`) REFERENCES `factura` (`Id_factura`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Detalle_S__Id_Se__5165187F` FOREIGN KEY (`Id_Servicio`) REFERENCES `servicios` (`Id_Servicios`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `auth_permission`
+  ADD CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
 
 --
--- Filtros para la tabla `factura`
+-- Filtros para la tabla `auth_user_groups`
 --
-ALTER TABLE `factura`
-  ADD CONSTRAINT `FK__Factura__Documen__4BAC3F29` FOREIGN KEY (`Documento_M`) REFERENCES `mecanico` (`Documento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Factura__Id_Meto__4CA06362` FOREIGN KEY (`Id_Metodo_Pago`) REFERENCES `metodo_pago` (`Id_Metodo_Pago`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Factura__NIT__4D94879B` FOREIGN KEY (`NIT`) REFERENCES `datos_empresa` (`NIT`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Factura__Placa__4AB81AF0` FOREIGN KEY (`Placa`) REFERENCES `vehiculo` (`Placa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `auth_user_groups`
+  ADD CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
+  ADD CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Filtros para la tabla `productos`
+-- Filtros para la tabla `auth_user_user_permissions`
 --
-ALTER TABLE `productos`
-  ADD CONSTRAINT `FK__Productos__Id_ti__403A8C7D` FOREIGN KEY (`Id_tipo_producto`) REFERENCES `tipo_producto` (`Id_tipo_producto`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `auth_user_user_permissions`
+  ADD CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
+  ADD CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
--- Filtros para la tabla `vehiculo`
+-- Filtros para la tabla `django_admin_log`
 --
-ALTER TABLE `vehiculo`
-  ADD CONSTRAINT `FK__Vehiculo__Docume__3A81B327` FOREIGN KEY (`Documento`) REFERENCES `clientes` (`Documento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK__Vehiculo__Id_Tip__3B75D760` FOREIGN KEY (`Id_Tipo_Vehiculo`) REFERENCES `tipo_vehiculo` (`Id_Tipo_Vehiculo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `django_admin_log`
+  ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
+  ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
+
+--
+-- Filtros para la tabla `factura_detalleproducto`
+--
+ALTER TABLE `factura_detalleproducto`
+  ADD CONSTRAINT `Factura_detalleprodu_factura_id_53cf187b_fk_Factura_f` FOREIGN KEY (`factura_id`) REFERENCES `factura_factura` (`id_factura`),
+  ADD CONSTRAINT `Factura_detalleprodu_producto_id_785fceb0_fk_Productos` FOREIGN KEY (`producto_id`) REFERENCES `productos_productos` (`id_producto`);
+
+--
+-- Filtros para la tabla `factura_detalleservicio`
+--
+ALTER TABLE `factura_detalleservicio`
+  ADD CONSTRAINT `Factura_detalleservi_documento_mecanico_i_68375984_fk_Usuarios_` FOREIGN KEY (`documento_mecanico_id`) REFERENCES `usuarios_usuarios` (`Documento`),
+  ADD CONSTRAINT `Factura_detalleservi_factura_id_a5866ac5_fk_Factura_f` FOREIGN KEY (`factura_id`) REFERENCES `factura_factura` (`id_factura`),
+  ADD CONSTRAINT `Factura_detalleservi_servicio_id_ae146b22_fk_Servicios` FOREIGN KEY (`servicio_id`) REFERENCES `servicios_servicios` (`id_servicios`);
+
+--
+-- Filtros para la tabla `factura_factura`
+--
+ALTER TABLE `factura_factura`
+  ADD CONSTRAINT `Factura_factura_id_metodo_pago_7f7937ec_fk_Factura_m` FOREIGN KEY (`id_metodo_pago`) REFERENCES `factura_metodopago` (`id_metodo_pago`),
+  ADD CONSTRAINT `Factura_factura_nit_d7f32b5e_fk_Empresa_empresa_nit` FOREIGN KEY (`nit`) REFERENCES `empresa_empresa` (`nit`),
+  ADD CONSTRAINT `Factura_factura_placa_3a5ccf6b_fk_Vehiculo_vehiculo_placa` FOREIGN KEY (`placa`) REFERENCES `vehiculo_vehiculo` (`placa`);
+
+--
+-- Filtros para la tabla `productos_productos`
+--
+ALTER TABLE `productos_productos`
+  ADD CONSTRAINT `Productos_productos_id_tipo_producto_c75ef1b3_fk_Productos` FOREIGN KEY (`id_tipo_producto`) REFERENCES `productos_tipoproducto` (`id_tipo_producto`);
+
+--
+-- Filtros para la tabla `vehiculo_vehiculo`
+--
+ALTER TABLE `vehiculo_vehiculo`
+  ADD CONSTRAINT `Vehiculo_vehiculo_Documento_60495f0a_fk_Clientes_` FOREIGN KEY (`Documento`) REFERENCES `clientes_clientes` (`Documento`),
+  ADD CONSTRAINT `Vehiculo_vehiculo_id_tipo_vehiculo_e39adc51_fk_Vehiculo_` FOREIGN KEY (`id_tipo_vehiculo`) REFERENCES `vehiculo_tipovehiculo` (`id_tipo_vehiculo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
