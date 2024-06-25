@@ -176,10 +176,16 @@ def obtener_precio_servicio(request):
     return JsonResponse({'precio': servicio.precio})
 
 
+
+
+
+
 @csrf_exempt
 def guardar_factura(request):
     if request.method == 'POST':
         try:
+            imprimir_mensajes_de_carga()
+            
             data = json.loads(request.body)
             logger.info('Datos recibidos en el backend: %s', data)
 
@@ -300,3 +306,21 @@ o si, siendo odiado, no te domina el odio
 Y aún así no pareces demasiado bueno o demasiado sabio.
 
 '''
+
+
+def imprimir_mensajes_de_carga():
+    loading_messages = {
+        1: "Acomodando vasos...",
+        2: "Lavándose las manos...",
+        3: "Preparando ingredientes...",
+        4: "Limpieza general...",
+        5: "Acomodando los toppings...",
+        6: "Afinando la máquina de batidos...",
+        7: "Verificando las órdenes...",
+        8: "Preparando las frutas...",
+        9: "Organizando el mostrador...",
+        10: "Encendiendo las luces...",
+    }
+
+    for key, message in loading_messages.items():
+        print(message)
